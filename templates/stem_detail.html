@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}{{ name }}({{ info.hanja }}) — 10천간 사주 일간 완전 풀이{% endblock %}
+{% block description %}{{ name }}일간의 본질, 적성, 인간관계. {{ info.metaphor }}. {{ info.element }}.{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block jsonld_extra %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"{{ name }}({{ info.hanja }}) 천간 풀이","inLanguage":"ko-KR","mainEntityOfPage":"{{ request.url }}","publisher":{"@id":"{{ request.url_root }}#org"}}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb"><a href="{{ url_for('stem_index') }}">10천간</a></p>
+    <h1>{{ name }}({{ info.hanja }})</h1>
+    <p class="lead">{{ info.metaphor }} · {{ info.element }}</p>
+  </div>
+</section>
+
+<article class="article container narrow">
+  <h2>{{ name }}일간의 본질</h2>
+  <p>{{ info.body }}</p>
+
+  {% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_INLINE %}
+  <div class="ad-container"><p class="ad-label">{{ t('ad_label') }}</p>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}" data-ad-slot="{{ ADSENSE_SLOT_INLINE }}" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+  {% endif %}
+
+  <h2>적합한 직업</h2>
+  <p>{{ info.career }}</p>
+
+  <h2>본인 일간 확인하기</h2>
+  <p>본인의 일간이 {{ name }}인지, 또는 어떤 천간인지 <a href="{{ url_for('index') }}" class="strong-link">무료 사주 풀이</a>에서 확인하세요. 일간을 알면 십신·십이운성 분석의 기준점이 됩니다.</p>
+
+  <div class="pillar-nav">
+    {% for nm in all_names %}
+    <a class="link-button {% if nm != name %}secondary{% endif %}" href="{{ url_for('stem_detail', name=nm) }}">{{ nm }}</a>
+    {% endfor %}
+  </div>
+</article>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_BOTTOM %}
+<div class="ad-container"><div class="container narrow"><p class="ad-label">{{ t('ad_label') }}</p>
+<ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}" data-ad-slot="{{ ADSENSE_SLOT_BOTTOM }}" data-ad-format="auto" data-full-width-responsive="true"></ins></div></div>
+{% endif %}
+{% endblock %}

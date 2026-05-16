@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}일시적 오류 — {{ SITE_NAME }}{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <h1>500</h1>
+    <p class="lead">일시적인 서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</p>
+    <a href="{{ url_for('index') }}" class="link-button">처음으로 돌아가기</a>
+  </div>
+</section>
+{% endblock %}

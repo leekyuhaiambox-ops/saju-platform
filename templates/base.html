@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1a0f2e">
+  <title>{% block title %}{{ SITE_NAME }}{% endblock %}</title>
+  <meta name="description" content="{% block description %}{% if lang == 'en' %}Free, accurate analysis of Saju (Korean Four-Pillar astrology): Day-Master, Ten Gods, Twelve Life Stages, and Five Elements.{% else %}{{ SITE_TAGLINE }}. 정확한 사주 사기둥, 십신, 십이운성, 오행 분석을 무료로 제공합니다.{% endif %}{% endblock %}">
+  <meta name="keywords" content="{% if lang == 'en' %}saju, korean astrology, chinese astrology, four pillars, BaZi, ten gods, day master, five elements, free reading, compatibility{% else %}사주,명리학,운세,무료사주,사주풀이,십신,십이운성,일주,60갑자,오행{% endif %}">
+  <link rel="canonical" href="{{ request.url }}">
+  {# hreflang 자동 생성 — 현 path에서 ko/en 쌍 노출 #}
+  {% set cur_path = request.path %}
+  {% if cur_path.startswith('/en') %}
+    {% set ko_path = cur_path[3:] or '/' %}
+    {% set en_path = cur_path %}
+  {% else %}
+    {% set ko_path = cur_path %}
+    {% set en_path = '/en' + (cur_path if cur_path != '/' else '/') %}
+  {% endif %}
+  <link rel="alternate" hreflang="ko" href="{{ request.url_root.rstrip('/') }}{{ ko_path }}">
+  <link rel="alternate" hreflang="en" href="{{ request.url_root.rstrip('/') }}{{ en_path }}">
+  <link rel="alternate" hreflang="x-default" href="{{ request.url_root.rstrip('/') }}{{ ko_path }}">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+  <meta property="og:title" content="{{ self.title() }}">
+  <meta property="og:description" content="{{ self.description() }}">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:site_name" content="{{ SITE_NAME }}">
+  <meta property="og:url" content="{{ request.url }}">
+  <meta property="og:image" content="{% block og_image %}{% if lang == 'en' %}{{ url_for('static', filename='img/og-default-en.png', _external=True) }}{% else %}{{ url_for('static', filename='img/og-default.png', _external=True) }}{% endif %}{% endblock %}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ self.title() }}">
+  <meta name="twitter:description" content="{{ self.description() }}">
+  <meta name="twitter:image" content="{{ self.og_image() }}">
+
+  <!-- 검색엔진 추가 -->
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="google" content="notranslate">
+
+  <!-- 검색엔진 소유권 인증 (환경변수에서 채워지면 자동 활성) -->
+  {% if GOOGLE_SITE_VERIFICATION %}<meta name="google-site-verification" content="{{ GOOGLE_SITE_VERIFICATION }}">{% endif %}
+  {% if NAVER_SITE_VERIFICATION %}<meta name="naver-site-verification" content="{{ NAVER_SITE_VERIFICATION }}">{% endif %}
+  {% if BING_SITE_VERIFICATION %}<meta name="msvalidate.01" content="{{ BING_SITE_VERIFICATION }}">{% endif %}
+  {% if YANDEX_SITE_VERIFICATION %}<meta name="yandex-verification" content="{{ YANDEX_SITE_VERIFICATION }}">{% endif %}
+  {% if PINTEREST_VERIFICATION %}<meta name="p:domain_verify" content="{{ PINTEREST_VERIFICATION }}">{% endif %}
+  <meta property="al:web:url" content="{{ request.url }}">
+
+  <!-- 사이트 전역 JSON-LD: WebSite + Organization + SearchAction -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "{{ request.url_root }}#website",
+        "url": "{{ request.url_root }}",
+        "name": "{{ SITE_NAME }}",
+        "description": "{{ SITE_TAGLINE }}",
+        "inLanguage": "ko-KR",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "{{ request.url_root }}result?birth_date={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": "{{ request.url_root }}#org",
+        "name": "{{ SITE_NAME }}",
+        "url": "{{ request.url_root }}",
+        "logo": "{{ url_for('static', filename='img/og-default.png', _external=True) }}"
+      }
+    ]
+  }
+  </script>
+  {% block jsonld_extra %}{% endblock %}
+
+  <!-- Favicon (inline SVG) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%231a0f2e'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle' fill='%23daa520' font-family='serif'%3E命%3C/text%3E%3C/svg%3E">
+
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%231a0f2e'/%3E%3Ctext x='90' y='130' font-size='110' text-anchor='middle' fill='%23daa520' font-family='serif'%3E命%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=20260512-2">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;900&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+
+  {% if ADSENSE_CLIENT_ID %}
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ ADSENSE_CLIENT_ID }}" crossorigin="anonymous"></script>
+  <meta name="google-adsense-account" content="{{ ADSENSE_CLIENT_ID }}">
+  {% endif %}
+
+  {% if META_PIXEL_ID %}
+  <!-- Meta Pixel -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '{{ META_PIXEL_ID }}');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id={{ META_PIXEL_ID }}&ev=PageView&noscript=1"/></noscript>
+  {% endif %}
+
+  {% if GA_MEASUREMENT_ID %}
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ GA_MEASUREMENT_ID }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{ GA_MEASUREMENT_ID }}');
+  </script>
+  {% endif %}
+
+  {% block head_extra %}{% endblock %}
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="{{ url_for('index') }}">
+        <span class="brand-mark">命</span>
+        <span class="brand-text">{{ SITE_NAME }}</span>
+      </a>
+      <nav class="nav">
+        {% set p = '/en' if lang == 'en' else '' %}
+        <a href="{{ p }}/">{{ t('nav_saju') }}</a>
+        <a href="{{ p }}/today">{{ t('nav_today') }}</a>
+        <a href="{{ p }}/zodiac">{{ t('nav_zodiac') }}</a>
+        <a href="{{ p }}/compatibility">{{ t('nav_compatibility') }}</a>
+        <a href="{{ p }}/sixty-pillars">{{ t('nav_pillars') }}</a>
+        <a href="{{ p }}/basics">{{ t('nav_basics') }}</a>
+        <a href="{{ p }}/glossary">{{ t('nav_glossary') }}</a>
+        <a href="{{ en_path if lang == 'ko' else ko_path }}" class="lang-switch" rel="alternate" hreflang="{{ 'en' if lang == 'ko' else 'ko' }}">
+          {% if lang == 'en' %}🇰🇷 한국어{% else %}🇺🇸 English{% endif %}
+        </a>
+      </nav>
+      <button class="nav-toggle" aria-label="menu" onclick="document.querySelector('.nav').classList.toggle('open')">☰</button>
+    </div>
+  </header>
+
+  <main class="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  {# ─── AdFit 728×90 Leaderboard (메인 콘텐츠 아래, 풋터 위) ─── #}
+  {% if ADFIT_SLOT_LEADERBOARD %}
+  <div class="adfit-container adfit-leaderboard">
+    <p class="ad-label">{{ t('ad_label') }}</p>
+    <ins class="kakao_ad_area" style="display:none;"
+         data-ad-unit="{{ ADFIT_SLOT_LEADERBOARD }}"
+         data-ad-width="728" data-ad-height="90"></ins>
+  </div>
+  {% endif %}
+
+  {# ─── AdFit 250×250 Square (풋터 위) ─── #}
+  {% if ADFIT_SLOT_SQUARE %}
+  <div class="adfit-container adfit-square">
+    <p class="ad-label">{{ t('ad_label') }}</p>
+    <ins class="kakao_ad_area" style="display:none;"
+         data-ad-unit="{{ ADFIT_SLOT_SQUARE }}"
+         data-ad-width="250" data-ad-height="250"></ins>
+  </div>
+  {% endif %}
+
+  {# ─── AdFit 160×600 Skyscraper (데스크탑 플로팅 사이드, 모바일 숨김) ─── #}
+  {% if ADFIT_SLOT_SKYSCRAPER %}
+  <div class="adfit-skyscraper">
+    <ins class="kakao_ad_area" style="display:none;"
+         data-ad-unit="{{ ADFIT_SLOT_SKYSCRAPER }}"
+         data-ad-width="160" data-ad-height="600"></ins>
+  </div>
+  {% endif %}
+
+  {# AdFit 스크립트 — 한 번만 로드 #}
+  {% if ADFIT_SLOT_LEADERBOARD or ADFIT_SLOT_MEDIUM or ADFIT_SLOT_SQUARE or ADFIT_SLOT_SKYSCRAPER %}
+  <script type="text/javascript" src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
+  <script>
+    // 광고 fill 실패 시 컨테이너 자체를 숨김 (빈 "광고" 라벨 방지)
+    (function () {
+      function hideUnfilledAdContainers() {
+        document.querySelectorAll('.adfit-container, .adfit-skyscraper').forEach(function (c) {
+          var area = c.querySelector('.kakao_ad_area');
+          if (!area) return;
+          var d = getComputedStyle(area).display;
+          if (d === 'none') {
+            c.style.display = 'none';
+          }
+        });
+      }
+      // AdFit이 fill 시도 시간 확보 (3초 + 추가 6초 백업)
+      setTimeout(hideUnfilledAdContainers, 3000);
+      setTimeout(hideUnfilledAdContainers, 9000);
+    })();
+  </script>
+  {% endif %}
+
+  <footer class="site-footer">
+    <div class="container">
+      {% set p = '/en' if lang == 'en' else '' %}
+      <div class="footer-grid">
+        <div>
+          <strong>{{ SITE_NAME }}</strong>
+          <p class="muted">{{ SITE_TAGLINE }}</p>
+        </div>
+        <div>
+          <h4>{{ t('footer_section_learn') }}</h4>
+          <a href="{{ p }}/basics">{{ t('nav_basics') }}</a>
+          <a href="{{ p }}/ten-gods">{% if lang == 'en' %}Ten Gods{% else %}십신 해설{% endif %}</a>
+          <a href="{{ p }}/twelve-stages">{% if lang == 'en' %}Twelve Life Stages{% else %}십이운성 해설{% endif %}</a>
+          <a href="{{ p }}/five-elements">{% if lang == 'en' %}Five Elements{% else %}오행 해설{% endif %}</a>
+          <a href="{{ p }}/sixty-pillars">{{ t('nav_pillars') }}</a>
+        </div>
+        <div>
+          <h4>{{ t('footer_section_info') }}</h4>
+          <a href="{{ p }}/about">{{ t('footer_link_about') }}</a>
+          <a href="{{ p }}/privacy">{{ t('footer_link_privacy') }}</a>
+          <a href="{{ p }}/terms">{{ t('footer_link_terms') }}</a>
+        </div>
+      </div>
+      <p class="copyright">© {{ current_year }} {{ SITE_NAME }}. {{ t('footer_copyright') }}</p>
+    </div>
+  </footer>
+
+  {% if ADSENSE_CLIENT_ID %}
+  <script>
+    document.querySelectorAll('.adsbygoogle').forEach(function(){
+      try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e){}
+    });
+  </script>
+  {% endif %}
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/static/sw.js').catch(function () {});
+      });
+    }
+  </script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

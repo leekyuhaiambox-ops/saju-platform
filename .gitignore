@@ -1,0 +1,55 @@
+# ─── 절대 커밋 금지: 자격증명 ───
+.env
+.env.local
+.env.production
+
+# 구독자 이메일은 비공개 데이터
+.subscribers.txt
+
+# ─── Python ───
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+ENV/
+
+# ─── 에디터 ───
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ─── OS ───
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── 봇 실행 로그 ───
+*.log
+bot.log
+
+# ─── 로컬 전용 배포 스크립트 (토큰 포함) ───
+_deploy.py
+_setup_lemmy_bot.py
+_quick_deploy_result.py
+_upload_4files.py
+_install_praw_remote.py
+_test_lemmy.py
+_check_lemmy_status.py
+_index_*.py
+_set_env.py
+_setup_scheduled_task.py
+_gen_pwa_icons.py
+_gen_og_cards_en.py
+_gen_pinterest_pins.py
+
+# ─── 큰 미디어 파일 (GitHub는 추적, 크기 제한 시 조정) ───
+# (현재는 트래킹. 만약 git push 시 100MB 초과 파일 있으면 추가)
+
+# ─── Windows 작업 스케줄러 ─── (PC 전용이라 깃 무관)
+run_all_bots.bat

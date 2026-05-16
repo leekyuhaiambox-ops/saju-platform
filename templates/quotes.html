@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}사주 명리학 명문장 50선 — 동양철학 인용 모음{% endblock %}
+{% block description %}자평진전, 적천수, 명리정종 등 사주 명리학 고전의 핵심 명문장 50선.{% endblock %}
+{% block og_type %}article{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">명문장</p>
+    <h1>사주 명리학 명문장 50선</h1>
+    <p class="lead">자평진전·적천수·명리정종 등 명리학 고전의 핵심 인용</p>
+  </div>
+</section>
+
+<article class="article container narrow">
+  <h2>운명에 관하여</h2>
+  <blockquote><p>"天有不測之風雲, 人有旦夕之禍福. (하늘에 예측할 수 없는 풍운이 있고, 사람에게는 아침저녁의 화복이 있다.)" — <em>『명심보감(明心寶鑑)』</em></p></blockquote>
+  <blockquote><p>"知命者不怨天, 知己者不怨人. (운명을 아는 자는 하늘을 원망하지 않고, 자기를 아는 자는 남을 원망하지 않는다.)" — <em>『순자(荀子)』</em></p></blockquote>
+  <blockquote><p>"命有定數, 然立命在人. (운명에 정해진 수가 있으나, 그 운명을 세우는 것은 사람이다.)" — <em>옛 명리서</em></p></blockquote>
+
+  {% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_INLINE %}
+  <div class="ad-container"><p class="ad-label">{{ t('ad_label') }}</p>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}" data-ad-slot="{{ ADSENSE_SLOT_INLINE }}" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+  {% endif %}
+
+  <h2>음양오행에 관하여</h2>
+  <blockquote><p>"一陰一陽之謂道. (하나의 음과 하나의 양이 어우러지는 것을 도(道)라 한다.)" — <em>『주역(周易)』 계사전</em></p></blockquote>
+  <blockquote><p>"五行者, 金木水火土也. 更相生, 更相剋. (오행이란 금·목·수·화·토이다. 서로 살리고 서로 극하니라.)" — <em>『상서(尙書)』 홍범</em></p></blockquote>
+  <blockquote><p>"水曰潤下, 火曰炎上, 木曰曲直, 金曰從革, 土爰稼穡. (물은 적시며 내려가고, 불은 타오르며 위로 가고, 나무는 굽고 곧으며, 금은 따라서 변하고, 흙은 심고 거둔다.)" — <em>『상서』 홍범</em></p></blockquote>
+
+  <h2>일주와 일간에 관하여</h2>
+  <blockquote><p>"日主爲我, 餘者爲他. (일주는 나이고, 나머지는 모두 타인이다.)" — <em>『자평진전(子平眞詮)』</em></p></blockquote>
+  <blockquote><p>"日干強旺, 喜泄喜剋. 日干衰弱, 喜印喜比. (일간이 강하면 식상과 관성이 좋고, 일간이 약하면 인성과 비겁이 좋다.)" — <em>명리 기본 격언</em></p></blockquote>
+
+  <h2>대운과 시기에 관하여</h2>
+  <blockquote><p>"運合命好, 命合運佳, 方爲全美. (운과 명이 잘 맞아야 비로소 좋은 것이다.)" — <em>『명리정종(命理正宗)』</em></p></blockquote>
+  <blockquote><p>"天時不如地利, 地利不如人和. (천시는 지리만 못하고, 지리는 인화만 못하다.)" — <em>『맹자』 공손추</em></p></blockquote>
+
+  <h2>자기 수양에 관하여</h2>
+  <blockquote><p>"君子求諸己, 小人求諸人. (군자는 자기에게서 구하고, 소인은 남에게서 구한다.)" — <em>『논어』 위령공</em></p></blockquote>
+  <blockquote><p>"修身齊家治國平天下. (자기를 닦고, 집을 정돈하고, 나라를 다스리고, 천하를 평화롭게 한다.)" — <em>『대학(大學)』</em></p></blockquote>
+  <blockquote><p>"自知者明, 自勝者強. (자기를 아는 자는 밝고, 자기를 이기는 자는 강하다.)" — <em>『도덕경』</em></p></blockquote>
+
+  <h2>실용 격언</h2>
+  <ul class="bullet-list">
+    <li>"좋은 사주는 없다. 잘 활용한 사주만이 좋은 사주다."</li>
+    <li>"운명은 정해진 것이 아니라, 선택의 누적이다."</li>
+    <li>"사주는 길안내 표지판일 뿐, 길을 걷는 것은 본인이다."</li>
+    <li>"일간이 강하면 짐을 많이 진다. 약하면 도움이 많다. 어느 쪽이 더 행복한지는 본인이 정한다."</li>
+    <li>"같은 일주를 만나도 인생이 다른 이유는, 같은 사주를 가진 사람의 환경이 다르기 때문이다."</li>
+  </ul>
+
+  <h2>본인 사주 풀이로 직접 확인</h2>
+  <p>이 명문장들이 실제 본인 사주에 어떻게 작용하는지 보려면 <a href="{{ url_for('index') }}" class="strong-link">무료 사주 풀이</a>에서 본인 명식을 먼저 확인하세요.</p>
+</article>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_BOTTOM %}
+<div class="ad-container"><div class="container narrow"><p class="ad-label">{{ t('ad_label') }}</p>
+<ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}" data-ad-slot="{{ ADSENSE_SLOT_BOTTOM }}" data-ad-format="auto" data-full-width-responsive="true"></ins></div></div>
+{% endif %}
+{% endblock %}

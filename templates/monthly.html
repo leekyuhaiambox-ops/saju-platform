@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}이번 달 운세 — {{ month_start.strftime('%Y년 %m월') }} 30일 일진 흐름{% endblock %}
+{% block description %}{{ month_start.strftime('%Y년 %m월 %d일') }}부터 30일간의 일진과 키워드. 매일의 흐름을 한눈에.{% endblock %}
+{% block og_type %}article{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">월간 운세</p>
+    <h1>이번 달 운세</h1>
+    <p class="lead">{{ month_start.strftime('%Y년 %m월 %d일') }} ~ {{ month_end.strftime('%m월 %d일') }} · 30일 흐름</p>
+  </div>
+</section>
+
+<section class="container">
+  <div class="monthly-grid">
+    {% for f in month_fortunes %}
+    <a class="monthly-cell elem-{{ f.day_element }}-border" href="{{ url_for('today_fortune', date_str=f.date.isoformat()) }}">
+      <div class="monthly-day">{{ f.date.day }}</div>
+      <div class="monthly-pillar elem-{{ f.day_element }}-text">{{ f.day_pillar_name }}</div>
+      <div class="monthly-keyword">{{ f.keyword_title }}</div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_BOTTOM %}
+<div class="ad-container"><div class="container narrow"><p class="ad-label">{{ t('ad_label') }}</p>
+<ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}" data-ad-slot="{{ ADSENSE_SLOT_BOTTOM }}" data-ad-format="auto" data-full-width-responsive="true"></ins></div></div>
+{% endif %}
+
+<section class="section alt">
+  <div class="container narrow">
+    <h2 class="section-title">내 사주에 맞는 정밀 풀이</h2>
+    <p>일진은 모두에게 동일하지만 그 영향은 개인 사주에 따라 다릅니다. 무료 사주 풀이로 본인 명식을 먼저 확인하세요.</p>
+    <p style="text-align:center"><a href="{{ url_for('index') }}" class="link-button">내 사주 보기</a></p>
+  </div>
+</section>
+{% endblock %}

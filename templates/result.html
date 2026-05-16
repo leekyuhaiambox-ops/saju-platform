@@ -1,0 +1,325 @@
+{% extends "base.html" %}
+{% block title %}
+{%- if saju -%}
+  {%- if lang == 'en' -%}
+{{ STEM_EN[saju.day_pillar.stem] }} ({{ ELEMENT_NAMES_EN[saju.day_pillar.stem_element] }}) — {{ interp.day_pillar_name }} Day Pillar Reading
+  {%- else -%}
+{{ saju.day_master }}({{ saju.day_master_element }}) — {{ interp.day_pillar_name }} 일주 풀이
+  {%- endif -%}
+{%- else -%}
+  {%- if lang == 'en' -%}Saju Reading{%- else -%}사주 풀이 결과{%- endif -%}
+{%- endif -%}
+{% endblock %}
+{% block description %}
+{%- if saju -%}{{ interp.summary_line }}{%- else -%}사주 풀이 결과 페이지{%- endif -%}
+{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_image %}
+{%- if saju -%}
+{{ request.url_root.rstrip('/') }}/og/result.png?y={{ saju.year }}&m={{ saju.month }}&d={{ saju.day }}&h={{ saju.hour }}&min={{ saju.minute }}&g={{ saju.gender|urlencode }}&n={{ (saju.name or '')|urlencode }}&lang={{ lang }}&uh={{ '1' if unknown_hour else '0' }}
+{%- else -%}
+{%- if lang == 'en' -%}{{ url_for('static', filename='img/og-default-en.png', _external=True) }}{%- else -%}{{ url_for('static', filename='img/og-default.png', _external=True) }}{%- endif -%}
+{%- endif -%}
+{% endblock %}
+
+{% block content %}
+{% if error %}
+<section class="container narrow">
+  <div class="alert">
+    <h2>입력 오류</h2>
+    <p>{{ error }}</p>
+    <a href="{{ url_for('index') }}" class="link-button">처음으로 돌아가기</a>
+  </div>
+</section>
+{% else %}
+
+<section class="result-hero">
+  <div class="container">
+    {% if saju.name %}<p class="result-name">{% if lang == 'en' %}{{ saju.name }}'s Saju Chart{% else %}{{ saju.name }}님의 사주명식{% endif %}</p>{% endif %}
+    <p class="result-birth">
+      {% if lang == 'en' %}
+        {{ saju.year }}-{{ "%02d"|format(saju.month) }}-{{ "%02d"|format(saju.day) }}
+        {%- if not unknown_hour %} · {{ "%02d"|format(saju.hour) }}:{{ "%02d"|format(saju.minute) }}{% endif %}
+        · {% if saju.gender == '남' %}Male{% else %}Female{% endif %}
+      {% else %}
+        {{ saju.year }}년 {{ saju.month }}월 {{ saju.day }}일
+        {%- if not unknown_hour %} · {{ "%02d"|format(saju.hour) }}시 {{ "%02d"|format(saju.minute) }}분{% endif %}
+        · {{ saju.gender }}
+      {% endif %}
+    </p>
+    <div class="day-master-card">
+      <p class="day-master-label">{{ t('day_master_label') }}</p>
+      <p class="day-master-stem">
+        {% if lang == 'en' %}{{ STEM_EN[saju.day_pillar.stem] }}{% else %}{{ saju.day_master }}{% endif %}
+        ({{ stems_hanja[saju.day_pillar.stem] }})
+      </p>
+      <p class="day-master-element elem-{{ saju.day_master_element }}">
+        {% if lang == 'en' %}{{ ELEMENT_NAMES_EN[saju.day_pillar.stem_element] }}{% else %}{{ saju.day_master_element }}{% endif %}
+      </p>
+    </div>
+    <p class="result-summary">{{ interp.summary_line }}</p>
+  </div>
+</section>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_TOP %}
+<div class="ad-container">
+  <div class="container narrow">
+    <p class="ad-label">{{ t('ad_label') }}</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}"
+         data-ad-slot="{{ ADSENSE_SLOT_TOP }}" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+</div>
+{% endif %}
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">{{ t('myeongsik_title') }}</h2>
+    <p class="section-sub">{{ t('myeongsik_sub') }}</p>
+
+    <div class="pillars-table">
+      <div class="pillar-col">
+        <div class="pillar-head">{{ t('pillar_hour') }}</div>
+        {% if saju.hour_pillar %}
+        <div class="pillar-stem elem-{{ stems_kr[saju.hour_pillar.stem] }}-bg">
+          <div class="hanja">{{ stems_hanja[saju.hour_pillar.stem] }}</div>
+          <div class="kr">{{ stems_kr[saju.hour_pillar.stem] }}</div>
+        </div>
+        <div class="pillar-branch elem-{{ branches_kr[saju.hour_pillar.branch] }}-bg">
+          <div class="hanja">{{ branches_hanja[saju.hour_pillar.branch] }}</div>
+          <div class="kr">{{ branches_kr[saju.hour_pillar.branch] }}</div>
+        </div>
+        <div class="pillar-meta">
+          <p>{{ interp.twelve_stage_meaning and saju.twelve_stages.hour }}</p>
+          <p class="hidden-list">{{ t('hidden_stems_label') }}: {{ saju.hidden_stems.hour|join('·') }}</p>
+        </div>
+        {% else %}
+        <div class="pillar-empty">{{ t('pillar_unknown_hour') }}</div>
+        {% endif %}
+      </div>
+
+      <div class="pillar-col day-col">
+        <div class="pillar-head">{{ t('pillar_day') }}</div>
+        <div class="pillar-stem elem-{{ stems_kr[saju.day_pillar.stem] }}-bg">
+          <div class="hanja">{{ saju.day_pillar.hanja[0] }}</div>
+          <div class="kr">{{ saju.day_pillar.name[0] }}</div>
+        </div>
+        <div class="pillar-branch elem-{{ branches_kr[saju.day_pillar.branch] }}-bg">
+          <div class="hanja">{{ saju.day_pillar.hanja[1] }}</div>
+          <div class="kr">{{ saju.day_pillar.name[1] }}</div>
+        </div>
+        <div class="pillar-meta">
+          <p>{{ saju.twelve_stages.day }}</p>
+          <p class="hidden-list">{{ t('hidden_stems_label') }}: {{ saju.hidden_stems.day|join('·') }}</p>
+        </div>
+      </div>
+
+      <div class="pillar-col">
+        <div class="pillar-head">{{ t('pillar_month') }}</div>
+        <div class="pillar-stem elem-{{ stems_kr[saju.month_pillar.stem] }}-bg">
+          <div class="hanja">{{ saju.month_pillar.hanja[0] }}</div>
+          <div class="kr">{{ saju.month_pillar.name[0] }}</div>
+        </div>
+        <div class="pillar-branch elem-{{ branches_kr[saju.month_pillar.branch] }}-bg">
+          <div class="hanja">{{ saju.month_pillar.hanja[1] }}</div>
+          <div class="kr">{{ saju.month_pillar.name[1] }}</div>
+        </div>
+        <div class="pillar-meta">
+          <p>{{ saju.twelve_stages.month }}</p>
+          <p class="hidden-list">{{ t('hidden_stems_label') }}: {{ saju.hidden_stems.month|join('·') }}</p>
+        </div>
+      </div>
+
+      <div class="pillar-col">
+        <div class="pillar-head">{{ t('pillar_year') }}</div>
+        <div class="pillar-stem elem-{{ stems_kr[saju.year_pillar.stem] }}-bg">
+          <div class="hanja">{{ saju.year_pillar.hanja[0] }}</div>
+          <div class="kr">{{ saju.year_pillar.name[0] }}</div>
+        </div>
+        <div class="pillar-branch elem-{{ branches_kr[saju.year_pillar.branch] }}-bg">
+          <div class="hanja">{{ saju.year_pillar.hanja[1] }}</div>
+          <div class="kr">{{ saju.year_pillar.name[1] }}</div>
+        </div>
+        <div class="pillar-meta">
+          <p>{{ saju.twelve_stages.year }}</p>
+          <p class="hidden-list">{{ t('hidden_stems_label') }}: {{ saju.hidden_stems.year|join('·') }}</p>
+        </div>
+      </div>
+    </div>
+
+    <table class="ten-god-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>{% if lang == 'en' %}Hr{% else %}시{% endif %}</th>
+          <th>{% if lang == 'en' %}Day{% else %}일{% endif %}</th>
+          <th>{% if lang == 'en' %}Mo{% else %}월{% endif %}</th>
+          <th>{% if lang == 'en' %}Yr{% else %}연{% endif %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>{{ t('tengod_table_stem') }}</th>
+          <td>{{ saju.ten_gods.hour_stem or '—' }}</td>
+          <td class="me">{{ t('me_label') }}</td>
+          <td>{{ saju.ten_gods.month_stem or '—' }}</td>
+          <td>{{ saju.ten_gods.year_stem or '—' }}</td>
+        </tr>
+        <tr>
+          <th>{{ t('tengod_table_branch') }}</th>
+          <td>{{ saju.ten_gods.hour_branch or '—' }}</td>
+          <td>{{ saju.ten_gods.day_branch or '—' }}</td>
+          <td>{{ saju.ten_gods.month_branch or '—' }}</td>
+          <td>{{ saju.ten_gods.year_branch or '—' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <h2 class="section-title">{{ interp.day_pillar_name }} — {{ interp.day_pillar_headline }}</h2>
+    <article class="reading">
+      <p>{{ interp.day_pillar_detail }}</p>
+    </article>
+  </div>
+</section>
+
+{# ─── AdFit 300×250 Medium Rectangle (결과 페이지 인라인) ─── #}
+{% if ADFIT_SLOT_MEDIUM %}
+<div class="adfit-container adfit-medium">
+  <p class="ad-label">{{ t('ad_label') }}</p>
+  <ins class="kakao_ad_area" style="display:none;"
+       data-ad-unit="{{ ADFIT_SLOT_MEDIUM }}"
+       data-ad-width="300" data-ad-height="250"></ins>
+</div>
+{% endif %}
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_INLINE %}
+<div class="ad-container">
+  <div class="container narrow">
+    <p class="ad-label">{{ t('ad_label') }}</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}"
+         data-ad-slot="{{ ADSENSE_SLOT_INLINE }}" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+</div>
+{% endif %}
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">{{ t('elements_section_title') }}</h2>
+    <p class="section-sub">{{ t('elements_section_sub') }}</p>
+    <div class="element-bars">
+      {% for elem, count in saju.element_counts.items() %}
+      <div class="element-bar">
+        <div class="bar-label elem-{{ elem }}-text">
+          {% if lang == 'en' %}{{ {'목':'Wood','화':'Fire','토':'Earth','금':'Metal','수':'Water'}[elem] }}{% else %}{{ elem }}{% endif %}
+          <span class="bar-count">{{ count }}{{ t('elem_count_unit') }}</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill elem-{{ elem }}-bg" style="width: {{ interp.element_pct[elem] }}%"></div></div>
+        <div class="bar-pct">{{ interp.element_pct[elem] }}%</div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="elem-detail">
+      <h3>{{ t('strongest_label') }} — {% if lang == 'en' %}{{ {'목':'Wood','화':'Fire','토':'Earth','금':'Metal','수':'Water'}[interp.max_element] }}{% else %}{{ interp.max_element }}{% endif %}</h3>
+      <p>{{ interp.element_meaning[interp.max_element][1] }}</p>
+      <h3>{{ t('weakest_label') }} — {% if lang == 'en' %}{{ {'목':'Wood','화':'Fire','토':'Earth','금':'Metal','수':'Water'}[interp.min_element] }}{% else %}{{ interp.min_element }}{% endif %}</h3>
+      <p>{{ interp.element_meaning[interp.min_element][1] }}</p>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <h2 class="section-title">{{ t('tengod_section_title') }}</h2>
+    <p class="section-sub">{{ t('tengod_section_sub') }}</p>
+    <div class="ten-god-grid">
+      {% for god, cnt in interp.ten_god_counts.items() %}
+        {% if cnt > 0 %}
+        <div class="ten-god-card">
+          <div class="ten-god-name">{{ god }}</div>
+          <div class="ten-god-count">{{ cnt }}{{ t('elem_count_unit') }}</div>
+          <p>{{ interp.ten_god_meanings[god] }}</p>
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">{{ t('daewoon_title') }}</h2>
+    <p class="section-sub">{{ t('daewoon_sub') }}</p>
+    <div class="daewoon-strip">
+      {% for d in daewoons %}
+      <div class="daewoon-card">
+        <div class="daewoon-age">{{ d.age }}{{ t('daewoon_age_unit') }}</div>
+        <div class="daewoon-name">{{ d.name }}</div>
+        <div class="daewoon-meta">{{ d.ten_god_stem or '—' }} · {{ d.twelve_stage }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_BOTTOM %}
+<div class="ad-container">
+  <div class="container narrow">
+    <p class="ad-label">{{ t('ad_label') }}</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}"
+         data-ad-slot="{{ ADSENSE_SLOT_BOTTOM }}" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+</div>
+{% endif %}
+
+<section class="section">
+  <div class="container narrow">
+    {% set lang_prefix = '/en' if lang == 'en' else '' %}
+    <h2 class="section-title">{{ t('share_title') }}</h2>
+    <p>
+      {% if lang == 'en' %}Share your {{ interp.day_pillar_name }} reading with friends, partner, or social.
+      {% else %}{{ interp.day_pillar_name }} 일주 풀이를 친구·연인·SNS에 공유해 보세요.{% endif %}
+    </p>
+    {% if lang == 'en' %}
+      {% set share_text = 'My Saju Day Pillar is ' ~ interp.day_pillar_name ~ ' — ' ~ interp.day_pillar_headline %}
+    {% else %}
+      {% set share_text = '내 사주 일주는 ' ~ interp.day_pillar_name ~ ' — ' ~ interp.day_pillar_headline %}
+    {% endif %}
+    <div class="share-buttons">
+      <button onclick="shareKakao()" class="link-button" style="background:#fee500;color:#3c1e1e">{{ t('share_kakao') }}</button>
+      <a href="https://twitter.com/intent/tweet?text={{ share_text|urlencode }}&url={{ request.url|urlencode }}" target="_blank" rel="noopener" class="link-button" style="background:#000;color:#fff">{{ t('share_twitter') }}</a>
+      <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url|urlencode }}" target="_blank" rel="noopener" class="link-button" style="background:#1877f2;color:#fff">{{ t('share_facebook') }}</a>
+      <button onclick="copyLink(this)" class="link-button secondary">{{ t('share_copylink') }}</button>
+    </div>
+    <h3 style="margin-top:2rem">{{ t('deeper_title') }}</h3>
+    {% set day_idx_calc = namespace(v=0) %}
+    {% for i in range(60) %}{% if i % 10 == saju.day_pillar.stem and i % 12 == saju.day_pillar.branch %}{% set day_idx_calc.v = i %}{% endif %}{% endfor %}
+    <a href="{{ lang_prefix }}/sixty-pillars/{{ day_idx_calc.v }}" class="link-button">{{ t('btn_pillar_detail') }}</a>
+    <a href="{{ lang_prefix }}/compatibility" class="link-button secondary">{{ t('btn_compatibility') }}</a>
+    <a href="{{ lang_prefix }}/today" class="link-button secondary">{{ t('btn_today_fortune') }}</a>
+    <a href="{{ lang_prefix }}/" class="link-button secondary">{{ t('btn_other_saju') }}</a>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container narrow">
+    <h3>{{ t('disclaimer_title') }}</h3>
+    <p class="disclaimer">{{ t('disclaimer_body') }}</p>
+  </div>
+</section>
+
+{% endif %}
+
+{% block scripts %}
+{% if META_PIXEL_ID and saju %}
+<script>
+  if (window.fbq) fbq('trackCustom', 'SajuViewed', {
+    day_master: "{{ saju.day_master }}",
+    element: "{{ saju.day_master_element }}"
+  });
+</script>
+{% endif %}
+{% endblock %}
+{% endblock %}

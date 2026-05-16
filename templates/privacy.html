@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}개인정보 처리방침 — {{ SITE_NAME }}{% endblock %}
+{% block description %}본 사이트의 개인정보 수집·이용·보관·제3자 제공·쿠키 사용에 관한 처리방침.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">안내</p>
+    <h1>개인정보 처리방침</h1>
+    <p class="lead">최종 개정일: {{ current_year }}년 {{ '1월 1일' }}</p>
+  </div>
+</section>
+
+<article class="article container narrow">
+  <h2>1. 수집하는 개인정보 항목</h2>
+  <p>본 사이트는 사주 풀이 서비스 제공을 위해 다음 항목을 일시적으로 수집합니다.</p>
+  <ul class="bullet-list">
+    <li>이름 또는 별명 (선택, 풀이 결과 화면 표시 용도)</li>
+    <li>성별, 생년월일, 출생 시각 (사주 계산 용도)</li>
+    <li>접속 IP, 브라우저 정보, 접속 일시 (서버 로그 자동 수집)</li>
+    <li>쿠키 (광고 및 서비스 품질 개선용)</li>
+  </ul>
+
+  <h2>2. 개인정보의 보관 및 파기</h2>
+  <p>사주 입력 정보(이름·성별·생년월일·출생 시각)는 서버 데이터베이스에 저장되지 않으며, 사용자의 브라우저 요청 처리 후 즉시 메모리에서 해제됩니다. 서버 접속 로그는 보안 및 장애 대응 목적으로 최대 30일간 보관 후 자동 삭제됩니다.</p>
+
+  <h2>3. 제3자 제공 및 광고</h2>
+  <p>본 사이트는 사용자의 개인정보를 제3자에게 제공하지 않습니다. 다만 다음과 같은 제3자 서비스의 자체 정책에 따라 일부 익명 정보가 수집될 수 있습니다.</p>
+  <ul class="bullet-list">
+    <li><strong>Google AdSense</strong> — 사용자 관심사 기반 광고 노출을 위해 쿠키 및 기기 식별자를 사용합니다. 자세한 내용은 <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">Google 광고 정책</a>을 참고하세요.</li>
+    <li><strong>Google Analytics</strong> — 사이트 방문 통계 분석. 익명화된 IP 정보가 사용됩니다.</li>
+    <li><strong>Meta Pixel</strong> — Facebook/Instagram 광고 효율 측정 및 유사 타겟 구성. 자세한 내용은 <a href="https://www.facebook.com/policy.php" target="_blank" rel="noopener">Meta 개인정보 정책</a>을 참고하세요.</li>
+  </ul>
+
+  <h2>4. 쿠키 사용</h2>
+  <p>본 사이트는 광고 및 서비스 품질 개선을 위해 쿠키를 사용합니다. 사용자는 브라우저 설정을 통해 쿠키 저장을 거부하거나 삭제할 수 있습니다. 다만 쿠키 차단 시 광고 노출 등 일부 기능이 제한될 수 있습니다.</p>
+
+  <h2>5. 광고 식별자 거부</h2>
+  <p>Google 개인 맞춤 광고는 <a href="https://adssettings.google.com/" target="_blank" rel="noopener">Google 광고 설정</a>에서 비활성화할 수 있습니다. Meta 광고는 <a href="https://www.facebook.com/settings?tab=ads" target="_blank" rel="noopener">Facebook 광고 설정</a>에서 관리할 수 있습니다.</p>
+
+  <h2>6. 이용자의 권리</h2>
+  <p>이용자는 본 사이트에 저장된 개인정보의 열람·정정·삭제를 요청할 수 있으나, 본 사이트는 사주 입력 정보를 저장하지 않으므로 별도의 열람·정정 청구 절차가 필요하지 않습니다.</p>
+
+  <h2>7. 처리방침의 변경</h2>
+  <p>법령 또는 서비스 운영 정책 변경에 따라 본 처리방침이 개정될 수 있으며, 개정 시 본 페이지에 공지합니다.</p>
+
+  <h2>8. 문의처</h2>
+  <p>개인정보 처리와 관련된 문의는 사이트 운영자에게 사이트 푸터에 명시된 채널로 연락 주시기 바랍니다.</p>
+</article>
+{% endblock %}

@@ -1,0 +1,60 @@
+name: Daily Bot — Auto-post to Lemmy / Mastodon / Dev.to + IndexNow
+
+on:
+  # 매일 UTC 16:00 = 한국시간(KST) 새벽 1:00에 자동 실행
+  schedule:
+    - cron: '0 16 * * *'
+  # 수동 트리거도 가능 (Actions 탭에서 "Run workflow" 버튼)
+  workflow_dispatch:
+
+permissions:
+  contents: write  # state 파일 커밋용
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run all bots
+        env:
+          # ─── Lemmy ───
+          LEMMY_INSTANCE: lemmy.world
+          LEMMY_USERNAME: ${{ secrets.LEMMY_USERNAME }}
+          LEMMY_PASSWORD: ${{ secrets.LEMMY_PASSWORD }}
+
+          # ─── Mastodon ───
+          MASTODON_INSTANCE: mastodon.social
+          MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
+
+          # ─── Dev.to ───
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+
+          # ─── 공통 ───
+          SITE_URL: https://tarofortune.pythonanywhere.com
+          SITE_HOST: tarofortune.pythonanywhere.com
+        run: |
+          python -X utf8 run_all_bots.py
+
+      - name: Commit state files (중복 방지 상태 영구 저장)
+        run: |
+          git config user.name "tarofortune-bot"
+          git config user.email "bot@tarofortune.pythonanywhere.com"
+          git add .lemmy_state.json .mastodon_state.json .devto_state.json 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: bot state $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git push
+          else
+            echo "No state changes to commit."
+          fi

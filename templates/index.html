@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}{{ SITE_NAME }} — {% if lang == 'en' %}Free Authentic Saju Reading{% else %}무료 정통 사주 풀이{% endif %}{% endblock %}
+{% block description %}{% if lang == 'en' %}Enter your birth date and time for a precise reading of the Four Pillars, Ten Gods, Twelve Life Stages, and Five Elements — 1,800 years of East Asian wisdom, free.{% else %}생년월일시만 입력하면 1,800년 동양철학 사주명리학으로 사기둥·십신·십이운성·오행을 정밀하게 풀어드립니다. 완전 무료.{% endif %}{% endblock %}
+{% block jsonld_extra %}
+{% if lang == 'en' %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+ {"@type":"Question","name":"What is Saju (사주)?","acceptedAnswer":{"@type":"Answer","text":"Saju is the Korean tradition of Chinese Four-Pillar astrology (BaZi). It encodes your birth year, month, day, and hour as eight Chinese characters of Heavenly Stems and Earthly Branches, used as a self-understanding framework."}},
+ {"@type":"Question","name":"Is the reading free?","acceptedAnswer":{"@type":"Answer","text":"Yes. The full Saju reading — Four Pillars, Ten Gods, Twelve Life Stages, Five Elements balance, and 100-year Daewoon flow — is completely free, with no signup or email required."}},
+ {"@type":"Question","name":"How accurate is the calculation?","acceptedAnswer":{"@type":"Answer","text":"We use the Meeus astronomical algorithm to compute the 24 solar terms to the minute, apply the Korean Late-Zi hour rule, and use the day-master-centered Ten God / Twelve Life Stage logic. This matches the precision of paid Saju calculators."}},
+ {"@type":"Question","name":"What's a Day Pillar archetype?","acceptedAnswer":{"@type":"Answer","text":"Your Day Pillar (the stem-branch pair of your birth day) is one of 60 personality archetypes — like a higher-resolution sun sign. Browse all 60 in the sixty-pillars section."}}
+]}
+</script>
+{% else %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+ {"@type":"Question","name":"사주는 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"사주는 태어난 해·달·날·시를 천간과 지지의 여덟 글자로 표기해 풀이하는 동양 명리학입니다. 본 사이트는 십신·십이운성·오행 분석까지 무료로 제공합니다."}},
+ {"@type":"Question","name":"정확도는 어느 정도인가요?","acceptedAnswer":{"@type":"Answer","text":"Meeus 천문공식으로 24절기 시점을 분 단위로 계산해 연주·월주 경계를 정확히 잡고, 야자시 보정과 한국 표준시(KST) 기준을 적용합니다. 유료 만세력과 같은 수준의 정밀도입니다."}},
+ {"@type":"Question","name":"개인정보가 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"생년월일시 입력은 서버에 저장되지 않습니다. 풀이 결과를 화면에 표시한 직후 메모리에서 해제됩니다."}},
+ {"@type":"Question","name":"음력 입력도 가능한가요?","acceptedAnswer":{"@type":"Answer","text":"현재는 양력만 지원합니다. 음력으로 생일을 아시는 분은 인터넷 검색의 양력 변환을 거쳐 입력해 주시기 바랍니다."}},
+ {"@type":"Question","name":"출생 시간을 모르면 풀이가 안 되나요?","acceptedAnswer":{"@type":"Answer","text":"출생 시간 미상 옵션이 있어, 시주를 제외한 연주·월주·일주 3기둥 분석을 받을 수 있습니다. 일주만으로도 의미 있는 풀이가 가능합니다."}}
+]}
+</script>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{% set form_action = '/en/result' if lang == 'en' else '/result' %}
+<section class="hero">
+  <div class="container">
+    <div class="hero-symbol">命</div>
+    <h1 class="hero-title">{{ t('hero_title') }}</h1>
+    <p class="hero-subtitle">{{ t('hero_subtitle') }}</p>
+    <p class="hero-meta">{{ t('hero_meta') }}</p>
+  </div>
+</section>
+
+<section class="form-section">
+  <div class="container narrow">
+    <form class="saju-form" method="POST" action="{{ form_action }}" id="sajuForm">
+      <h2>{{ t('form_title') }}</h2>
+
+      <label class="field">
+        <span class="field-label">{{ t('form_name') }} <em>({{ t('form_optional') }})</em></span>
+        <input type="text" name="name" placeholder="{{ t('form_name_placeholder') }}" maxlength="30" autocomplete="off">
+      </label>
+
+      <fieldset class="field">
+        <legend class="field-label">{{ t('form_gender') }}</legend>
+        <div class="radio-group">
+          <label class="radio"><input type="radio" name="gender" value="{% if lang == 'en' %}M{% else %}남{% endif %}" checked><span>{{ t('form_male') }}</span></label>
+          <label class="radio"><input type="radio" name="gender" value="{% if lang == 'en' %}F{% else %}여{% endif %}"><span>{{ t('form_female') }}</span></label>
+        </div>
+      </fieldset>
+
+      <label class="field">
+        <span class="field-label">{{ t('form_birth_date') }} <em>({{ t('form_solar') }})</em></span>
+        <input type="date" name="birth_date" required min="{{ min_date }}" max="{{ max_date }}" value="">
+      </label>
+
+      <label class="field">
+        <span class="field-label">{{ t('form_birth_time') }} <em>({{ t('form_time_note') }})</em></span>
+        <input type="time" name="birth_time" id="birthTime" step="60">
+      </label>
+
+      <label class="checkbox-row">
+        <input type="checkbox" name="unknown_hour" id="unknownHour" onchange="document.getElementById('birthTime').disabled = this.checked">
+        <span>{{ t('form_unknown_hour') }}</span>
+      </label>
+
+      <button type="submit" class="cta-button">
+        <span class="cta-main">{{ t('cta_main') }}</span>
+        <span class="cta-sub">{{ t('cta_sub') }}</span>
+      </button>
+
+      <p class="note">{{ t('form_note') }}</p>
+    </form>
+  </div>
+</section>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_INLINE %}
+<div class="ad-container">
+  <div class="container narrow">
+    <p class="ad-label">{{ t('ad_label') }}</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}"
+         data-ad-slot="{{ ADSENSE_SLOT_INLINE }}" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+</div>
+{% endif %}
+
+<section class="feature-section">
+  <div class="container">
+    <h2 class="section-title">{{ t('feature_title') }}</h2>
+    <div class="feature-grid">
+      <div class="feature">
+        <div class="feature-icon">天</div>
+        <h3>{{ t('feature_1_title') }}</h3>
+        <p>{{ t('feature_1_body') }}</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">地</div>
+        <h3>{{ t('feature_2_title') }}</h3>
+        <p>{{ t('feature_2_body') }}</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">人</div>
+        <h3>{{ t('feature_3_title') }}</h3>
+        <p>{{ t('feature_3_body') }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section alt">
+  <div class="container">
+    <h2 class="section-title">{{ t('info_title') }}</h2>
+    <div class="info-grid">
+      <article class="info-card">
+        <h3>{{ t('info_pillars_title') }}</h3>
+        <p>{{ t('info_pillars_body') }}</p>
+      </article>
+      <article class="info-card">
+        <h3>{{ t('info_tengods_title') }}</h3>
+        <p>{{ t('info_tengods_body') }}</p>
+      </article>
+      <article class="info-card">
+        <h3>{{ t('info_stages_title') }}</h3>
+        <p>{{ t('info_stages_body') }}</p>
+      </article>
+      <article class="info-card">
+        <h3>{{ t('info_elements_title') }}</h3>
+        <p>{{ t('info_elements_body') }}</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_BOTTOM %}
+<div class="ad-container">
+  <div class="container narrow">
+    <p class="ad-label">{{ t('ad_label') }}</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}"
+         data-ad-slot="{{ ADSENSE_SLOT_BOTTOM }}" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}12지지 완전 정리 — 사주 지지·지장간 가이드{% endblock %}
+{% block description %}자·축·인·묘·진·사·오·미·신·유·술·해 — 12지지 각각의 의미와 지장간 본기·중기·여기.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">학습 가이드 · 12지지</p>
+    <h1>12지지(十二支)</h1>
+    <p class="lead">땅의 12 기운. 각 지지마다 숨겨진 지장간이 있어 사주 해석의 깊이를 만듭니다.</p>
+  </div>
+</section>
+
+<section class="container">
+  <div class="pillar-grid">
+    {% for name, info in items %}
+    <a class="pillar-tile" href="{{ url_for('branch_detail', name=name) }}">
+      <div class="pillar-tile-name">{{ name }}({{ info.branch_hanja }})</div>
+      <div class="pillar-tile-headline">{{ info.season }}의 지지</div>
+      <div class="pillar-tile-element">지장간 — {{ info.stems|join(' · ') }}</div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_BOTTOM %}
+<div class="ad-container"><div class="container narrow"><p class="ad-label">{{ t('ad_label') }}</p>
+<ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}" data-ad-slot="{{ ADSENSE_SLOT_BOTTOM }}" data-ad-format="auto" data-full-width-responsive="true"></ins></div></div>
+{% endif %}
+{% endblock %}

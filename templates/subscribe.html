@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}일일 운세 구독 — 매일 아침 본인 사주 맞춤 일진 메일{% endblock %}
+{% block description %}매일 아침 본인 사주에 맞춘 오늘의 일진과 키워드를 이메일로 받아보세요.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">구독 신청</p>
+    <h1>일일 운세 메일 구독</h1>
+    <p class="lead">매일 아침 8시, 오늘의 일진과 행운 키워드를 메일로.</p>
+  </div>
+</section>
+
+<section class="form-section">
+  <div class="container narrow">
+    {% if success %}
+    <div class="day-master-card" style="margin-bottom:2rem">
+      <p class="day-master-label">✓ 구독 신청 완료</p>
+      <p class="day-master-stem" style="font-size:1.3rem">{{ email }}</p>
+      <p class="muted">곧 첫 메일을 받으실 수 있습니다.</p>
+    </div>
+    {% else %}
+    {% if error %}<div class="alert"><p>{{ error }}</p></div>{% endif %}
+    <form class="saju-form" method="POST">
+      <h2>이메일 입력</h2>
+      <p style="color:var(--text-dim);text-align:center;margin-bottom:1.5rem">매일 오전 8시, 오늘의 일진과 키워드를 보내드립니다. 언제든 해지 가능.</p>
+      <label class="field">
+        <span class="field-label">이메일 주소</span>
+        <input type="email" name="email" required placeholder="your@email.com">
+      </label>
+      <button type="submit" class="cta-button">
+        <span class="cta-main">무료 구독 신청</span>
+        <span class="cta-sub">스팸 없음 · 언제든 해지 가능</span>
+      </button>
+    </form>
+    {% endif %}
+
+    <div class="info-card" style="margin-top:2rem">
+      <h3>매일 받게 될 내용</h3>
+      <ul class="bullet-list">
+        <li>오늘의 일진 (60갑자 한 글자)</li>
+        <li>오늘의 키워드와 흐름</li>
+        <li>행운의 색·방위·숫자</li>
+        <li>오늘 추천하는 활동</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_BOTTOM %}
+<div class="ad-container"><div class="container narrow"><p class="ad-label">{{ t('ad_label') }}</p>
+<ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}" data-ad-slot="{{ ADSENSE_SLOT_BOTTOM }}" data-ad-format="auto" data-full-width-responsive="true"></ins></div></div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}오늘의 운세 — {{ target.strftime('%Y년 %m월 %d일') }} {{ fortune.day_pillar_name }} {% endblock %}
+{% block description %}{{ target.strftime('%Y년 %m월 %d일') }}의 일진은 {{ fortune.day_pillar_name }}({{ fortune.day_pillar_hanja }}). 오늘의 키워드, 행운의 색·방위·숫자를 확인하세요.{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block jsonld_extra %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"오늘의 운세 — {{ target.strftime('%Y년 %m월 %d일') }} {{ fortune.day_pillar_name }}","datePublished":"{{ target.isoformat() }}","inLanguage":"ko-KR","mainEntityOfPage":"{{ request.url }}","publisher":{"@id":"{{ request.url_root }}#org"}}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">오늘의 운세</p>
+    <h1>{{ target.strftime('%Y년 %m월 %d일') }}</h1>
+    <p class="lead">오늘의 일진은 <strong class="elem-{{ fortune.day_element }}-text">{{ fortune.day_pillar_name }}({{ fortune.day_pillar_hanja }})</strong></p>
+    <p class="meta">{{ fortune.year_pillar_name }}년 {{ fortune.month_pillar_name }}월 {{ fortune.day_pillar_name }}일</p>
+  </div>
+</section>
+
+<section class="container narrow">
+  <div class="day-fortune-card elem-{{ fortune.day_element }}-border">
+    <h2>{{ fortune.keyword_title }}</h2>
+    <p class="lead">{{ fortune.keyword_body }}</p>
+    <div class="lucky-grid">
+      <div><span class="lucky-label">행운의 색</span><span class="lucky-value">{{ fortune.lucky_color }}</span></div>
+      <div><span class="lucky-label">행운의 방위</span><span class="lucky-value">{{ fortune.lucky_direction }}</span></div>
+      <div><span class="lucky-label">행운의 숫자</span><span class="lucky-value">{{ fortune.lucky_number }}</span></div>
+    </div>
+  </div>
+
+  <div class="day-nav">
+    <a href="{{ url_for('today_fortune', date_str=yesterday) }}" class="link-button secondary">← 어제</a>
+    <a href="{{ url_for('today_fortune') }}" class="link-button">오늘로</a>
+    <a href="{{ url_for('today_fortune', date_str=tomorrow) }}" class="link-button secondary">내일 →</a>
+  </div>
+</section>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_INLINE %}
+<div class="ad-container"><div class="container narrow"><p class="ad-label">{{ t('ad_label') }}</p>
+<ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}" data-ad-slot="{{ ADSENSE_SLOT_INLINE }}" data-ad-format="auto" data-full-width-responsive="true"></ins></div></div>
+{% endif %}
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">띠별 오늘의 흐름</h2>
+    <p class="section-sub">자신의 띠를 클릭하면 올해 전체 흐름과 오늘의 영향을 확인할 수 있습니다.</p>
+    <div class="zodiac-grid">
+      {% for z, info in zodiac_traits.items() %}
+      <a href="{{ url_for('zodiac_detail', name=z) }}" class="zodiac-tile">
+        <div class="zodiac-name">{{ z }}</div>
+        <div class="zodiac-keyword">{{ info[1] }}</div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container narrow">
+    <h2 class="section-title">내 사주 전체 풀이가 궁금하다면</h2>
+    <p>오늘의 일진은 모두에게 동일하지만, 그 영향은 개인 사주에 따라 다릅니다. 무료 사주 풀이로 자신의 명식을 먼저 확인하세요.</p>
+    <p style="text-align:center"><a href="{{ url_for('index') }}" class="link-button">내 사주 보기</a></p>
+  </div>
+</section>
+{% endblock %}

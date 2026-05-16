@@ -1,0 +1,772 @@
+/* ─────────────────────────────────────────────────────────────
+   사주명리 플랫폼 — 동양 고전 다크 테마
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  --bg: #0f0817;
+  --bg-2: #1a0f2e;
+  --bg-3: #251943;
+  --bg-card: #1e1535;
+  --border: #3d2e5e;
+  --text: #f3eee8;
+  --text-dim: #b9adc4;
+  --text-mute: #8b7e98;
+  --accent: #daa520;
+  --accent-2: #f4cf6b;
+  --accent-3: #c9914a;
+  --red: #c14d4d;
+  --shadow: 0 10px 40px rgba(0,0,0,.4);
+
+  /* 오행 색 */
+  --elem-목: #4a9b6e;
+  --elem-목-dim: rgba(74,155,110,.18);
+  --elem-화: #d04a4a;
+  --elem-화-dim: rgba(208,74,74,.18);
+  --elem-토: #c39845;
+  --elem-토-dim: rgba(195,152,69,.18);
+  --elem-금: #c6cdd4;
+  --elem-금-dim: rgba(198,205,212,.18);
+  --elem-수: #4a78c8;
+  --elem-수-dim: rgba(74,120,200,.18);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img, svg { max-width: 100%; height: auto; }
+a { color: var(--accent-2); text-decoration: none; transition: color .15s; }
+a:hover { color: var(--accent); }
+
+h1, h2, h3, h4 {
+  font-family: 'Noto Serif KR', serif;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0 0 .6em;
+  color: var(--text);
+}
+h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); font-weight: 900; }
+h2 { font-size: clamp(1.4rem, 3vw, 1.9rem); }
+h3 { font-size: clamp(1.15rem, 2vw, 1.35rem); }
+p { margin: 0 0 1em; }
+em { font-style: normal; color: var(--text-mute); font-size: .88em; font-weight: 400; }
+
+.container { max-width: 1180px; margin: 0 auto; padding: 0 1.25rem; }
+.container.narrow { max-width: 760px; }
+.muted { color: var(--text-dim); }
+
+/* ─── Header ─── */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  backdrop-filter: blur(12px);
+  background: rgba(15,8,23,.85);
+  border-bottom: 1px solid var(--border);
+}
+.site-header .container {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; min-height: 64px;
+}
+.brand {
+  display: inline-flex; align-items: center; gap: .55rem;
+  font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 1.05rem;
+  color: var(--text);
+}
+.brand:hover { color: var(--accent); }
+.brand-mark {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-3) 100%);
+  color: #1a0f2e; display: grid; place-items: center;
+  font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 1.25rem;
+}
+.nav {
+  display: flex; gap: 1.2rem; flex-wrap: wrap;
+}
+.nav a {
+  color: var(--text-dim); font-size: .94rem; font-weight: 500;
+}
+.nav a:hover { color: var(--accent-2); }
+.nav-toggle {
+  display: none; background: none; border: 1px solid var(--border);
+  color: var(--text); padding: .35rem .6rem; border-radius: 6px;
+  cursor: pointer; font-size: 1.1rem;
+}
+@media (max-width: 880px) {
+  .nav {
+    position: absolute; top: 64px; left: 0; right: 0;
+    background: var(--bg-2); padding: 1rem 1.25rem;
+    flex-direction: column; gap: .8rem;
+    border-bottom: 1px solid var(--border);
+    display: none;
+  }
+  .nav.open { display: flex; }
+  .nav-toggle { display: inline-block; }
+}
+
+/* ─── Hero ─── */
+.hero {
+  text-align: center; padding: 4.5rem 0 3rem;
+  background: radial-gradient(ellipse at top, var(--bg-2) 0%, var(--bg) 70%);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 20% 30%, rgba(218,165,32,.12) 0%, transparent 50%),
+              radial-gradient(circle at 80% 70%, rgba(74,120,200,.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+.hero > * { position: relative; }
+.hero-symbol {
+  font-family: 'Noto Serif KR', serif; font-size: 5rem;
+  color: var(--accent); font-weight: 900; line-height: 1;
+  margin-bottom: 1rem; text-shadow: 0 4px 30px rgba(218,165,32,.4);
+}
+.hero-title {
+  font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; margin: 0 0 .6em;
+}
+.hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.3rem); color: var(--text-dim);
+  margin: 0 0 .6em;
+}
+.hero-meta { color: var(--text-mute); font-size: .92rem; }
+
+/* ─── Form ─── */
+.form-section { padding: 2rem 0 3rem; }
+.saju-form {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 2rem; box-shadow: var(--shadow);
+}
+.saju-form h2 {
+  text-align: center; color: var(--accent-2);
+  font-family: 'Noto Serif KR', serif; margin-bottom: 1.5rem;
+}
+.field { display: block; margin-bottom: 1.25rem; }
+.field-label {
+  display: block; margin-bottom: .4rem; font-weight: 600;
+  color: var(--text); font-size: .95rem;
+}
+.field input[type="text"], .field input[type="date"], .field input[type="time"] {
+  width: 100%; padding: .75rem .9rem; font-size: 1rem;
+  background: var(--bg); color: var(--text);
+  border: 1px solid var(--border); border-radius: 8px;
+  font-family: inherit;
+}
+.field input:focus {
+  outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(218,165,32,.18);
+}
+.field input:disabled { opacity: .5; }
+.radio-group { display: flex; gap: .6rem; }
+.radio {
+  flex: 1; padding: .7rem; text-align: center; cursor: pointer;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+  font-weight: 500;
+}
+.radio input { display: none; }
+.radio input:checked + span { color: var(--accent); font-weight: 700; }
+.radio:has(input:checked) {
+  background: rgba(218,165,32,.1); border-color: var(--accent);
+}
+.checkbox-row {
+  display: flex; align-items: center; gap: .5rem; margin: 1rem 0 1.5rem;
+  color: var(--text-dim); cursor: pointer;
+}
+.cta-button {
+  display: block; width: 100%; padding: 1.1rem; cursor: pointer;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-3) 100%);
+  color: #1a0f2e; border: none; border-radius: 12px;
+  font-family: 'Noto Serif KR', serif; font-weight: 900;
+  transition: transform .15s, box-shadow .15s;
+  box-shadow: 0 4px 20px rgba(218,165,32,.3);
+}
+.cta-button:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(218,165,32,.45); }
+.cta-button:active { transform: translateY(0); }
+.cta-main { display: block; font-size: 1.25rem; }
+.cta-sub { display: block; font-size: .85rem; font-weight: 500; margin-top: .15rem; opacity: .8; }
+.note { text-align: center; font-size: .85rem; color: var(--text-mute); margin-top: 1rem; }
+
+/* ─── Feature/Info Section ─── */
+.section, .feature-section, .content-section { padding: 3rem 0; }
+.section.alt, .content-section.alt {
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+}
+.section-title {
+  text-align: center; margin-bottom: .5rem; color: var(--accent-2);
+}
+.section-sub {
+  text-align: center; color: var(--text-dim); margin-bottom: 2rem;
+}
+.feature-grid {
+  display: grid; gap: 1.25rem; margin-top: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.feature {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.75rem; text-align: center;
+}
+.feature-icon {
+  font-family: 'Noto Serif KR', serif; font-size: 2.5rem;
+  color: var(--accent); margin-bottom: .5rem;
+}
+.info-grid {
+  display: grid; gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+.info-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.5rem;
+}
+.info-card h3 { color: var(--accent-2); }
+.info-card p { color: var(--text-dim); margin: 0; }
+
+/* ─── Ad container ─── */
+.ad-container {
+  padding: 1.5rem 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(218,165,32,.03) 50%, transparent 100%);
+}
+.ad-label {
+  text-align: center; font-size: .72rem; color: var(--text-mute);
+  margin: 0 0 .5rem; letter-spacing: .15em; text-transform: uppercase;
+}
+
+/* ─── Page hero (sub pages) ─── */
+.page-hero {
+  padding: 3rem 0 2rem; text-align: center;
+  background: linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 100%);
+}
+.breadcrumb {
+  color: var(--text-mute); font-size: .85rem; letter-spacing: .1em;
+  text-transform: uppercase; margin: 0 0 .5rem;
+}
+.breadcrumb a { color: var(--text-mute); }
+.breadcrumb a:hover { color: var(--accent-2); }
+.lead { font-size: 1.1rem; color: var(--text-dim); }
+.meta { color: var(--text-mute); font-size: .9rem; }
+
+/* ─── Article ─── */
+.article { padding: 2.5rem 0; }
+.article h2 {
+  margin-top: 2.5rem; padding-bottom: .5rem;
+  border-bottom: 1px solid var(--border); color: var(--accent-2);
+}
+.article h3 { margin-top: 1.8rem; color: var(--text); }
+.article p { color: var(--text-dim); }
+.bullet-list {
+  list-style: none; padding: 0; margin: 1em 0;
+}
+.bullet-list li {
+  position: relative; padding-left: 1.4em; margin-bottom: .6em;
+  color: var(--text-dim);
+}
+.bullet-list li::before {
+  content: '◆'; position: absolute; left: 0; top: 0;
+  color: var(--accent); font-size: .7em;
+}
+.strong-link {
+  color: var(--accent-2); font-weight: 700; border-bottom: 1px solid var(--accent-3);
+}
+
+/* ─── Result page ─── */
+.result-hero {
+  background: linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 100%);
+  text-align: center; padding: 3rem 0 2rem;
+}
+.result-name { color: var(--accent-2); font-size: 1.1rem; font-weight: 600; }
+.result-birth { color: var(--text-dim); margin-bottom: 1.5rem; }
+.day-master-card {
+  display: inline-block; background: var(--bg-card);
+  border: 1px solid var(--accent); border-radius: 16px;
+  padding: 1.25rem 2rem; margin: .5rem 0 1.5rem;
+  box-shadow: 0 0 30px rgba(218,165,32,.25);
+}
+.day-master-label { color: var(--text-mute); font-size: .85rem; margin: 0; }
+.day-master-stem {
+  font-family: 'Noto Serif KR', serif; font-size: 2.5rem; font-weight: 900;
+  color: var(--accent); margin: .1em 0;
+}
+.day-master-element { margin: 0; font-weight: 700; }
+.result-summary {
+  max-width: 720px; margin: 1rem auto; color: var(--text-dim);
+  font-size: 1.05rem;
+}
+
+/* ─── Pillars table (4 columns: hour day month year) ─── */
+.pillars-table {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: .6rem;
+  margin: 1.5rem 0 2rem; max-width: 720px; margin-left: auto; margin-right: auto;
+}
+.pillar-col {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1rem .5rem; text-align: center;
+}
+.pillar-col.day-col { border-color: var(--accent); box-shadow: 0 0 20px rgba(218,165,32,.25); }
+.pillar-head {
+  font-size: .82rem; color: var(--text-mute); margin-bottom: .6rem;
+  letter-spacing: .05em;
+}
+.pillar-stem, .pillar-branch {
+  border-radius: 8px; padding: .5rem .25rem; margin-bottom: .35rem;
+  background: var(--bg-3);
+}
+.pillar-stem .hanja, .pillar-branch .hanja,
+.big-pillar-stem .hanja, .big-pillar-branch .hanja {
+  font-family: 'Noto Serif KR', serif; font-size: 1.6rem; font-weight: 900;
+  line-height: 1.1; color: #fff;
+}
+.pillar-stem .kr, .pillar-branch .kr,
+.big-pillar-stem .kr, .big-pillar-branch .kr {
+  font-size: .78rem; color: rgba(255,255,255,.8);
+}
+.pillar-meta {
+  font-size: .78rem; color: var(--text-dim); margin-top: .5rem;
+}
+.pillar-meta p { margin: .2em 0; }
+.hidden-list { color: var(--text-mute); font-size: .72rem; }
+.pillar-empty {
+  padding: 2rem .5rem; color: var(--text-mute); font-size: .85rem;
+}
+
+.ten-god-table {
+  width: 100%; max-width: 720px; margin: 0 auto;
+  border-collapse: collapse; background: var(--bg-card);
+  border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+}
+.ten-god-table th, .ten-god-table td {
+  padding: .6rem .5rem; text-align: center; font-size: .9rem;
+  border-bottom: 1px solid var(--border);
+}
+.ten-god-table thead { background: var(--bg-3); }
+.ten-god-table tbody th {
+  background: var(--bg-3); font-weight: 600; color: var(--text-dim);
+}
+.ten-god-table .me { color: var(--accent); font-weight: 700; }
+
+/* ─── Reading article ─── */
+.reading {
+  max-width: 760px; margin: 0 auto; padding: 1.5rem 1.5rem 0;
+  font-size: 1.05rem; line-height: 1.85; color: var(--text);
+}
+
+/* ─── Element bars ─── */
+.element-bars { max-width: 600px; margin: 1.5rem auto; }
+.element-bar {
+  display: grid; grid-template-columns: 70px 1fr 60px;
+  align-items: center; gap: .75rem; margin-bottom: .6rem;
+}
+.bar-label { font-weight: 700; font-family: 'Noto Serif KR', serif; }
+.bar-count { font-weight: 400; font-size: .78em; color: var(--text-mute); margin-left: .3em; }
+.bar-track {
+  height: 16px; background: var(--bg-3); border-radius: 8px; overflow: hidden;
+}
+.bar-fill { height: 100%; border-radius: 8px; transition: width .8s ease; }
+.bar-pct {
+  text-align: right; color: var(--text-dim); font-size: .85rem;
+  font-variant-numeric: tabular-nums;
+}
+.elem-detail {
+  max-width: 720px; margin: 2rem auto 0; padding: 1.5rem;
+  background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border);
+}
+.elem-detail h3 { color: var(--accent-2); margin-top: 1.2rem; }
+.elem-detail h3:first-child { margin-top: 0; }
+
+/* ─── Ten god grid ─── */
+.ten-god-grid {
+  display: grid; gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  max-width: 1000px; margin: 0 auto;
+}
+.ten-god-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.2rem; text-align: center;
+}
+.ten-god-name {
+  font-family: 'Noto Serif KR', serif; font-size: 1.3rem; font-weight: 900;
+  color: var(--accent-2);
+}
+.ten-god-count {
+  font-size: .85rem; color: var(--text-mute); margin: .2rem 0 .6rem;
+}
+.ten-god-card p { font-size: .9rem; color: var(--text-dim); margin: 0; }
+
+/* ─── Daewoon strip ─── */
+.daewoon-strip {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: .5rem; max-width: 1100px; margin: 0 auto;
+}
+.daewoon-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 10px; padding: .9rem .5rem; text-align: center;
+}
+.daewoon-age { color: var(--accent); font-weight: 700; font-size: .9rem; }
+.daewoon-name {
+  font-family: 'Noto Serif KR', serif; font-weight: 900;
+  font-size: 1.1rem; margin: .3em 0;
+}
+.daewoon-meta { color: var(--text-mute); font-size: .75rem; }
+
+/* ─── Pillar grid (60갑자 인덱스) ─── */
+.pillar-grid {
+  display: grid; gap: .8rem; margin-top: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+.pillar-tile {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.2rem; text-decoration: none;
+  color: var(--text); transition: transform .15s, border-color .15s;
+  display: block; border-left-width: 4px;
+}
+.pillar-tile:hover { transform: translateY(-3px); }
+.pillar-number {
+  font-size: .72rem; color: var(--text-mute);
+  font-variant-numeric: tabular-nums; margin-bottom: .3rem;
+}
+.pillar-tile-name {
+  font-family: 'Noto Serif KR', serif; font-size: 1.35rem; font-weight: 900;
+  margin-bottom: .4rem;
+}
+.pillar-tile-headline {
+  color: var(--text-dim); font-size: .88rem; line-height: 1.4;
+}
+.pillar-tile-element {
+  font-size: .75rem; color: var(--text-mute); margin-top: .4rem;
+}
+.info-note {
+  background: var(--bg-card); border-left: 3px solid var(--accent);
+  padding: .75rem 1rem; border-radius: 6px; margin-top: 1rem;
+}
+
+/* ─── Pillar detail page ─── */
+.big-pillar {
+  display: inline-flex; gap: .6rem; padding: 1rem;
+  background: var(--bg-card); border-radius: 16px;
+  border: 1px solid var(--border); border-left-width: 4px;
+  margin: 1rem 0 1.5rem;
+}
+.big-pillar-stem, .big-pillar-branch {
+  width: 90px; height: 110px; border-radius: 12px;
+  display: grid; place-items: center; padding: 1rem .5rem;
+}
+.big-pillar-stem .hanja, .big-pillar-branch .hanja {
+  font-size: 2.5rem;
+}
+.big-pillar-stem .kr, .big-pillar-branch .kr {
+  font-size: .9rem;
+}
+.pillar-nav {
+  display: flex; gap: .6rem; justify-content: center;
+  margin-top: 2.5rem; flex-wrap: wrap;
+}
+
+/* ─── Stages table ─── */
+.stages-table {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden; margin: 1.5rem 0;
+}
+.stage-row {
+  display: grid; grid-template-columns: 100px 1fr; gap: 1rem;
+  padding: 1rem 1.2rem; border-bottom: 1px solid var(--border);
+}
+.stage-row:last-child { border-bottom: none; }
+.stage-name {
+  font-family: 'Noto Serif KR', serif; font-size: 1.15rem; font-weight: 700;
+  color: var(--accent-2);
+}
+.stage-body { color: var(--text-dim); }
+
+.five-pairs { display: grid; gap: 1rem; margin: 1.5rem 0; }
+.pair {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.25rem 1.5rem;
+}
+.pair h3 { color: var(--accent-2); margin-top: 0; }
+.pair ul { margin: 0; padding-left: 1.2em; color: var(--text-dim); }
+.pair li { margin-bottom: .3em; }
+
+.god-detail {
+  margin: 1.5rem 0; padding: 1.25rem; background: var(--bg-card);
+  border-radius: 12px; border-left: 3px solid var(--accent);
+}
+.god-detail h3 { color: var(--accent); margin-top: 0; }
+.god-detail .more { color: var(--text-dim); margin-top: .8rem; }
+
+.elem-block {
+  margin: 1.5rem 0; padding: 1.5rem; background: var(--bg-card);
+  border: 1px solid var(--border); border-radius: 12px;
+  border-left-width: 4px;
+}
+.elem-attrs {
+  margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed var(--border);
+  font-size: .92rem;
+}
+
+/* ─── Link buttons ─── */
+.link-button {
+  display: inline-block; padding: .7rem 1.25rem;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-3) 100%);
+  color: #1a0f2e; border-radius: 10px; font-weight: 700;
+  margin: .25rem; box-shadow: 0 4px 15px rgba(218,165,32,.25);
+}
+.link-button:hover { transform: translateY(-2px); color: #1a0f2e; }
+.link-button.secondary {
+  background: var(--bg-card); color: var(--text); border: 1px solid var(--border);
+  box-shadow: none;
+}
+
+/* ─── Alert ─── */
+.alert {
+  background: var(--bg-card); border: 1px solid var(--red);
+  border-radius: 12px; padding: 1.5rem; text-align: center;
+  margin: 3rem auto; max-width: 500px;
+}
+.alert h2 { color: var(--red); }
+
+.disclaimer {
+  font-size: .88rem; color: var(--text-mute); font-style: italic;
+}
+
+/* ─── Footer ─── */
+.site-footer {
+  background: var(--bg-2); border-top: 1px solid var(--border);
+  padding: 3rem 0 1.5rem; margin-top: 4rem;
+}
+.footer-grid {
+  display: grid; gap: 2rem; margin-bottom: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+.footer-grid h4 {
+  color: var(--accent-2); font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 700; font-size: .95rem; margin-bottom: .8rem;
+}
+.footer-grid a {
+  display: block; color: var(--text-dim); font-size: .9rem;
+  padding: .25rem 0;
+}
+.copyright {
+  text-align: center; color: var(--text-mute); font-size: .82rem;
+  padding-top: 1.5rem; border-top: 1px solid var(--border);
+}
+
+/* ─── 오행 색 클래스 (천간/지지 셀 배경) ─── */
+/* 천간별 오행 매핑: 갑·을(목) 병·정(화) 무·기(토) 경·신(금) 임·계(수) */
+.elem-갑-bg, .elem-을-bg { background: var(--elem-목); }
+.elem-병-bg, .elem-정-bg { background: var(--elem-화); }
+.elem-무-bg, .elem-기-bg { background: var(--elem-토); }
+.elem-경-bg, .elem-신-bg { background: var(--elem-금); color: #1a0f2e; }
+.elem-임-bg, .elem-계-bg { background: var(--elem-수); }
+/* 지지별 오행 */
+.elem-인-bg, .elem-묘-bg { background: var(--elem-목); }
+.elem-사-bg, .elem-오-bg { background: var(--elem-화); }
+.elem-진-bg, .elem-술-bg, .elem-축-bg, .elem-미-bg { background: var(--elem-토); }
+.elem-신-bg, .elem-유-bg { background: var(--elem-금); color: #1a0f2e; }
+.elem-자-bg, .elem-해-bg { background: var(--elem-수); }
+
+.elem-목-bg { background: var(--elem-목); }
+.elem-화-bg { background: var(--elem-화); }
+.elem-토-bg { background: var(--elem-토); }
+.elem-금-bg { background: var(--elem-금); color: #1a0f2e; }
+.elem-수-bg { background: var(--elem-수); }
+.elem-목-text { color: var(--elem-목); }
+.elem-화-text { color: var(--elem-화); }
+.elem-토-text { color: var(--elem-토); }
+.elem-금-text { color: var(--elem-금); }
+.elem-수-text { color: var(--elem-수); }
+.elem-목-border { border-left-color: var(--elem-목); }
+.elem-화-border { border-left-color: var(--elem-화); }
+.elem-토-border { border-left-color: var(--elem-토); }
+.elem-금-border { border-left-color: var(--elem-금); }
+.elem-수-border { border-left-color: var(--elem-수); }
+
+/* ─── Today fortune ─── */
+.day-fortune-card {
+  background: var(--bg-card); border-radius: 16px; padding: 2rem;
+  border: 1px solid var(--border); border-left-width: 4px;
+  margin: 1.5rem 0;
+}
+.day-fortune-card h2 { margin-top: 0; color: var(--accent-2); }
+.lucky-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem; margin-top: 1.5rem;
+}
+.lucky-grid > div {
+  background: var(--bg-3); border-radius: 10px; padding: 1rem;
+  text-align: center;
+}
+.lucky-label { display: block; color: var(--text-mute); font-size: .8rem; }
+.lucky-value {
+  display: block; font-weight: 700; color: var(--accent-2);
+  font-size: 1.15rem; margin-top: .3rem;
+}
+.day-nav {
+  display: flex; gap: .6rem; justify-content: center;
+  margin: 1.5rem 0; flex-wrap: wrap;
+}
+
+/* ─── Zodiac grid ─── */
+.zodiac-grid {
+  display: grid; gap: .8rem;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+.zodiac-tile {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.25rem; text-align: center;
+  color: var(--text); transition: transform .15s;
+}
+.zodiac-tile:hover { transform: translateY(-3px); color: var(--text); }
+.zodiac-name {
+  font-family: 'Noto Serif KR', serif; font-size: 1.4rem; font-weight: 900;
+  color: var(--accent-2); margin-bottom: .3rem;
+}
+.zodiac-hanja {
+  font-size: .8rem; color: var(--text-mute); margin-left: .3em;
+  font-weight: 400;
+}
+.zodiac-keyword {
+  font-size: .85rem; color: var(--accent); margin-bottom: .5rem;
+}
+.zodiac-trait {
+  font-size: .82rem; color: var(--text-dim); margin: 0;
+  line-height: 1.5;
+}
+
+/* ─── Compatibility ─── */
+.couple-grid {
+  display: grid; gap: 1.5rem; margin: 1rem 0;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+.person-block {
+  background: var(--bg-3); border-radius: 10px; padding: 1.25rem;
+}
+.person-block h3 { color: var(--accent-2); margin-top: 0; }
+.score-circle {
+  display: inline-flex; flex-direction: column; align-items: center;
+  justify-content: center; width: 160px; height: 160px;
+  border-radius: 50%; margin: 1rem auto;
+  background: var(--bg-card); border: 3px solid var(--accent);
+  box-shadow: 0 0 40px rgba(218,165,32,.3);
+}
+.score-num {
+  font-family: 'Noto Serif KR', serif; font-size: 3rem; font-weight: 900;
+  color: var(--accent); line-height: 1;
+}
+.score-label {
+  font-size: 1rem; color: var(--text-dim); margin-top: .2em;
+}
+.score-circle.score-최상 { border-color: #ff7777; box-shadow: 0 0 40px rgba(255,119,119,.4); }
+.score-circle.score-최상 .score-num { color: #ff7777; }
+.score-circle.score-주의 { border-color: var(--text-mute); }
+.couple-pillars {
+  display: grid; gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.couple-pillars > div {
+  background: var(--bg-card); border-radius: 12px; padding: 1.25rem;
+  border: 1px solid var(--border); text-align: center;
+}
+.mini-pillars {
+  display: flex; gap: .4rem; justify-content: center; flex-wrap: wrap;
+  margin: .8rem 0;
+}
+.mini-pillar {
+  background: var(--bg-3); padding: .4rem .7rem; border-radius: 8px;
+  font-family: 'Noto Serif KR', serif; font-weight: 700;
+}
+.mini-pillar.emph {
+  background: var(--accent); color: #1a0f2e;
+}
+.delta { color: var(--accent); font-size: .85em; margin-left: .5em; }
+.share-buttons {
+  display: flex; gap: .5rem; justify-content: center; flex-wrap: wrap;
+  margin: 1.5rem 0;
+}
+
+/* ─── Glossary ─── */
+.glossary-section { margin-bottom: 2rem; }
+.glossary-list {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; padding: .5rem 1.5rem; margin: 1rem 0;
+}
+.glossary-term {
+  font-family: 'Noto Serif KR', serif; font-weight: 700;
+  color: var(--accent-2); margin-top: 1rem; font-size: 1.05rem;
+  scroll-margin-top: 80px;
+}
+.glossary-desc {
+  margin: .3rem 0 1rem; color: var(--text-dim); padding-left: 0;
+  font-size: .95rem; line-height: 1.65;
+}
+
+/* ─── Mobile tweaks ─── */
+@media (max-width: 640px) {
+  .hero { padding: 3rem 0 2rem; }
+  .saju-form { padding: 1.5rem; border-radius: 12px; }
+  .pillars-table { grid-template-columns: repeat(4, 1fr); gap: .3rem; }
+  .pillar-col { padding: .6rem .25rem; }
+  .pillar-stem .hanja, .pillar-branch .hanja { font-size: 1.25rem; }
+  .day-master-stem { font-size: 2rem; }
+  .footer-grid { gap: 1rem; text-align: left; }
+  .element-bar { grid-template-columns: 60px 1fr 50px; gap: .5rem; }
+  .stage-row { grid-template-columns: 70px 1fr; gap: .5rem; padding: .8rem 1rem; }
+}
+
+/* ─── Reduce motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ─── AdFit Containers ─────────────────────── */
+.adfit-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 0;
+  margin: 1rem auto;
+}
+.adfit-leaderboard {
+  padding-top: 1rem;
+}
+.adfit-square {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+.adfit-medium {
+  margin: 1.5rem auto;
+}
+.adfit-container .ad-label {
+  text-align: center;
+  font-size: .72rem;
+  color: var(--text-mute);
+  margin: 0 0 .5rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+.adfit-container .kakao_ad_area {
+  margin: 0 auto;
+}
+
+/* ─── Floating Skyscraper (160×600) — 데스크탑 와이드만 ─── */
+.adfit-skyscraper {
+  display: none;
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 16px;
+  width: 160px;
+  z-index: 30;
+  pointer-events: auto;
+}
+.adfit-skyscraper .kakao_ad_area {
+  margin: 0;
+}
+@media (min-width: 1500px) {
+  .adfit-skyscraper {
+    display: block;
+  }
+}
+

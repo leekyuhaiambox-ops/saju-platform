@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}60갑자 일주별 풀이 — 60개 일주 핵심 해설{% endblock %}
+{% block description %}갑자부터 계해까지 60갑자 일주 전체의 핵심 풀이와 성향 해설. 자신의 일주를 찾아 상세 해설을 확인하세요.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">학습 가이드 · 60갑자</p>
+    <h1>60갑자 일주별 풀이</h1>
+    <p class="lead">사주 일주(태어난 날의 천간·지지) 60개 조합. 각 일주가 가진 본질적 기질과 인생의 결을 정리했습니다.</p>
+  </div>
+</section>
+
+<section class="container">
+  <p class="info-note">자신의 일주가 무엇인지 모른다면 <a href="{{ url_for('index') }}" class="strong-link">먼저 사주 풀이</a>로 확인하세요.</p>
+
+  <div class="pillar-grid">
+    {% for p in pillars %}
+    <a class="pillar-tile elem-{{ p.element }}-border" href="{{ url_for('sixty_pillar_detail', idx=p.index) }}">
+      <div class="pillar-number">#{{ '%02d'|format(p.index + 1) }}</div>
+      <div class="pillar-tile-name elem-{{ p.element }}-text">{{ p.name }}</div>
+      <div class="pillar-tile-headline">{{ p.headline }}</div>
+      <div class="pillar-tile-element">{{ p.element }} 일간</div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_BOTTOM %}
+<div class="ad-container">
+  <div class="container narrow">
+    <p class="ad-label">{{ t('ad_label') }}</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}"
+         data-ad-slot="{{ ADSENSE_SLOT_BOTTOM }}" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

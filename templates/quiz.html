@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% block title %}사주 명리학 퀴즈 — 내 사주 IQ 테스트{% endblock %}
+{% block description %}10문항으로 알아보는 사주명리학 지식 수준. 무료 인터랙티브 퀴즈.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">사주 IQ 테스트</p>
+    <h1>사주 명리학 퀴즈</h1>
+    <p class="lead">10문항으로 알아보는 본인의 사주 지식 수준. 결과는 SNS로 공유 가능.</p>
+  </div>
+</section>
+
+<section class="form-section">
+  <div class="container narrow">
+    <div id="quizApp" class="saju-form">
+      <div id="quizStart">
+        <h2 style="text-align:center">준비되셨나요?</h2>
+        <p style="text-align:center; color: var(--text-dim)">10문항 · 3분 소요 · 결과 즉시 표시</p>
+        <button onclick="startQuiz()" class="cta-button">
+          <span class="cta-main">퀴즈 시작</span>
+          <span class="cta-sub">난이도: 초급 ~ 중급</span>
+        </button>
+      </div>
+      <div id="quizActive" style="display:none">
+        <div style="display:flex;justify-content:space-between;color:var(--text-dim);margin-bottom:1rem">
+          <span id="quizProgress">1 / 10</span>
+          <span id="quizScore">정답 0</span>
+        </div>
+        <div id="quizBar" style="height:6px;background:var(--bg-3);border-radius:3px;overflow:hidden;margin-bottom:1.5rem">
+          <div id="quizBarFill" style="height:100%;width:10%;background:var(--accent);transition:width .3s"></div>
+        </div>
+        <h3 id="quizQuestion" style="font-size:1.15rem;line-height:1.5"></h3>
+        <div id="quizChoices" style="margin-top:1rem"></div>
+      </div>
+      <div id="quizResult" style="display:none;text-align:center">
+        <h2 id="quizTitle"></h2>
+        <p class="day-master-stem" id="quizScoreFinal" style="margin:1rem 0"></p>
+        <p id="quizMsg" style="color:var(--text-dim);margin-bottom:1.5rem"></p>
+        <div style="margin-top:1.5rem">
+          <button onclick="shareQuiz()" class="link-button">결과 공유하기</button>
+          <a href="{{ url_for('index') }}" class="link-button secondary">내 사주 보기</a>
+          <button onclick="location.reload()" class="link-button secondary">다시 풀기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_BOTTOM %}
+<div class="ad-container"><div class="container narrow"><p class="ad-label">{{ t('ad_label') }}</p>
+<ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}" data-ad-slot="{{ ADSENSE_SLOT_BOTTOM }}" data-ad-format="auto" data-full-width-responsive="true"></ins></div></div>
+{% endif %}
+
+{% block scripts %}
+<script>
+const QUIZ = [
+  {q: "사주의 한 해는 언제부터 시작되나요?",
+   c: ["양력 1월 1일", "음력 1월 1일 (설날)", "양력 2월 4일경 입춘", "동지(冬至)"],
+   a: 2, exp: "사주의 연주 경계는 입춘(立春, ~2월 4일)입니다. 태양 황경 315°를 지나는 순간."},
+  {q: "다음 중 천간(天干)이 아닌 것은?",
+   c: ["갑(甲)", "축(丑)", "임(壬)", "병(丙)"],
+   a: 1, exp: "축(丑)은 지지입니다. 천간은 갑·을·병·정·무·기·경·신·임·계 10개."},
+  {q: "본인 사주에서 '나'를 의미하는 글자는?",
+   c: ["연주의 천간", "월주의 천간", "일주의 천간(일간)", "시주의 천간"],
+   a: 2, exp: "일간(日干)이 본인. 사주의 모든 해석이 이 글자를 기준으로 합니다."},
+  {q: "야자시(夜子時) 규칙이 적용되는 시간은?",
+   c: ["00:00 ~ 01:00", "23:00 ~ 24:00", "22:00 ~ 23:00", "01:00 ~ 02:00"],
+   a: 1, exp: "23시 이후 출생자는 다음날 일주를 사용합니다(야자시 규칙)."},
+  {q: "오행의 상생 순서는?",
+   c: ["목→화→토→금→수", "목→토→수→화→금", "수→금→토→화→목", "화→목→수→금→토"],
+   a: 0, exp: "목생화, 화생토, 토생금, 금생수, 수생목 — 자연스러운 생산 순환."},
+  {q: "60갑자가 60인 이유는?",
+   c: ["10×6=60", "10과 12의 최소공배수", "12×5=60", "그냥 우연"],
+   a: 1, exp: "lcm(10, 12) = 60. 천간 10과 지지 12의 최소공배수."},
+  {q: "다음 중 십신(十神)이 아닌 것은?",
+   c: ["비견", "정관", "장생", "편재"],
+   a: 2, exp: "장생은 십이운성. 십신은 비견·겁재·식신·상관·편재·정재·편관·정관·편인·정인."},
+  {q: "여자 사주에서 '남편'을 의미하는 십신은?",
+   c: ["식신", "정재", "정관", "편인"],
+   a: 2, exp: "여자 사주에서는 정관이 정식 남편. 남자에게는 정관이 자식."},
+  {q: "지장간(地藏干)이란?",
+   c: ["하늘의 숨겨진 별", "지지 안에 숨어 있는 천간들", "사주의 비밀 코드", "윤달의 다른 이름"],
+   a: 1, exp: "각 지지에 숨겨진 천간들. 사주 해석의 30~40%가 여기서 나옵니다."},
+  {q: "대운(大運)의 흐름 방향은?",
+   c: ["모두 순행", "모두 역행", "양남·음녀 순행, 음남·양녀 역행", "남자는 순행, 여자는 역행"],
+   a: 2, exp: "양남(양 연간 + 남자)·음녀(음 연간 + 여자)는 순행, 반대는 역행."},
+];
+
+let idx = 0, score = 0;
+
+function startQuiz() {
+  document.getElementById('quizStart').style.display = 'none';
+  document.getElementById('quizActive').style.display = 'block';
+  showQuestion();
+}
+
+function showQuestion() {
+  const q = QUIZ[idx];
+  document.getElementById('quizProgress').textContent = `${idx + 1} / ${QUIZ.length}`;
+  document.getElementById('quizScore').textContent = `정답 ${score}`;
+  document.getElementById('quizBarFill').style.width = `${((idx + 1) / QUIZ.length) * 100}%`;
+  document.getElementById('quizQuestion').textContent = q.q;
+  const choicesEl = document.getElementById('quizChoices');
+  choicesEl.innerHTML = q.c.map((c, i) =>
+    `<button class="link-button secondary" style="display:block;width:100%;margin:.4rem 0;text-align:left" onclick="answer(${i})">${i + 1}. ${c}</button>`
+  ).join('');
+}
+
+function answer(choice) {
+  const q = QUIZ[idx];
+  const correct = (choice === q.a);
+  if (correct) score++;
+  alert((correct ? "✓ 정답!" : "✗ 오답.") + "\n\n" + q.exp);
+  idx++;
+  if (idx < QUIZ.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  document.getElementById('quizActive').style.display = 'none';
+  document.getElementById('quizResult').style.display = 'block';
+  let title, msg;
+  if (score >= 9) { title = "🏆 사주 마스터"; msg = "당신은 명리학에 대한 깊은 이해를 가지고 있습니다. 명리학자의 길도 가능한 수준!"; }
+  else if (score >= 7) { title = "🌟 상급 학도"; msg = "사주의 핵심 개념을 잘 알고 계시네요. 본인 사주를 직접 풀이해 보세요."; }
+  else if (score >= 5) { title = "📖 중급 입문자"; msg = "기본기는 잡혀 있습니다. 60갑자 일주별 풀이를 함께 읽어보세요."; }
+  else if (score >= 3) { title = "🌱 초급 입문자"; msg = "이제 막 사주의 세계에 들어오셨네요. 사주 기초 가이드부터 시작해 보세요."; }
+  else { title = "🍃 사주 새내기"; msg = "괜찮습니다, 모두가 처음에는 그렇습니다. 무료 사주 풀이로 본인 사주부터 만나보세요."; }
+  document.getElementById('quizTitle').textContent = title;
+  document.getElementById('quizScoreFinal').textContent = `${score} / ${QUIZ.length}`;
+  document.getElementById('quizMsg').textContent = msg;
+  if (window.fbq) fbq('trackCustom', 'QuizCompleted', { score: score });
+}
+
+function shareQuiz() {
+  const text = `사주 IQ 테스트 ${score}/${QUIZ.length}점! 당신도 해보세요 👉`;
+  if (navigator.share) {
+    navigator.share({ title: document.title, text: text, url: location.href });
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text + ' ' + location.href);
+    alert("링크 복사 완료!");
+  }
+}
+</script>
+{% endblock %}
+{% endblock %}

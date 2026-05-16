@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}{{ result.p1.name or '나' }} ♥ {{ result.p2.name or '상대' }} — 사주 궁합 {{ result.score }}점 ({{ result.grade }}){% endblock %}
+{% block description %}두 사람의 사주 궁합은 {{ result.score }}점 — {{ result.grade }}. {{ result.advice }}{% endblock %}
+{% block og_type %}article{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb"><a href="{{ url_for('compatibility_page') }}">사주 궁합</a></p>
+    <h1>{{ result.p1.name or '첫 번째' }} ♥ {{ result.p2.name or '두 번째' }}</h1>
+    <div class="score-circle score-{{ result.grade }}">
+      <div class="score-num">{{ result.score }}</div>
+      <div class="score-label">{{ result.grade }}</div>
+    </div>
+    <p class="result-summary">{{ result.advice }}</p>
+  </div>
+</section>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_TOP %}
+<div class="ad-container"><div class="container narrow"><p class="ad-label">{{ t('ad_label') }}</p>
+<ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}" data-ad-slot="{{ ADSENSE_SLOT_TOP }}" data-ad-format="auto" data-full-width-responsive="true"></ins></div></div>
+{% endif %}
+
+<section class="section">
+  <div class="container narrow">
+    <h2 class="section-title">두 사람의 명식</h2>
+    <div class="couple-pillars">
+      <div>
+        <h3>{{ result.p1.name or '첫 번째' }}</h3>
+        <p class="meta">{{ result.p1.year }}-{{ '%02d'|format(result.p1.month) }}-{{ '%02d'|format(result.p1.day) }} {{ result.p1.gender }}</p>
+        <div class="mini-pillars">
+          <span class="mini-pillar">{{ result.p1.year_pillar.name }}</span>
+          <span class="mini-pillar">{{ result.p1.month_pillar.name }}</span>
+          <span class="mini-pillar emph">{{ result.p1.day_pillar.name }}</span>
+          {% if result.p1.hour_pillar %}<span class="mini-pillar">{{ result.p1.hour_pillar.name }}</span>{% endif %}
+        </div>
+        <p>일간 <strong>{{ result.p1.day_master }}({{ result.p1.day_master_element }})</strong></p>
+      </div>
+      <div>
+        <h3>{{ result.p2.name or '두 번째' }}</h3>
+        <p class="meta">{{ result.p2.year }}-{{ '%02d'|format(result.p2.month) }}-{{ '%02d'|format(result.p2.day) }} {{ result.p2.gender }}</p>
+        <div class="mini-pillars">
+          <span class="mini-pillar">{{ result.p2.year_pillar.name }}</span>
+          <span class="mini-pillar">{{ result.p2.month_pillar.name }}</span>
+          <span class="mini-pillar emph">{{ result.p2.day_pillar.name }}</span>
+          {% if result.p2.hour_pillar %}<span class="mini-pillar">{{ result.p2.hour_pillar.name }}</span>{% endif %}
+        </div>
+        <p>일간 <strong>{{ result.p2.day_master }}({{ result.p2.day_master_element }})</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container narrow">
+    <h2 class="section-title">관계 포인트 분석</h2>
+    {% if result.notes %}
+      {% for title, body, delta in result.notes %}
+      <div class="god-detail">
+        <h3>{{ title }} <span class="delta">{{ delta }}</span></h3>
+        <p>{{ body }}</p>
+      </div>
+      {% endfor %}
+    {% else %}
+    <p>특별히 강한 합·충 관계는 발견되지 않습니다. 평이한 흐름의 인연입니다.</p>
+    {% endif %}
+  </div>
+</section>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_INLINE %}
+<div class="ad-container"><div class="container narrow"><p class="ad-label">{{ t('ad_label') }}</p>
+<ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}" data-ad-slot="{{ ADSENSE_SLOT_INLINE }}" data-ad-format="auto" data-full-width-responsive="true"></ins></div></div>
+{% endif %}
+
+<section class="section">
+  <div class="container narrow">
+    <h2 class="section-title">결과 공유 / 재분석</h2>
+    <div class="share-buttons">
+      <button onclick="navigator.share && navigator.share({title:document.title, url:location.href})" class="link-button">결과 공유하기</button>
+      <a href="{{ url_for('compatibility_page') }}" class="link-button secondary">다른 사람 보기</a>
+      <a href="{{ url_for('index') }}" class="link-button secondary">내 사주 풀이</a>
+    </div>
+    <p class="disclaimer">본 궁합 분석은 사주의 일간·일지·연지 관계를 핵심 변수로 산출한 점수입니다. 실제 인연은 두 사람의 노력과 시간이 만듭니다.</p>
+  </div>
+</section>
+{% endblock %}

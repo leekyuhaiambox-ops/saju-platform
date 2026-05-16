@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block title %}사주 기초 가이드 — 사주명리학이란{% endblock %}
+{% block description %}사주 명리학의 기본 개념, 사기둥과 천간지지, 60갑자, 음양오행, 24절기까지 입문자가 알아야 할 모든 것을 정리한 가이드.{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block jsonld_extra %}
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Article",
+  "headline":"사주 기초 가이드 — 사주명리학이란",
+  "description":"사주 명리학의 기본 개념, 사기둥과 천간지지, 60갑자, 음양오행, 24절기 가이드.",
+  "inLanguage":"ko-KR",
+  "mainEntityOfPage":"{{ request.url }}",
+  "publisher":{"@id":"{{ request.url_root }}#org"},
+  "image":"{{ url_for('static', filename='img/og-default.png', _external=True) }}"
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+ {"@type":"ListItem","position":1,"name":"홈","item":"{{ request.url_root }}"},
+ {"@type":"ListItem","position":2,"name":"사주 기초","item":"{{ request.url }}"}
+]}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">학습 가이드</p>
+    <h1>사주 기초 — 사주명리학 입문</h1>
+    <p class="lead">1,800년 동양철학의 정수, 사주명리학을 처음 만나는 분들을 위한 개요입니다.</p>
+  </div>
+</section>
+
+<article class="article container narrow">
+  <h2>사주(四柱)란 무엇인가</h2>
+  <p>사주(四柱)는 글자 그대로 ‘네 개의 기둥’이라는 뜻입니다. 사람이 태어난 해(年)·달(月)·날(日)·시(時) 각각을 천간(天干) 1자와 지지(地支) 1자로 표기해, 총 여덟 글자의 명식(命式)을 만든 것이 사주입니다. 그래서 사주를 흔히 ‘사주팔자(四柱八字)’라고도 부릅니다.</p>
+  <p>사주명리학은 이 여덟 글자를 음양오행(陰陽五行)의 상생상극 원리로 풀어 한 사람의 타고난 기질, 인생의 흐름, 인간관계와 진로 적성을 해석하는 학문입니다. 한대(漢代) 이후 형성되어 송·명대에 체계화되었으며, 오늘날에도 동아시아 사회에서 자기이해의 도구로 널리 활용됩니다.</p>
+
+  {% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_INLINE %}
+  <div class="ad-container">
+    <p class="ad-label">{{ t('ad_label') }}</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}"
+         data-ad-slot="{{ ADSENSE_SLOT_INLINE }}" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+  {% endif %}
+
+  <h2>천간(天干)과 지지(地支)</h2>
+  <p>천간은 하늘의 기운을 10가지로 나눈 부호이고, 지지는 땅의 기운을 12가지로 나눈 부호입니다.</p>
+  <h3>10천간</h3>
+  <p><strong>甲(갑) 乙(을) 丙(병) 丁(정) 戊(무) 己(기) 庚(경) 辛(신) 壬(임) 癸(계)</strong></p>
+  <p>천간 각각은 음양과 오행 속성을 갖습니다. 갑·을은 목(木), 병·정은 화(火), 무·기는 토(土), 경·신은 금(金), 임·계는 수(水)이고, 순서가 홀수인 갑·병·무·경·임은 양, 짝수인 을·정·기·신·계는 음입니다.</p>
+
+  <h3>12지지</h3>
+  <p><strong>子(자) 丑(축) 寅(인) 卯(묘) 辰(진) 巳(사) 午(오) 未(미) 申(신) 酉(유) 戌(술) 亥(해)</strong></p>
+  <p>지지는 12동물(쥐·소·호랑이·토끼·용·뱀·말·양·원숭이·닭·개·돼지)에 대응되며, 동시에 시간·계절·방위를 나타냅니다. 자(子)는 23~01시, 축(丑)은 01~03시 식으로 두 시간씩 묶이며, 인·묘·진은 봄, 사·오·미는 여름, 신·유·술은 가을, 해·자·축은 겨울입니다.</p>
+
+  <h2>60갑자(六十甲子)</h2>
+  <p>10천간과 12지지를 짝지으면 갑자(甲子)·을축(乙丑)·병인(丙寅)에서 시작해 계해(癸亥)까지 60개의 조합이 만들어집니다. 이 순환을 60갑자라 하며, 한 사람의 사주 4기둥은 60갑자 중 4개로 구성됩니다.</p>
+  <p>일주(日柱)는 사주에서 가장 핵심으로, 그 사람의 본질적 기질을 보여줍니다. 본 사이트의 <a href="{{ url_for('sixty_pillars_index') }}">60갑자 일주별 풀이</a>에서 자신의 일주 글자를 찾아 깊이 있는 해설을 읽어보세요.</p>
+
+  <h2>음양(陰陽)과 오행(五行)</h2>
+  <p>음양은 만물의 두 가지 상반된 기운이고, 오행은 그것을 다섯 가지 운동으로 세분화한 체계입니다.</p>
+  <ul class="bullet-list">
+    <li><strong>목(木)</strong> — 봄, 동쪽, 푸른색, 성장과 의(義)</li>
+    <li><strong>화(火)</strong> — 여름, 남쪽, 붉은색, 표현과 예(禮)</li>
+    <li><strong>토(土)</strong> — 환절기, 중앙, 황색, 신뢰와 신(信)</li>
+    <li><strong>금(金)</strong> — 가을, 서쪽, 백색, 결단과 의(義)</li>
+    <li><strong>수(水)</strong> — 겨울, 북쪽, 흑색, 지혜와 지(智)</li>
+  </ul>
+  <p>오행은 서로를 <strong>상생(生)</strong>하기도 하고 <strong>상극(剋)</strong>하기도 합니다. 목생화·화생토·토생금·금생수·수생목으로 순환하는 상생, 목극토·토극수·수극화·화극금·금극목으로 제어하는 상극이 사주 해석의 기본 동력 구조입니다. <a href="{{ url_for('five_elements_page') }}">오행 해설 페이지</a>에서 더 자세히 다룹니다.</p>
+
+  <h2>십신(十神) — 일간 중심의 관계망</h2>
+  <p>사주 해석에서 가장 중요한 개념입니다. 일주의 천간을 ‘나(我)’라고 보고, 다른 일곱 글자가 나와 어떤 오행 관계인지에 따라 이름을 붙입니다.</p>
+  <ul class="bullet-list">
+    <li>나와 같은 오행: <strong>비견·겁재</strong> (자아, 동료, 경쟁)</li>
+    <li>내가 생하는 오행: <strong>식신·상관</strong> (재능, 표현, 자식)</li>
+    <li>내가 극하는 오행: <strong>편재·정재</strong> (재물, 활동성)</li>
+    <li>나를 극하는 오행: <strong>편관·정관</strong> (직장, 명예, 시련)</li>
+    <li>나를 생하는 오행: <strong>편인·정인</strong> (인덕, 학문, 어머니)</li>
+  </ul>
+  <p>각 십신의 구체적 의미는 <a href="{{ url_for('ten_gods_page') }}">십신 해설</a>에서 정리했습니다.</p>
+
+  <h2>십이운성(十二運星)</h2>
+  <p>일간(나)이 사주 각 지지를 만났을 때 가지는 기운의 단계를 12개로 나눈 것입니다. 사람의 생애에 비유하면 잉태(태)·출생(장생)·청년(건록)·전성기(제왕)·노년(쇠·병·사·묘)을 거쳐 다시 새로운 시작(절)에 이르는 순환입니다.</p>
+  <p>이 12단계를 보면 사주가 어느 시기에 강하고 약한지, 어느 기둥에서 힘이 응축되는지를 가늠할 수 있습니다. <a href="{{ url_for('twelve_stages_page') }}">십이운성 해설</a>에서 모든 단계를 정리했습니다.</p>
+
+  <h2>24절기와 사주 경계</h2>
+  <p>흔한 오해 중 하나는 ‘1월 1일에 해가 바뀌면 사주의 연주도 바뀐다’는 것입니다. 사주에서 한 해의 시작은 <strong>입춘(立春, 2월 4일경)</strong>입니다. 입춘 이전에 태어났다면 양력으로 같은 해여도 사주의 연주는 전년도가 됩니다.</p>
+  <p>월주도 마찬가지로 24절기 중 12개의 ‘월건절기’(입춘·경칩·청명·입하·망종·소서·입추·백로·한로·입동·대설·소한)를 기준으로 바뀝니다. 그래서 같은 1월 출생자도 소한 전·후에 따라 월주가 달라질 수 있습니다.</p>
+  <p>본 사이트는 매년 24절기 시점을 천문 알고리즘으로 분 단위까지 계산해 연주·월주를 정확히 결정합니다.</p>
+
+  <h2>일주(日柱) — 사주의 심장</h2>
+  <p>현대 명리학에서 가장 중시되는 것이 바로 일주입니다. 태어난 날의 천간·지지로 구성된 두 글자가 그 사람의 본질적 기질·성격·잠재력을 가장 강하게 드러냅니다.</p>
+  <p>예를 들어 <strong>갑자(甲子)</strong> 일주는 큰 나무가 깊은 우물물을 만난 격으로 지성과 인내의 학자형이라 풀이하고, <strong>병오(丙午)</strong> 일주는 한낮의 태양으로 카리스마의 정점이라 봅니다.</p>
+  <p>본 사이트는 60개 일주 전부에 대한 핵심 풀이를 제공합니다. <a href="{{ url_for('sixty_pillars_index') }}">60갑자 일주별 풀이 목록</a>에서 자신의 일주를 찾아보세요.</p>
+
+  <h2>대운(大運)과 세운(歲運)</h2>
+  <p>사주가 그 사람의 ‘타고난 청사진’이라면, 대운은 ‘10년 단위로 펼쳐지는 인생의 큰 흐름’이고, 세운은 ‘올해 한 해의 운기’입니다. 두 운이 사주 명식과 어떻게 상호작용하는지에 따라 시기별 운세가 결정됩니다.</p>
+  <p>본 사이트의 결과 페이지에서는 출생자의 사주에 맞춰 대운 10기둥(100년)을 자동 산출해 보여드립니다.</p>
+
+  <h2>사주를 보는 올바른 자세</h2>
+  <p>사주는 정해진 운명이 아니라 자기이해의 도구입니다. 어떤 기운을 타고 났는지, 어떤 부분이 강하고 약한지를 알면 인생의 선택을 더 지혜롭게 할 수 있습니다. ‘좋은 사주’ ‘나쁜 사주’는 존재하지 않으며, 사주에 적힌 기운을 어떻게 활용하느냐가 본인의 몫입니다.</p>
+  <p>준비가 되셨다면 <a href="{{ url_for('index') }}" class="strong-link">지금 무료로 내 사주 보러 가기</a>.</p>
+</article>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_BOTTOM %}
+<div class="ad-container">
+  <div class="container narrow">
+    <p class="ad-label">{{ t('ad_label') }}</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}"
+         data-ad-slot="{{ ADSENSE_SLOT_BOTTOM }}" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

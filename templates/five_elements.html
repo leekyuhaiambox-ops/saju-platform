@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}오행(五行) 해설 — 목·화·토·금·수의 균형{% endblock %}
+{% block description %}목·화·토·금·수 다섯 기운의 의미, 상생상극 원리, 사주에서의 균형 해석 가이드.{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block jsonld_extra %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"오행(五行) — 목화토금수 다섯 기운의 균형","inLanguage":"ko-KR","mainEntityOfPage":"{{ request.url }}","publisher":{"@id":"{{ request.url_root }}#org"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+ {"@type":"ListItem","position":1,"name":"홈","item":"{{ request.url_root }}"},
+ {"@type":"ListItem","position":2,"name":"오행","item":"{{ request.url }}"}
+]}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">학습 가이드 · 오행</p>
+    <h1>오행(五行) — 우주를 움직이는 다섯 기운</h1>
+    <p class="lead">목·화·토·금·수, 자연과 인간을 설명하는 다섯 운동의 균형이 사주 해석의 토대입니다.</p>
+  </div>
+</section>
+
+<article class="article container narrow">
+  <p>오행은 우주 만물을 ‘다섯 가지 기운의 운동’으로 설명하는 동양 사상의 핵심 체계입니다. 단순히 다섯 가지 물질이 아니라 ‘성장(목)·확산(화)·중재(토)·수렴(금)·저장(수)’이라는 다섯 가지 운동 방식을 의미합니다. 사주의 천간과 지지는 모두 이 다섯 운동 중 하나에 속하므로, 오행의 분포와 균형이 사주 해석의 출발점입니다.</p>
+
+  {% for elem, info in meanings.items() %}
+  <section class="elem-block elem-{{ elem }}-border">
+    <h2 class="elem-{{ elem }}-text">{{ elem }}({{ {'목':'木','화':'火','토':'土','금':'金','수':'水'}[elem] }})  {{ info[0] }}</h2>
+    <p>{{ info[1] }}</p>
+    <div class="elem-attrs">
+      {% if elem == '목' %}
+      <p><strong>계절</strong> 봄 · <strong>방위</strong> 동쪽 · <strong>색</strong> 청색 · <strong>장부</strong> 간·담</p>
+      <p>목 기운은 ‘위로 뻗어 올라가는’ 성장의 운동입니다. 봄에 새싹이 돋고 큰 나무가 가지를 뻗는 형상으로, 사람에게는 의욕·기획력·인의(仁義)의 마음을 줍니다. 사주에 목이 적절하면 진취적이고 미래지향적이며, 너무 강하면 고집이 세고 융통성이 부족할 수 있습니다.</p>
+      {% elif elem == '화' %}
+      <p><strong>계절</strong> 여름 · <strong>방위</strong> 남쪽 · <strong>색</strong> 적색 · <strong>장부</strong> 심장·소장</p>
+      <p>화 기운은 ‘밖으로 퍼져나가는’ 확산의 운동입니다. 한낮의 태양처럼 밝고 외향적이며 표현력·열정·예의(禮)를 의미합니다. 사주에 화가 적절하면 사교성과 자신감이 있고, 너무 강하면 충동적이고 산만할 수 있습니다.</p>
+      {% elif elem == '토' %}
+      <p><strong>계절</strong> 환절기 · <strong>방위</strong> 중앙 · <strong>색</strong> 황색 · <strong>장부</strong> 비장·위</p>
+      <p>토 기운은 ‘중재하고 받쳐주는’ 안정의 운동입니다. 넓은 대지처럼 모든 것을 품고 다섯 기운을 중간에서 매개합니다. 사람에게는 신뢰·포용·신의(信)를 줍니다. 사주에 토가 적절하면 안정감 있는 중재자이고, 너무 강하면 우직하고 변화를 거부할 수 있습니다.</p>
+      {% elif elem == '금' %}
+      <p><strong>계절</strong> 가을 · <strong>방위</strong> 서쪽 · <strong>색</strong> 백색 · <strong>장부</strong> 폐·대장</p>
+      <p>금 기운은 ‘안으로 모으고 단단하게 다듬는’ 수렴의 운동입니다. 단단한 광물과 가을 서리의 형상으로, 사람에게는 결단력·분별력·의리(義)를 줍니다. 사주에 금이 적절하면 강한 의지와 정의감이 있고, 너무 강하면 강박과 비판이 두드러집니다.</p>
+      {% elif elem == '수' %}
+      <p><strong>계절</strong> 겨울 · <strong>방위</strong> 북쪽 · <strong>색</strong> 흑색 · <strong>장부</strong> 신장·방광</p>
+      <p>수 기운은 ‘아래로 흐르고 저장하는’ 침잠의 운동입니다. 흐르는 물과 깊은 우물의 형상으로, 사람에게는 총명·임기응변·지혜(智)를 줍니다. 사주에 수가 적절하면 명석하고 적응력이 뛰어나고, 너무 강하면 변덕과 우울이 나타날 수 있습니다.</p>
+      {% endif %}
+    </div>
+  </section>
+  {% endfor %}
+
+  {% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_INLINE %}
+  <div class="ad-container">
+    <p class="ad-label">{{ t('ad_label') }}</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}"
+         data-ad-slot="{{ ADSENSE_SLOT_INLINE }}" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+  {% endif %}
+
+  <h2>상생(相生)과 상극(相剋)</h2>
+  <p>오행은 서로 생(生)하거나 극(剋)하는 관계를 맺습니다.</p>
+  <h3>상생 — 서로를 살리는 순환</h3>
+  <p>목생화(木生火) — 나무가 불을 살리고 / 화생토(火生土) — 불이 흙을 살리고 / 토생금(土生金) — 흙이 광물을 키우고 / 금생수(金生水) — 광물 사이에서 물이 솟고 / 수생목(水生木) — 물이 나무를 키운다.</p>
+  <h3>상극 — 서로를 제어하는 균형</h3>
+  <p>목극토(木剋土) — 나무가 흙을 뚫고 / 토극수(土剋水) — 흙이 물을 막고 / 수극화(水剋火) — 물이 불을 끄고 / 화극금(火剋金) — 불이 쇠를 녹이고 / 금극목(金剋木) — 쇠가 나무를 자른다.</p>
+  <p>사주 해석에서는 어떤 오행이 다른 오행을 적절히 제어할 때 ‘좋다’고 봅니다. 한 기운만 강하면 폭주하고, 너무 약하면 그 영역이 인생의 결핍 지점이 됩니다.</p>
+
+  <h2>오행 균형 진단</h2>
+  <p>사주에서 오행을 진단할 때는 단순한 개수가 아니라 <strong>왕상휴수사(旺相休囚死)</strong>를 봅니다. 같은 목 글자 하나라도 봄(인·묘월)에 있으면 왕성하고, 가을(신·유월)에 있으면 휴수됩니다. 본 사이트는 글자 수 분포뿐 아니라 절기 기준 시기별 강약도 고려하여 해석합니다.</p>
+
+  <h2>오행을 보완하는 일상의 지혜</h2>
+  <p>사주에서 부족한 오행이 발견되면 옷·색·방위·취미·직업 선택으로 보완할 수 있다고 전통적으로 봅니다.</p>
+  <ul class="bullet-list">
+    <li><strong>목 부족</strong> — 푸른색 옷, 동쪽 방향, 화초 키우기, 산책</li>
+    <li><strong>화 부족</strong> — 붉은색 액세서리, 남쪽, 밝은 공간, 운동</li>
+    <li><strong>토 부족</strong> — 황색·갈색, 중앙·고향, 자연 흙, 봉사 활동</li>
+    <li><strong>금 부족</strong> — 흰색·금속, 서쪽, 금속 액세서리, 의리 있는 관계</li>
+    <li><strong>수 부족</strong> — 흑색·청색, 북쪽, 수영·물 가까이, 독서</li>
+  </ul>
+  <p class="disclaimer">위 보완법은 전통적인 견해이며, 단순한 색상 선택만으로 사주의 흐름을 바꿀 수는 없습니다. 자기이해와 생활 양식 개선의 가이드로 참고해 주세요.</p>
+
+  <p>당신 사주의 오행 균형이 궁금하다면 <a href="{{ url_for('index') }}" class="strong-link">무료 사주 풀이</a>에서 그래프로 확인할 수 있습니다.</p>
+</article>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_BOTTOM %}
+<div class="ad-container">
+  <div class="container narrow">
+    <p class="ad-label">{{ t('ad_label') }}</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}"
+         data-ad-slot="{{ ADSENSE_SLOT_BOTTOM }}" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

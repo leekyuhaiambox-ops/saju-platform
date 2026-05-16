@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}십이운성(十二運星) 해설 — 사주 에너지의 12단계{% endblock %}
+{% block description %}장생·목욕·관대·건록·제왕·쇠·병·사·묘·절·태·양 — 사주 일간의 에너지 흐름을 보여주는 12단계 운성 해설.{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block jsonld_extra %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"십이운성(十二運星) — 일간 에너지의 12단계","inLanguage":"ko-KR","mainEntityOfPage":"{{ request.url }}","publisher":{"@id":"{{ request.url_root }}#org"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+ {"@type":"ListItem","position":1,"name":"홈","item":"{{ request.url_root }}"},
+ {"@type":"ListItem","position":2,"name":"십이운성","item":"{{ request.url }}"}
+]}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">학습 가이드 · 십이운성</p>
+    <h1>십이운성(十二運星) — 일간 에너지의 생애 흐름</h1>
+    <p class="lead">사람이 태(胎)에서 태어나 자라고 늙고 흙으로 돌아가는 인생 전 과정을, 사주 일간이 만나는 각 지지에 매핑한 명리학의 정수.</p>
+  </div>
+</section>
+
+<article class="article container narrow">
+  <p>십이운성은 일간(나)이 사주의 지지를 만났을 때 가지는 기운의 강약을 12단계로 표현한 것입니다. 한 사람의 일생에 비유하면 잉태(태)에서 시작해 태어나(장생) 성장하고(목욕·관대) 사회에 진출(건록)하고 정점에 이르렀다가(제왕) 노쇠(쇠·병·사)하고 흙으로 돌아가(묘) 다시 새 생명으로 잉태되는(절·태·양) 순환입니다.</p>
+
+  <div class="stages-table">
+    {% for stage, meaning in meanings.items() %}
+    <div class="stage-row">
+      <div class="stage-name">{{ stage }}</div>
+      <div class="stage-body">{{ meaning }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_INLINE %}
+  <div class="ad-container">
+    <p class="ad-label">{{ t('ad_label') }}</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}"
+         data-ad-slot="{{ ADSENSE_SLOT_INLINE }}" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+  {% endif %}
+
+  <h2>십이운성을 읽는 4가지 관점</h2>
+  <h3>1. 어디서 시작되는가 — 천간별 장생지(長生地)</h3>
+  <p>양간(갑·병·무·경·임)은 양의 지지에서, 음간(을·정·기·신·계)은 음의 지지에서 장생합니다. 예를 들어 갑목(甲)은 해(亥)에서 장생하고, 을목(乙)은 오(午)에서 장생합니다. 일간이 어느 지지에서 ‘새로 태어나는지’를 알면 그 지지가 사주에 있을 때 자기 분야가 활성화된다는 의미가 됩니다.</p>
+
+  <h3>2. 순행과 역행</h3>
+  <p>양간은 순행(子→丑→寅 방향)으로, 음간은 역행(子→亥→戌 방향)으로 12단계를 순환합니다. 음양이 다르게 흐른다는 점이 사주의 묘미입니다.</p>
+
+  <h3>3. 4개 기둥의 위치별 의미</h3>
+  <ul class="bullet-list">
+    <li><strong>연주의 십이운성</strong> — 조상·초년의 흐름. 가문의 영향력.</li>
+    <li><strong>월주의 십이운성</strong> — 부모·청년의 흐름. 사회 진출 시기.</li>
+    <li><strong>일주의 십이운성</strong> — 본인·중년의 흐름. 자기 자리의 안정도.</li>
+    <li><strong>시주의 십이운성</strong> — 자녀·말년의 흐름. 노후의 모습.</li>
+  </ul>
+
+  <h3>4. 강약 판단의 보조 지표</h3>
+  <p>건록·제왕·장생·관대는 일간의 기운이 강한 자리이고, 사·묘·절·태는 약한 자리입니다. 일간의 강약 판단에 십이운성이 결정적 단서를 제공합니다.</p>
+
+  <h2>실전 해석 예시</h2>
+  <p>예를 들어 <strong>갑목(甲)</strong> 일간이 일지에 <strong>해(亥)</strong>를 만났다면 ‘장생’ 상태입니다. 새로 태어난 어린 나무의 활기처럼 자기 분야에서 항상 신선하고 성장 가능성이 있다는 의미입니다. 반면 일지에 <strong>신(申)</strong>을 만나면 ‘절(絶)’ 상태로, 한번 끊고 새로 시작하는 단절의 운입니다. 이 경우 직업 변동이 잦거나 인생에 큰 전환점이 자주 옵니다.</p>
+
+  <p>또 다른 예로 <strong>병화(丙)</strong> 일간이 일지에 <strong>오(午)</strong>를 만나면 ‘제왕’입니다. 한낮의 태양처럼 카리스마가 정점이며, 자기 분야의 정상에 오르는 기운입니다. 다만 제왕은 과한 자존심·고집의 함정도 있어 절제가 필요합니다.</p>
+
+  <h2>십이운성과 인생의 호흡</h2>
+  <p>십이운성은 사주의 4개 자리에서만 보는 것이 아니라 대운(10년 단위)·세운(1년 단위)에서도 살핍니다. 대운이 일간의 건록·제왕 자리로 흐르면 그 시기에 사회적 성취가 크고, 사·묘·절 자리로 흐르면 그 시기에 내실·정리·전환의 흐름이 옵니다.</p>
+  <p>사주의 단계가 어떻게 흘러가는지 보고 싶다면 <a href="{{ url_for('index') }}" class="strong-link">내 사주 풀이</a>에서 대운 흐름과 함께 확인하세요.</p>
+</article>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_BOTTOM %}
+<div class="ad-container">
+  <div class="container narrow">
+    <p class="ad-label">{{ t('ad_label') }}</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}"
+         data-ad-slot="{{ ADSENSE_SLOT_BOTTOM }}" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

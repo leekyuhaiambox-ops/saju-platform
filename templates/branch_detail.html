@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}{{ name }}({{ info.branch_hanja }}) — 12지지·지장간 완전 풀이{% endblock %}
+{% block description %}{{ name }}지지의 본기·중기·여기 지장간과 사주에서의 의미. {{ info.season }} 계절.{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block jsonld_extra %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"{{ name }}({{ info.branch_hanja }}) 지지 풀이","inLanguage":"ko-KR","mainEntityOfPage":"{{ request.url }}","publisher":{"@id":"{{ request.url_root }}#org"}}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb"><a href="{{ url_for('branch_index') }}">12지지</a></p>
+    <h1>{{ name }}({{ info.branch_hanja }})</h1>
+    <p class="lead">{{ info.season }}의 지지</p>
+  </div>
+</section>
+
+<article class="article container narrow">
+  <h2>{{ name }}의 본질</h2>
+  <p>{{ info.body }}</p>
+
+  <h2>지장간(地藏干)</h2>
+  <p>{{ info.branch_hanja }} 안에 숨어 있는 천간들 — <strong>{{ info.stems|join(' · ') }}</strong>.</p>
+  <p>지장간 분석은 사주 해석의 핵심으로, 표면 8글자에 드러나지 않은 30~40%의 정보가 여기서 나옵니다.</p>
+
+  {% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_INLINE %}
+  <div class="ad-container"><p class="ad-label">{{ t('ad_label') }}</p>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}" data-ad-slot="{{ ADSENSE_SLOT_INLINE }}" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+  {% endif %}
+
+  <h2>내 사주에서 {{ name }} 확인하기</h2>
+  <p>본인 사주에 {{ name }}이 있는지 + 지장간이 어떻게 작용하는지 <a href="{{ url_for('index') }}" class="strong-link">무료 사주 풀이</a>에서 자동 분석됩니다.</p>
+
+  <div class="pillar-nav">
+    {% for nm in all_names %}
+    <a class="link-button {% if nm != name %}secondary{% endif %}" href="{{ url_for('branch_detail', name=nm) }}">{{ nm }}</a>
+    {% endfor %}
+  </div>
+</article>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_BOTTOM %}
+<div class="ad-container"><div class="container narrow"><p class="ad-label">{{ t('ad_label') }}</p>
+<ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}" data-ad-slot="{{ ADSENSE_SLOT_BOTTOM }}" data-ad-format="auto" data-full-width-responsive="true"></ins></div></div>
+{% endif %}
+{% endblock %}

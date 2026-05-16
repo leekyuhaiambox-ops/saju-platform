@@ -1,0 +1,1002 @@
+"""사주 명리학 광고 수익형 플랫폼 — Flask 메인 앱.
+
+PythonAnywhere 무료 티어 배포 기준으로 설계되었다.
+- /        : 입력 폼
+- /result  : POST/GET으로 받은 생년월일시 → 사주 결과
+- /basics  : 사주 기초 가이드
+- /ten-gods, /twelve-stages, /five-elements : 콘텐츠 페이지
+- /sixty-pillars : 60갑자 일주별 풀이 인덱스
+- /sixty-pillars/<idx> : 특정 일주 상세
+- /about, /privacy, /terms : 정책 페이지
+- /ads.txt, /robots.txt   : SEO/광고 인프라
+"""
+import os
+from datetime import datetime, date, timedelta
+from flask import (Flask, render_template, request, redirect, url_for,
+                   abort, Response, jsonify, g)
+
+from saju import compute_saju, compute_daewoon, interpret
+from saju.interpreter import (
+    DAY_PILLAR_INTERPRETATIONS, TEN_GOD_MEANING,
+    TWELVE_STAGE_MEANING, ELEMENT_MEANING
+)
+from saju.interpreter_en import (
+    DAY_PILLAR_INTERPRETATIONS_EN, TEN_GOD_EN,
+    TWELVE_STAGE_EN, ELEMENT_EN, ZODIAC_TRAITS_EN
+)
+from saju.daily import (
+    daily_fortune, zodiac_yearly_fortune, compatibility,
+    ZODIAC_TRAITS, ZODIAC_BRANCH_INDEX
+)
+from saju.glossary import GLOSSARY
+from saju.glossary_en import GLOSSARY_EN
+from saju.i18n import t, LANGS, DEFAULT_LANG, STEM_EN, BRANCH_EN, ELEMENT_EN as ELEMENT_NAMES_EN
+from saju import data as D
+from saju.cache import cached, get_cache, stats as cache_stats
+from saju.indexnow import INDEXNOW_KEY, INDEXNOW_KEY_LOCATION
+from saju.long_tail import CAREER_HEADLINES, LOVE_HEADLINES
+from saju.solar_terms_data import SOLAR_TERM_DETAIL
+from saju.detail_pages import (
+    TEN_GODS_DETAIL, TWELVE_STAGES_DETAIL,
+    HIDDEN_STEMS_DETAIL, HEAVENLY_STEMS_DETAIL,
+)
+import threading
+import subprocess
+
+# ─── 외부 cron용 웹훅 시크릿 ─────────────────────────
+CRON_SECRET = os.environ.get("CRON_SECRET", "")
+
+
+app = Flask(__name__)
+app.config["JSON_AS_ASCII"] = False
+
+
+@app.url_defaults
+def _add_lang_to_url(endpoint, values):
+    if hasattr(g, "lang") and "lang" not in values and g.lang != DEFAULT_LANG:
+        # Only auto-pass lang for endpoints that have <lang> in route, but we keep manual handling
+        pass
+
+
+@app.before_request
+def _detect_lang():
+    """Detect language from URL prefix `/en/`. Default = Korean."""
+    p = request.path
+    if p == "/en" or p.startswith("/en/"):
+        g.lang = "en"
+    else:
+        g.lang = "ko"
+
+# ─────────────────────────────────────────────────────────────────
+# 광고/추적 ID — 환경변수로 외부 주입 (배포 시 .env 또는 webapp 환경변수)
+# ─────────────────────────────────────────────────────────────────
+ADSENSE_CLIENT_ID = os.environ.get("ADSENSE_CLIENT_ID", "")     # 예: ca-pub-1234567890123456
+ADSENSE_SLOT_TOP = os.environ.get("ADSENSE_SLOT_TOP", "")
+ADSENSE_SLOT_INLINE = os.environ.get("ADSENSE_SLOT_INLINE", "")
+ADSENSE_SLOT_BOTTOM = os.environ.get("ADSENSE_SLOT_BOTTOM", "")
+
+# 카카오 AdFit — 즉시 활성 (AdSense 승인 대기 동안 수익화)
+ADFIT_SLOT_LEADERBOARD = os.environ.get("ADFIT_SLOT_LEADERBOARD", "DAN-n0PoylDwx5yW9h6m")  # 728×90
+ADFIT_SLOT_MEDIUM = os.environ.get("ADFIT_SLOT_MEDIUM", "DAN-6igVlxF0jtfGAy7k")            # 300×250
+ADFIT_SLOT_SQUARE = os.environ.get("ADFIT_SLOT_SQUARE", "DAN-R1f0lIsOhUpSLRxI")            # 250×250
+ADFIT_SLOT_SKYSCRAPER = os.environ.get("ADFIT_SLOT_SKYSCRAPER", "DAN-oS7GuVEpbyNDjHBF")    # 160×600
+META_PIXEL_ID = os.environ.get("META_PIXEL_ID", "")             # 예: 1234567890
+GA_MEASUREMENT_ID = os.environ.get("GA_MEASUREMENT_ID", "")     # 예: G-XXXXXXXX
+
+# 검색엔진 소유권 인증 — 가입 후 환경변수만 채우면 활성화
+GOOGLE_SITE_VERIFICATION = os.environ.get("GOOGLE_SITE_VERIFICATION", "")  # google-site-verification 메타 값
+NAVER_SITE_VERIFICATION = os.environ.get("NAVER_SITE_VERIFICATION", "")    # 네이버 서치어드바이저
+BING_SITE_VERIFICATION = os.environ.get("BING_SITE_VERIFICATION", "")      # Bing Webmaster
+YANDEX_SITE_VERIFICATION = os.environ.get("YANDEX_SITE_VERIFICATION", "")  # Yandex
+PINTEREST_VERIFICATION = os.environ.get("PINTEREST_VERIFICATION", "")      # Pinterest
+SITE_NAME = "사주명리 — 운명의 설계도"
+SITE_TAGLINE = "1,800년 동양철학의 지혜로 당신의 사주를 풀어드립니다"
+
+
+@app.context_processor
+def inject_globals():
+    lang = getattr(g, "lang", DEFAULT_LANG)
+    return {
+        "ADSENSE_CLIENT_ID": ADSENSE_CLIENT_ID,
+        "ADSENSE_SLOT_TOP": ADSENSE_SLOT_TOP,
+        "ADSENSE_SLOT_INLINE": ADSENSE_SLOT_INLINE,
+        "ADSENSE_SLOT_BOTTOM": ADSENSE_SLOT_BOTTOM,
+        "ADFIT_SLOT_LEADERBOARD": ADFIT_SLOT_LEADERBOARD,
+        "ADFIT_SLOT_MEDIUM": ADFIT_SLOT_MEDIUM,
+        "ADFIT_SLOT_SQUARE": ADFIT_SLOT_SQUARE,
+        "ADFIT_SLOT_SKYSCRAPER": ADFIT_SLOT_SKYSCRAPER,
+        "META_PIXEL_ID": META_PIXEL_ID,
+        "GA_MEASUREMENT_ID": GA_MEASUREMENT_ID,
+        "GOOGLE_SITE_VERIFICATION": GOOGLE_SITE_VERIFICATION,
+        "NAVER_SITE_VERIFICATION": NAVER_SITE_VERIFICATION,
+        "BING_SITE_VERIFICATION": BING_SITE_VERIFICATION,
+        "YANDEX_SITE_VERIFICATION": YANDEX_SITE_VERIFICATION,
+        "PINTEREST_VERIFICATION": PINTEREST_VERIFICATION,
+        "SITE_NAME": t("site_name", lang),
+        "SITE_TAGLINE": t("site_tagline", lang),
+        "current_year": datetime.now().year,
+        "lang": lang,
+        "t": t,
+        "STEM_EN": STEM_EN,
+        "BRANCH_EN": BRANCH_EN,
+        "ELEMENT_NAMES_EN": ELEMENT_NAMES_EN,
+    }
+
+
+# ─────────────────────────────────────────────────────────────────
+# 메인 / 입력  (한국어 + 영문 동시 지원)
+# ─────────────────────────────────────────────────────────────────
+@app.route("/")
+@app.route("/en/")
+def index():
+    return render_template("index.html",
+                           today=date.today().isoformat(),
+                           min_date="1900-01-01",
+                           max_date=date.today().isoformat())
+
+
+# ─────────────────────────────────────────────────────────────────
+# 사주 풀이 결과
+# ─────────────────────────────────────────────────────────────────
+@app.route("/result", methods=["GET", "POST"])
+@app.route("/en/result", methods=["GET", "POST"])
+def result():
+    is_en = (g.lang == "en")
+    if request.method == "POST":
+        form = request.form
+    else:
+        form = request.args
+
+    try:
+        name = (form.get("name") or "").strip()[:30]
+        gender = form.get("gender", "남" if not is_en else "M")
+        birth_date_str = form.get("birth_date", "")
+        birth_time_str = form.get("birth_time", "")
+        unknown_hour = form.get("unknown_hour") == "on"
+        is_lunar = False
+
+        if not birth_date_str:
+            return redirect(url_for("index"))
+
+        bd = datetime.strptime(birth_date_str, "%Y-%m-%d").date()
+        if unknown_hour or not birth_time_str:
+            hour, minute = 12, 0
+            unknown_hour = True
+        else:
+            bt = datetime.strptime(birth_time_str, "%H:%M").time()
+            hour, minute = bt.hour, bt.minute
+
+        if not (1900 <= bd.year <= date.today().year):
+            err = ("Only birth dates from 1900 onward are supported for precise analysis."
+                   if is_en else "1900년 이후 출생만 정밀 분석이 가능합니다.")
+            return render_template("result.html", error=err)
+
+        # gender normalization
+        if is_en:
+            gender_internal = "남" if gender in ("M", "male", "Male", "남", "남자") else "여"
+        else:
+            gender_internal = gender
+
+        saju = compute_saju(bd.year, bd.month, bd.day, hour, minute,
+                            gender=gender_internal, name=name,
+                            is_lunar=is_lunar, unknown_hour=unknown_hour)
+        daewoons = compute_daewoon(saju)
+        interp = interpret(saju)
+
+        # English overrides for interpretation when lang=en
+        if is_en:
+            day_idx = _find_pillar_idx(saju.day_pillar.stem, saju.day_pillar.branch)
+            en_info = DAY_PILLAR_INTERPRETATIONS_EN.get(day_idx)
+            if en_info:
+                interp["day_pillar_name"] = en_info[0]
+                interp["day_pillar_headline"] = en_info[1]
+                interp["day_pillar_detail"] = en_info[2]
+            interp["ten_god_meanings"] = {k: v[1] for k, v in TEN_GOD_EN.items()}
+            interp["twelve_stage_meaning"] = TWELVE_STAGE_EN
+            interp["element_meaning"] = ELEMENT_EN
+            # day master + element labels
+            interp["summary_line"] = (
+                f"{en_info[0] if en_info else ''} — {en_info[1] if en_info else ''}. "
+                f"Day stem {STEM_EN[saju.day_pillar.stem]} ({ELEMENT_NAMES_EN[D.STEM_ELEMENT[saju.day_pillar.stem]]}) "
+                f"is in '{TWELVE_STAGE_EN.get(saju.twelve_stages['day'], '')[:30]}…' state at the day branch."
+            )
+
+        return render_template("result.html",
+                               saju=saju,
+                               interp=interp,
+                               daewoons=daewoons,
+                               unknown_hour=unknown_hour,
+                               stems_kr=D.HEAVENLY_STEMS_KR,
+                               branches_kr=D.EARTHLY_BRANCHES_KR,
+                               stems_hanja=D.HEAVENLY_STEMS,
+                               branches_hanja=D.EARTHLY_BRANCHES)
+    except (ValueError, KeyError) as e:
+        err = f"Invalid input: {e}" if is_en else f"입력 형식이 올바르지 않습니다: {e}"
+        return render_template("result.html", error=err)
+
+
+def _find_pillar_idx(stem: int, branch: int) -> int:
+    for i in range(60):
+        if i % 10 == stem and i % 12 == branch:
+            return i
+    return 0
+
+
+# ─────────────────────────────────────────────────────────────────
+# 콘텐츠 페이지
+# ─────────────────────────────────────────────────────────────────
+@app.route("/basics")
+@app.route("/en/basics")
+def basics():
+    return render_template("basics.html")
+
+
+@app.route("/ten-gods")
+@app.route("/en/ten-gods")
+def ten_gods_page():
+    if g.lang == "en":
+        meanings = {k: v[1] for k, v in TEN_GOD_EN.items()}
+    else:
+        meanings = TEN_GOD_MEANING
+    return render_template("ten_gods.html", meanings=meanings)
+
+
+@app.route("/twelve-stages")
+@app.route("/en/twelve-stages")
+def twelve_stages_page():
+    meanings = TWELVE_STAGE_EN if g.lang == "en" else TWELVE_STAGE_MEANING
+    return render_template("twelve_stages.html", meanings=meanings)
+
+
+@app.route("/five-elements")
+@app.route("/en/five-elements")
+def five_elements_page():
+    meanings = ELEMENT_EN if g.lang == "en" else ELEMENT_MEANING
+    return render_template("five_elements.html", meanings=meanings)
+
+
+# ─────────────────────────────────────────────────────────────────
+# 오늘의 운세
+# ─────────────────────────────────────────────────────────────────
+@app.route("/today")
+@app.route("/today/<date_str>")
+@app.route("/en/today")
+@app.route("/en/today/<date_str>")
+def today_fortune(date_str=None):
+    try:
+        if date_str:
+            target = datetime.strptime(date_str, "%Y-%m-%d").date()
+        else:
+            target = date.today()
+    except ValueError:
+        target = date.today()
+
+    fortune = daily_fortune(target)
+    yesterday = target - timedelta(days=1)
+    tomorrow = target + timedelta(days=1)
+    # 띠별 일일 키워드 12개 (간략)
+    return render_template("today.html",
+                           fortune=fortune,
+                           target=target,
+                           yesterday=yesterday.isoformat(),
+                           tomorrow=tomorrow.isoformat(),
+                           zodiac_traits=ZODIAC_TRAITS)
+
+
+# ─────────────────────────────────────────────────────────────────
+# 띠별 운세 12개
+# ─────────────────────────────────────────────────────────────────
+@app.route("/zodiac")
+@app.route("/en/zodiac")
+def zodiac_index():
+    if g.lang == "en":
+        # ZODIAC_TRAITS_EN is keyed by Korean name; we expose both KR key + EN data
+        zodiacs = {k: ZODIAC_TRAITS_EN[k] for k in ZODIAC_TRAITS}
+    else:
+        zodiacs = ZODIAC_TRAITS
+    return render_template("zodiac_index.html", zodiacs=zodiacs)
+
+
+@app.route("/zodiac/<name>")
+@app.route("/en/zodiac/<name>")
+def zodiac_detail(name):
+    # English path supports both EN slugs (rat, ox, ...) and KR names
+    en_to_kr = {
+        "rat": "쥐", "ox": "소", "tiger": "호랑이", "rabbit": "토끼",
+        "dragon": "용", "snake": "뱀", "horse": "말", "goat": "양",
+        "monkey": "원숭이", "rooster": "닭", "dog": "개", "pig": "돼지",
+    }
+    kr_name = en_to_kr.get(name.lower(), name)
+    if kr_name not in ZODIAC_TRAITS:
+        abort(404)
+    fortune = zodiac_yearly_fortune(kr_name)
+    if g.lang == "en":
+        en_info = ZODIAC_TRAITS_EN[kr_name]
+        fortune["name"] = en_info[0].split(" (")[1].rstrip(")")  # "Rat" extracted from "Zi (Rat)"
+        fortune["trait"] = en_info
+    return render_template("zodiac_detail.html",
+                           zodiac=fortune,
+                           zodiacs=ZODIAC_TRAITS_EN if g.lang == "en" else ZODIAC_TRAITS,
+                           kr_name=kr_name)
+
+
+# ─────────────────────────────────────────────────────────────────
+# 궁합
+# ─────────────────────────────────────────────────────────────────
+@app.route("/compatibility", methods=["GET", "POST"])
+@app.route("/en/compatibility", methods=["GET", "POST"])
+def compatibility_page():
+    if request.method == "GET":
+        return render_template("compatibility.html",
+                               today=date.today().isoformat(),
+                               max_date=date.today().isoformat())
+    try:
+        p1 = {
+            "name": request.form.get("p1_name", "").strip()[:30],
+            "gender": request.form.get("p1_gender", "남"),
+        }
+        p2 = {
+            "name": request.form.get("p2_name", "").strip()[:30],
+            "gender": request.form.get("p2_gender", "여"),
+        }
+        for key, prefix in [(p1, "p1"), (p2, "p2")]:
+            bd = datetime.strptime(request.form[f"{prefix}_birth_date"], "%Y-%m-%d").date()
+            bt_str = request.form.get(f"{prefix}_birth_time", "")
+            if bt_str:
+                bt = datetime.strptime(bt_str, "%H:%M").time()
+                h, m = bt.hour, bt.minute
+            else:
+                h, m = 12, 0
+            key.update({"year": bd.year, "month": bd.month, "day": bd.day,
+                        "hour": h, "minute": m})
+        result = compatibility(p1, p2)
+        return render_template("compatibility_result.html",
+                               result=result,
+                               stems_kr=D.HEAVENLY_STEMS_KR,
+                               branches_kr=D.EARTHLY_BRANCHES_KR)
+    except (KeyError, ValueError) as e:
+        return render_template("compatibility.html",
+                               error=f"입력값을 확인해 주세요: {e}",
+                               today=date.today().isoformat(),
+                               max_date=date.today().isoformat())
+
+
+# ─────────────────────────────────────────────────────────────────
+# 용어 사전
+# ─────────────────────────────────────────────────────────────────
+@app.route("/glossary")
+@app.route("/en/glossary")
+def glossary_page():
+    grouped = {}
+    src = GLOSSARY_EN if g.lang == "en" else GLOSSARY
+    for term, cat, desc in src:
+        grouped.setdefault(cat, []).append({"term": term, "desc": desc})
+    return render_template("glossary.html", grouped=grouped, total=len(src))
+
+
+@app.route("/sixty-pillars")
+@app.route("/en/sixty-pillars")
+def sixty_pillars_index():
+    pillars = []
+    src = DAY_PILLAR_INTERPRETATIONS_EN if g.lang == "en" else DAY_PILLAR_INTERPRETATIONS
+    for i in range(60):
+        info = src.get(i)
+        if info:
+            pillars.append({
+                "index": i,
+                "name": info[0],
+                "headline": info[1],
+                "stem_kr": D.HEAVENLY_STEMS_KR[i % 10] if g.lang != "en" else STEM_EN[i % 10],
+                "branch_kr": D.EARTHLY_BRANCHES_KR[i % 12] if g.lang != "en" else BRANCH_EN[i % 12],
+                "element": D.ELEMENTS_KR[D.STEM_ELEMENT[i % 10]] if g.lang != "en" else ELEMENT_NAMES_EN[D.STEM_ELEMENT[i % 10]],
+            })
+    return render_template("sixty_pillars.html", pillars=pillars)
+
+
+@app.route("/sixty-pillars/<int:idx>")
+@app.route("/en/sixty-pillars/<int:idx>")
+def sixty_pillar_detail(idx):
+    if not (0 <= idx < 60):
+        abort(404)
+    src = DAY_PILLAR_INTERPRETATIONS_EN if g.lang == "en" else DAY_PILLAR_INTERPRETATIONS
+    info = src.get(idx)
+    if not info:
+        abort(404)
+    if g.lang == "en":
+        stem_label = STEM_EN[idx % 10]
+        branch_label = BRANCH_EN[idx % 12]
+        elem_label = ELEMENT_NAMES_EN[D.STEM_ELEMENT[idx % 10]]
+    else:
+        stem_label = D.HEAVENLY_STEMS_KR[idx % 10]
+        branch_label = D.EARTHLY_BRANCHES_KR[idx % 12]
+        elem_label = D.ELEMENTS_KR[D.STEM_ELEMENT[idx % 10]]
+    return render_template("pillar_detail.html",
+                           idx=idx,
+                           name=info[0],
+                           headline=info[1],
+                           detail=info[2],
+                           stem_kr=stem_label,
+                           branch_kr=branch_label,
+                           stem_hanja=D.HEAVENLY_STEMS[idx % 10],
+                           branch_hanja=D.EARTHLY_BRANCHES[idx % 12],
+                           element=elem_label,
+                           prev_idx=(idx - 1) % 60,
+                           next_idx=(idx + 1) % 60)
+
+
+# ─────────────────────────────────────────────────────────────────
+# 정책 페이지 (AdSense 승인 필수)
+# ─────────────────────────────────────────────────────────────────
+@app.route("/about")
+@app.route("/en/about")
+def about():
+    return render_template("about.html")
+
+
+@app.route("/privacy")
+@app.route("/en/privacy")
+def privacy():
+    return render_template("privacy.html")
+
+
+@app.route("/terms")
+@app.route("/en/terms")
+def terms():
+    return render_template("terms.html")
+
+
+# ─────────────────────────────────────────────────────────────────
+# SEO / 광고 인프라 파일
+# ─────────────────────────────────────────────────────────────────
+@app.route("/ads.txt")
+def ads_txt():
+    """Google AdSense 인증용 ads.txt. ADSENSE_CLIENT_ID(ca-pub-XXXX) 사용."""
+    pub_id = ADSENSE_CLIENT_ID.replace("ca-pub-", "").strip()
+    if not pub_id:
+        return Response("# AdSense not yet configured.\n", mimetype="text/plain")
+    body = f"google.com, pub-{pub_id}, DIRECT, f08c47fec0942fa0\n"
+    return Response(body, mimetype="text/plain")
+
+
+@app.route("/robots.txt")
+def robots_txt():
+    body = (
+        "User-agent: *\n"
+        "Allow: /\n"
+        "Disallow: /result?\n"
+        f"Sitemap: {request.url_root}sitemap.xml\n"
+    )
+    return Response(body, mimetype="text/plain")
+
+
+# ─────────────────────────────────────────────────────────────────
+# IndexNow 키 파일 (Bing·Yandex·Naver 소유권 증명)
+# ─────────────────────────────────────────────────────────────────
+@app.route("/" + INDEXNOW_KEY + ".txt")
+def indexnow_key_file():
+    return Response(INDEXNOW_KEY, mimetype="text/plain")
+
+
+# ─────────────────────────────────────────────────────────────────
+# 사주 결과 동적 OG 이미지 (PNG) — 공유 시 본인 사주가 박힌 카드
+# /og/result.png?y=1990&m=5&d=15&h=14&min=30&g=남&n=홍길동&lang=ko
+# ─────────────────────────────────────────────────────────────────
+@app.route("/og/result.png")
+def og_result_card():
+    try:
+        from saju.og_card import render_result_card
+        from saju.calculator import compute_saju
+        y = int(request.args.get("y", 1990))
+        m = int(request.args.get("m", 1))
+        d = int(request.args.get("d", 1))
+        h = int(request.args.get("h", 12))
+        mi = int(request.args.get("min", 0))
+        gender = request.args.get("g", "남")
+        name = request.args.get("n", "")[:20]
+        lang = request.args.get("lang", "ko")
+        unknown_hour = request.args.get("uh", "0") == "1"
+
+        saju = compute_saju(y, m, d, h, mi, gender=gender, name=name,
+                            unknown_hour=unknown_hour)
+
+        def p_dict(p):
+            return None if p is None else {"stem": p.stem, "branch": p.branch}
+
+        # 일주 인덱스
+        day_idx = 0
+        for i in range(60):
+            if i % 10 == saju.day_pillar.stem and i % 12 == saju.day_pillar.branch:
+                day_idx = i; break
+
+        png = render_result_card(
+            year_pillar=p_dict(saju.year_pillar),
+            month_pillar=p_dict(saju.month_pillar),
+            day_pillar=p_dict(saju.day_pillar),
+            hour_pillar=p_dict(saju.hour_pillar),
+            day_idx=day_idx, lang=lang, name=name,
+        )
+        return Response(png, mimetype="image/png",
+                        headers={"Cache-Control": "public, max-age=86400"})
+    except Exception as e:
+        # 실패 시 기본 OG 반환
+        return redirect(url_for("static",
+                                filename=("img/og-default-en.png" if request.args.get("lang") == "en"
+                                          else "img/og-default.png")))
+
+
+# ─────────────────────────────────────────────────────────────────
+# 웹훅 — 외부 cron이 매일 호출해서 봇·색인 작업 트리거
+# 인증: ?key=<CRON_SECRET>
+# ?task=lemmy | mastodon | indexnow
+# ─────────────────────────────────────────────────────────────────
+def _run_in_thread(target):
+    """봇 작업을 백그라운드 스레드로 실행 (요청 응답 막지 않게)."""
+    t = threading.Thread(target=target, daemon=True)
+    t.start()
+
+
+@app.route("/api/cron/<task>")
+def cron_webhook(task):
+    if not CRON_SECRET or request.args.get("key", "") != CRON_SECRET:
+        return jsonify({"ok": False, "error": "Forbidden"}), 403
+    task = task.lower()
+    if task == "lemmy":
+        from lemmy_bot import run_daily as lemmy_daily
+        _run_in_thread(lemmy_daily)
+        return jsonify({"ok": True, "task": "lemmy", "scheduled": True})
+    elif task == "mastodon":
+        from mastodon_bot import run_daily as mast_daily
+        _run_in_thread(mast_daily)
+        return jsonify({"ok": True, "task": "mastodon", "scheduled": True})
+    elif task == "indexnow":
+        from auto_index import submit_indexnow, ping_google_sitemap, ping_bing_sitemap
+        def _all():
+            submit_indexnow()
+            ping_google_sitemap()
+            ping_bing_sitemap()
+        _run_in_thread(_all)
+        return jsonify({"ok": True, "task": "indexnow", "scheduled": True})
+    elif task == "all":
+        from lemmy_bot import run_daily as lemmy_daily
+        from mastodon_bot import run_daily as mast_daily
+        from auto_index import submit_indexnow
+        def _all():
+            try:
+                lemmy_daily()
+            except Exception:
+                pass
+            try:
+                mast_daily()
+            except Exception:
+                pass
+            try:
+                submit_indexnow()
+            except Exception:
+                pass
+        _run_in_thread(_all)
+        return jsonify({"ok": True, "task": "all", "scheduled": True})
+    return jsonify({"ok": False, "error": f"Unknown task: {task}"}), 400
+
+
+# ─────────────────────────────────────────────────────────────────
+# RSS 피드 — 일일 운세 + 60갑자 일주별 풀이
+# 외부 어그리게이터/리더에 노출 → 자연 트래픽 유입
+# ─────────────────────────────────────────────────────────────────
+@app.route("/feed.xml")
+@app.route("/en/feed.xml")
+def rss_feed():
+    base = request.url_root.rstrip("/")
+    is_en = (g.lang == "en")
+    lang_prefix = "/en" if is_en else ""
+
+    title = "Saju Myeongri Daily — Day Pillar Reading Feed" if is_en else "사주명리 데일리 — 일주 풀이 피드"
+    description = ("Daily fortune by Day Pillar and 60-Gapja archetype readings."
+                   if is_en else "오늘의 일진과 60갑자 일주별 풀이를 매일 안내합니다.")
+
+    items = []
+    today = date.today()
+    # 최근 일주일 일진
+    for i in range(7):
+        d = today - timedelta(days=i)
+        fortune = daily_fortune(d)
+        item_title = (f"Today's fortune {d.isoformat()} — {fortune['day_pillar_name']}" if is_en
+                      else f"오늘의 일진 {d.isoformat()} — {fortune['day_pillar_name']}")
+        item_link = f"{base}{lang_prefix}/today/{d.isoformat()}"
+        item_desc = fortune.get("keyword_body", "")
+        items.append(
+            f"<item><title>{_xml_esc(item_title)}</title>"
+            f"<link>{item_link}</link>"
+            f"<guid>{item_link}</guid>"
+            f"<pubDate>{d.strftime('%a, %d %b %Y 00:00:00 +0000')}</pubDate>"
+            f"<description>{_xml_esc(item_desc)}</description></item>"
+        )
+    # 60갑자 일주별 풀이 (정적이므로 회전 표시)
+    src = DAY_PILLAR_INTERPRETATIONS_EN if is_en else DAY_PILLAR_INTERPRETATIONS
+    rotation_start = (today.toordinal() * 7) % 60
+    for offset in range(7):
+        idx = (rotation_start + offset) % 60
+        info = src.get(idx)
+        if not info:
+            continue
+        item_title = (f"Day Pillar Reading: {info[0]}" if is_en
+                      else f"60갑자 일주 풀이: {info[0]}")
+        item_link = f"{base}{lang_prefix}/sixty-pillars/{idx}"
+        items.append(
+            f"<item><title>{_xml_esc(item_title)}</title>"
+            f"<link>{item_link}</link>"
+            f"<guid>{item_link}</guid>"
+            f"<description>{_xml_esc(info[1])}</description></item>"
+        )
+
+    body = (
+        f'<?xml version="1.0" encoding="UTF-8"?>'
+        f'<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">'
+        f"<channel>"
+        f"<title>{_xml_esc(title)}</title>"
+        f"<link>{base}{lang_prefix}/</link>"
+        f'<atom:link href="{base}{lang_prefix}/feed.xml" rel="self" type="application/rss+xml"/>'
+        f"<description>{_xml_esc(description)}</description>"
+        f"<language>{'en' if is_en else 'ko'}</language>"
+        f"<lastBuildDate>{today.strftime('%a, %d %b %Y 00:00:00 +0000')}</lastBuildDate>"
+        + "".join(items)
+        + "</channel></rss>"
+    )
+    return Response(body, mimetype="application/rss+xml")
+
+
+def _xml_esc(s: str) -> str:
+    return (str(s).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+            .replace('"', "&quot;").replace("'", "&apos;"))
+
+
+# ─────────────────────────────────────────────────────────────────
+# 일주별 직업 / 연애운 페이지 (롱테일 SEO — 120 추가 페이지)
+# ─────────────────────────────────────────────────────────────────
+@app.route("/sixty-pillars/<int:idx>/career")
+@app.route("/en/sixty-pillars/<int:idx>/career")
+def pillar_career(idx):
+    return _pillar_topic_page(idx, "career")
+
+
+@app.route("/sixty-pillars/<int:idx>/love")
+@app.route("/en/sixty-pillars/<int:idx>/love")
+def pillar_love(idx):
+    return _pillar_topic_page(idx, "love")
+
+
+def _pillar_topic_page(idx, topic):
+    if not (0 <= idx < 60):
+        abort(404)
+    src = DAY_PILLAR_INTERPRETATIONS_EN if g.lang == "en" else DAY_PILLAR_INTERPRETATIONS
+    info = src.get(idx)
+    if not info:
+        abort(404)
+    pillar_name = info[0]
+    headlines = CAREER_HEADLINES if topic == "career" else LOVE_HEADLINES
+    topic_body = headlines.get(idx, ("", ""))
+    return render_template("pillar_topic.html",
+                           idx=idx,
+                           pillar_name=pillar_name,
+                           headline=info[1],
+                           topic=topic,
+                           topic_title=topic_body[0],
+                           topic_body=topic_body[1],
+                           prev_idx=(idx - 1) % 60,
+                           next_idx=(idx + 1) % 60)
+
+
+# ─────────────────────────────────────────────────────────────────
+# 주간/월간 운세 (시즌 키워드 점령)
+# ─────────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────
+# 십신 개별 상세 페이지
+# ─────────────────────────────────────────────────────────────────
+@app.route("/ten-gods/<name>")
+def ten_god_detail(name):
+    info = TEN_GODS_DETAIL.get(name)
+    if not info:
+        abort(404)
+    return render_template("god_detail.html", name=name, info=info,
+                           all_names=list(TEN_GODS_DETAIL.keys()))
+
+
+# ─────────────────────────────────────────────────────────────────
+# 십이운성 개별 상세 페이지
+# ─────────────────────────────────────────────────────────────────
+@app.route("/twelve-stages/<name>")
+def twelve_stage_detail(name):
+    info = TWELVE_STAGES_DETAIL.get(name)
+    if not info:
+        abort(404)
+    return render_template("stage_detail.html", name=name, info=info,
+                           all_names=list(TWELVE_STAGES_DETAIL.keys()))
+
+
+# ─────────────────────────────────────────────────────────────────
+# 12지지 / 지장간 개별 상세
+# ─────────────────────────────────────────────────────────────────
+@app.route("/branches/<name>")
+def branch_detail(name):
+    info = HIDDEN_STEMS_DETAIL.get(name)
+    if not info:
+        abort(404)
+    return render_template("branch_detail.html", name=name, info=info,
+                           all_names=list(HIDDEN_STEMS_DETAIL.keys()))
+
+
+@app.route("/branches")
+def branch_index():
+    items = [(n, v) for n, v in HIDDEN_STEMS_DETAIL.items()]
+    return render_template("branch_index.html", items=items)
+
+
+# ─────────────────────────────────────────────────────────────────
+# 천간 개별 상세 페이지
+# ─────────────────────────────────────────────────────────────────
+@app.route("/stems/<name>")
+def stem_detail(name):
+    info = HEAVENLY_STEMS_DETAIL.get(name)
+    if not info:
+        abort(404)
+    return render_template("stem_detail.html", name=name, info=info,
+                           all_names=list(HEAVENLY_STEMS_DETAIL.keys()))
+
+
+@app.route("/stems")
+def stem_index():
+    items = [(n, v) for n, v in HEAVENLY_STEMS_DETAIL.items()]
+    return render_template("stem_index.html", items=items)
+
+
+# ─────────────────────────────────────────────────────────────────
+# 사주 퀴즈 (인터랙티브 — 일주 맞히기)
+# ─────────────────────────────────────────────────────────────────
+@app.route("/quiz")
+def quiz_page():
+    return render_template("quiz.html")
+
+
+# ─────────────────────────────────────────────────────────────────
+# 일일 운세 이메일 구독 신청 (리드 수집)
+# ─────────────────────────────────────────────────────────────────
+@app.route("/subscribe", methods=["GET", "POST"])
+def subscribe():
+    if request.method == "POST":
+        email = (request.form.get("email") or "").strip()
+        if not email or "@" not in email:
+            return render_template("subscribe.html", error="올바른 이메일을 입력해 주세요.")
+        # 파일로 저장 (DB 없이 간단히)
+        import os as _os
+        sub_file = _os.path.join(_os.path.dirname(__file__), ".subscribers.txt")
+        try:
+            with open(sub_file, "a", encoding="utf-8") as f:
+                f.write(f"{datetime.now().isoformat()}\t{email}\n")
+        except Exception:
+            pass
+        return render_template("subscribe.html", success=True, email=email)
+    return render_template("subscribe.html")
+
+
+# ─────────────────────────────────────────────────────────────────
+# 명문장 모음 (인용 검색 트래픽)
+# ─────────────────────────────────────────────────────────────────
+@app.route("/quotes")
+def quotes_page():
+    return render_template("quotes.html")
+
+
+# ─────────────────────────────────────────────────────────────────
+# 24절기 페이지 (한국 검색 키워드 점령)
+# ─────────────────────────────────────────────────────────────────
+@app.route("/solar-terms")
+@app.route("/en/solar-terms")
+def solar_terms_index():
+    terms = []
+    for i, info in SOLAR_TERM_DETAIL.items():
+        terms.append({"idx": i, **info})
+    return render_template("solar_terms.html", terms=terms)
+
+
+@app.route("/solar-terms/<int:idx>")
+@app.route("/en/solar-terms/<int:idx>")
+def solar_term_detail(idx):
+    if not (0 <= idx <= 23):
+        abort(404)
+    info = SOLAR_TERM_DETAIL.get(idx)
+    if not info:
+        abort(404)
+    # 올해 이 절기의 정확한 시점 계산
+    from saju.calculator import solar_term_jd, jd_to_gregorian
+    today = date.today()
+    jd_this_year = solar_term_jd(today.year, idx) + 9 / 24  # KST
+    y, mo, d, hh, mm, _ = jd_to_gregorian(jd_this_year)
+    actual_time = f"{y}-{mo:02d}-{d:02d} {hh:02d}:{mm:02d} KST"
+    return render_template("solar_term_detail.html",
+                           idx=idx, info=info, actual_time=actual_time,
+                           prev_idx=(idx - 1) % 24, next_idx=(idx + 1) % 24)
+
+
+# ─────────────────────────────────────────────────────────────────
+# 신년 운세 (시즌 키워드 - "2026년 운세")
+# ─────────────────────────────────────────────────────────────────
+@app.route("/yearly")
+@app.route("/yearly/<int:year>")
+@app.route("/en/yearly")
+@app.route("/en/yearly/<int:year>")
+def yearly_fortune(year=None):
+    target_year = year or date.today().year
+    if not (1900 <= target_year <= 2100):
+        abort(404)
+    # 연도의 갑자 산출 (입춘 기준)
+    year_stem = (target_year - 4) % 10
+    year_branch = (target_year - 4) % 12
+    year_pillar_name = D.HEAVENLY_STEMS_KR[year_stem] + D.EARTHLY_BRANCHES_KR[year_branch]
+    year_hanja = D.HEAVENLY_STEMS[year_stem] + D.EARTHLY_BRANCHES[year_branch]
+    year_element = D.ELEMENTS_KR[D.STEM_ELEMENT[year_stem]]
+    year_animal = D.ZODIAC_ANIMALS[year_branch]
+
+    # 12띠별 그 해 운세
+    zodiacs = []
+    for zname in ZODIAC_TRAITS:
+        fortune = zodiac_yearly_fortune(zname, today=date(target_year, 6, 15))
+        zodiacs.append({"name": zname, **fortune})
+
+    return render_template("yearly.html",
+                           year=target_year,
+                           year_pillar=year_pillar_name,
+                           year_hanja=year_hanja,
+                           year_element=year_element,
+                           year_animal=year_animal,
+                           zodiacs=zodiacs)
+
+
+# ─────────────────────────────────────────────────────────────────
+# 음력 → 양력 변환기 (유용 유틸리티)
+# 정확한 한국 음력 변환은 천문연 데이터 필요 → 여기서는 근사 알고리즘
+# ─────────────────────────────────────────────────────────────────
+@app.route("/lunar-converter", methods=["GET", "POST"])
+@app.route("/en/lunar-converter", methods=["GET", "POST"])
+def lunar_converter():
+    if request.method == "POST":
+        try:
+            ly = int(request.form["lunar_year"])
+            lm = int(request.form["lunar_month"])
+            ld = int(request.form["lunar_day"])
+            is_leap = request.form.get("is_leap") == "on"
+            from saju.lunar import lunar_to_solar
+            sd = lunar_to_solar(ly, lm, ld, is_leap)
+            return render_template("lunar_converter.html",
+                                   lunar=(ly, lm, ld, is_leap),
+                                   solar=sd)
+        except (KeyError, ValueError) as e:
+            return render_template("lunar_converter.html",
+                                   error=f"입력값 오류: {e}")
+    return render_template("lunar_converter.html")
+
+
+@app.route("/weekly")
+@app.route("/en/weekly")
+def weekly_fortune():
+    today = date.today()
+    days = [today + timedelta(days=i) for i in range(7)]
+    week_fortunes = [daily_fortune(d) for d in days]
+    return render_template("weekly.html", week_fortunes=week_fortunes,
+                           week_start=today, week_end=today + timedelta(days=6))
+
+
+@app.route("/monthly")
+@app.route("/en/monthly")
+def monthly_fortune():
+    today = date.today()
+    # 30일치 일진 미리보기
+    days = [today + timedelta(days=i) for i in range(30)]
+    month_fortunes = [daily_fortune(d) for d in days]
+    return render_template("monthly.html",
+                           month_fortunes=month_fortunes,
+                           month_start=today,
+                           month_end=today + timedelta(days=29))
+
+
+@app.route("/sitemap.xml")
+def sitemap():
+    base = request.url_root.rstrip("/")
+    today_iso = date.today().isoformat()
+    base_pages = [
+        ("/", "1.0", "daily"),
+        ("/today", "0.9", "daily"),
+        ("/compatibility", "0.9", "weekly"),
+        ("/zodiac", "0.8", "weekly"),
+        ("/sixty-pillars", "0.8", "monthly"),
+        ("/basics", "0.7", "monthly"),
+        ("/ten-gods", "0.7", "monthly"),
+        ("/twelve-stages", "0.7", "monthly"),
+        ("/five-elements", "0.7", "monthly"),
+        ("/glossary", "0.6", "monthly"),
+        ("/about", "0.4", "yearly"),
+        ("/privacy", "0.3", "yearly"),
+        ("/terms", "0.3", "yearly"),
+    ]
+    zodiacs_kr = ["쥐", "소", "호랑이", "토끼", "용", "뱀",
+                  "말", "양", "원숭이", "닭", "개", "돼지"]
+    zodiacs_en = ["rat", "ox", "tiger", "rabbit", "dragon", "snake",
+                  "horse", "goat", "monkey", "rooster", "dog", "pig"]
+
+    def emit(path, prio, freq, alt_en=None):
+        """hreflang alternate links 포함."""
+        ko_url = f"{base}{path}"
+        en_url = f"{base}/en{alt_en if alt_en is not None else path}"
+        ko_block = (
+            f"<url><loc>{ko_url}</loc>"
+            f"<lastmod>{today_iso}</lastmod>"
+            f"<changefreq>{freq}</changefreq>"
+            f"<priority>{prio}</priority>"
+            f'<xhtml:link rel="alternate" hreflang="ko" href="{ko_url}"/>'
+            f'<xhtml:link rel="alternate" hreflang="en" href="{en_url}"/>'
+            f'<xhtml:link rel="alternate" hreflang="x-default" href="{ko_url}"/>'
+            f"</url>"
+        )
+        en_block = (
+            f"<url><loc>{en_url}</loc>"
+            f"<lastmod>{today_iso}</lastmod>"
+            f"<changefreq>{freq}</changefreq>"
+            f"<priority>{prio}</priority>"
+            f'<xhtml:link rel="alternate" hreflang="ko" href="{ko_url}"/>'
+            f'<xhtml:link rel="alternate" hreflang="en" href="{en_url}"/>'
+            f'<xhtml:link rel="alternate" hreflang="x-default" href="{ko_url}"/>'
+            f"</url>"
+        )
+        return ko_block + en_block
+
+    items = []
+    for u, prio, freq in base_pages:
+        items.append(emit(u, prio, freq))
+    for z_kr, z_en in zip(zodiacs_kr, zodiacs_en):
+        from urllib.parse import quote
+        items.append(emit(f"/zodiac/{quote(z_kr)}", "0.7", "weekly",
+                          alt_en=f"/zodiac/{z_en}"))
+    for i in range(60):
+        items.append(emit(f"/sixty-pillars/{i}", "0.6", "monthly"))
+
+    body = ('<?xml version="1.0" encoding="UTF-8"?>'
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
+            'xmlns:xhtml="http://www.w3.org/1999/xhtml">'
+            + "".join(items) + "</urlset>")
+    return Response(body, mimetype="application/xml")
+
+
+# ─────────────────────────────────────────────────────────────────
+# API 엔드포인트 (JSON) — 향후 모바일/외부 연동용
+# ─────────────────────────────────────────────────────────────────
+@app.route("/api/saju", methods=["POST"])
+def api_saju():
+    data = request.get_json(silent=True) or {}
+    try:
+        y = int(data["year"]); m = int(data["month"]); d = int(data["day"])
+        h = int(data.get("hour", 12)); mi = int(data.get("minute", 0))
+        gender = data.get("gender", "남")
+        unknown_hour = bool(data.get("unknown_hour", False))
+        saju = compute_saju(y, m, d, h, mi, gender=gender, unknown_hour=unknown_hour)
+        return jsonify({
+            "ok": True,
+            "result": saju.to_dict(),
+            "interpretation": interpret(saju),
+        })
+    except (KeyError, ValueError, TypeError) as e:
+        return jsonify({"ok": False, "error": str(e)}), 400
+
+
+# ─────────────────────────────────────────────────────────────────
+# 에러 핸들러
+# ─────────────────────────────────────────────────────────────────
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("404.html"), 404
+
+
+@app.errorhandler(500)
+def server_error(e):
+    return render_template("500.html"), 500
+
+
+if __name__ == "__main__":
+    app.run(debug=True, host="127.0.0.1", port=5000)

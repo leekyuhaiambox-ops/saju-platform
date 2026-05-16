@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}{{ year }}년 운세 — {{ year_pillar }}년 {{ year_animal }}띠 12지별 신년운{% endblock %}
+{% block description %}{{ year }}년은 {{ year_pillar }}({{ year_hanja }})년, {{ year_animal }}띠의 해. {{ year_element }} 기운이 주도하는 한 해의 흐름과 12띠별 운세.{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block jsonld_extra %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"{{ year }}년 운세 — {{ year_pillar }}년 신년운","inLanguage":"ko-KR","mainEntityOfPage":"{{ request.url }}","publisher":{"@id":"{{ request.url_root }}#org"}}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">신년 운세</p>
+    <h1>{{ year }}년 운세</h1>
+    <p class="lead">{{ year_pillar }}({{ year_hanja }})년 · {{ year_animal }}띠의 해</p>
+    <p class="meta">{{ year_element }} 기운이 주도하는 한 해</p>
+  </div>
+</section>
+
+<article class="article container narrow">
+  <h2>{{ year }}년 전체 흐름</h2>
+  <p>{{ year }}년의 연주는 <strong>{{ year_pillar }}({{ year_hanja }})</strong>입니다. 천간 <strong>{{ year_pillar[0] }}</strong>의 {{ year_element }} 기운이 이번 한 해를 이끕니다. 사주의 새해는 양력 1월 1일이 아니라 입춘(2월 4일경)부터 시작되므로, 본격적인 {{ year_pillar }}년의 흐름은 입춘 이후 펼쳐집니다.</p>
+
+  <p>{{ year_element }} 기운이 강한 해는 {% if year_element == '목' %}새로운 시작과 성장, 진취적 활동{% elif year_element == '화' %}표현과 확장, 활발한 교류{% elif year_element == '토' %}안정과 신뢰, 중재{% elif year_element == '금' %}결단과 정리, 정의로운 행동{% elif year_element == '수' %}지혜와 적응, 깊은 사고{% endif %}이 어울리는 시기입니다. 자기 사주에서 {{ year_element }} 기운이 부족했던 사람에게는 이 해가 보완의 흐름이 됩니다.</p>
+
+  {% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_INLINE %}
+  <div class="ad-container"><p class="ad-label">{{ t('ad_label') }}</p>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}" data-ad-slot="{{ ADSENSE_SLOT_INLINE }}" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+  {% endif %}
+</article>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">12띠별 {{ year }}년 운세</h2>
+    <p class="section-sub">본인 띠를 찾아 클릭하면 {{ year }}년의 상세 흐름을 확인할 수 있습니다.</p>
+    <div class="pillar-grid">
+      {% for z in zodiacs %}
+      <a class="pillar-tile" href="{{ url_for('zodiac_detail', name=z.name) }}">
+        <div class="pillar-tile-name">{{ z.name }}띠</div>
+        <div class="pillar-tile-headline">{{ z.trait[1] }}</div>
+        {% for title, body in z.relations[:1] %}
+        <div class="pillar-tile-element">{{ title }}</div>
+        {% endfor %}
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container narrow">
+    <h2 class="section-title">내 사주에 맞춘 {{ year }}년 정밀 풀이</h2>
+    <p>띠 운세는 12지 지지 하나만 보는 거친 분석입니다. 본인 사주 전체로 {{ year }}년 흐름을 보려면 명식과 함께 봐야 합니다. 무료 사주 풀이에서 본인 명식과 {{ year }}년 세운의 상호작용을 확인하세요.</p>
+    <p style="text-align:center"><a href="{{ url_for('index') }}" class="link-button">내 사주로 정밀 풀이 받기</a></p>
+  </div>
+</section>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_BOTTOM %}
+<div class="ad-container"><div class="container narrow"><p class="ad-label">{{ t('ad_label') }}</p>
+<ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}" data-ad-slot="{{ ADSENSE_SLOT_BOTTOM }}" data-ad-format="auto" data-full-width-responsive="true"></ins></div></div>
+{% endif %}
+{% endblock %}

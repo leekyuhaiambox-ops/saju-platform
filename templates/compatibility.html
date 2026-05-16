@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}사주 궁합 보기 — 두 사람의 사주 분석{% endblock %}
+{% block description %}연인·부부·친구 두 사람의 사주를 비교해 천간합·지지합·충 관계를 분석합니다. 무료 사주 궁합.{% endblock %}
+{% block jsonld_extra %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","name":"사주 궁합 보기","inLanguage":"ko-KR","mainEntityOfPage":"{{ request.url }}","publisher":{"@id":"{{ request.url_root }}#org"}}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">사주 궁합</p>
+    <h1>사주 궁합 보기</h1>
+    <p class="lead">두 사람의 사주를 비교해 천간합·지지합·충 관계를 점수로 분석합니다.</p>
+  </div>
+</section>
+
+{% if error %}
+<div class="container narrow"><div class="alert"><p>{{ error }}</p></div></div>
+{% endif %}
+
+<section class="container narrow">
+  <form class="saju-form" method="POST" action="{{ url_for('compatibility_page') }}">
+    <h2>두 사람의 생년월일시</h2>
+
+    <div class="couple-grid">
+      <div class="person-block">
+        <h3>첫 번째 사람</h3>
+        <label class="field">
+          <span class="field-label">이름 <em>(선택)</em></span>
+          <input type="text" name="p1_name" maxlength="30" autocomplete="off">
+        </label>
+        <fieldset class="field">
+          <legend class="field-label">성별</legend>
+          <div class="radio-group">
+            <label class="radio"><input type="radio" name="p1_gender" value="남" checked><span>남</span></label>
+            <label class="radio"><input type="radio" name="p1_gender" value="여"><span>여</span></label>
+          </div>
+        </fieldset>
+        <label class="field">
+          <span class="field-label">생년월일 <em>(양력)</em></span>
+          <input type="date" name="p1_birth_date" required min="1900-01-01" max="{{ max_date }}">
+        </label>
+        <label class="field">
+          <span class="field-label">출생 시각 <em>(선택)</em></span>
+          <input type="time" name="p1_birth_time">
+        </label>
+      </div>
+
+      <div class="person-block">
+        <h3>두 번째 사람</h3>
+        <label class="field">
+          <span class="field-label">이름 <em>(선택)</em></span>
+          <input type="text" name="p2_name" maxlength="30" autocomplete="off">
+        </label>
+        <fieldset class="field">
+          <legend class="field-label">성별</legend>
+          <div class="radio-group">
+            <label class="radio"><input type="radio" name="p2_gender" value="남"><span>남</span></label>
+            <label class="radio"><input type="radio" name="p2_gender" value="여" checked><span>여</span></label>
+          </div>
+        </fieldset>
+        <label class="field">
+          <span class="field-label">생년월일 <em>(양력)</em></span>
+          <input type="date" name="p2_birth_date" required min="1900-01-01" max="{{ max_date }}">
+        </label>
+        <label class="field">
+          <span class="field-label">출생 시각 <em>(선택)</em></span>
+          <input type="time" name="p2_birth_time">
+        </label>
+      </div>
+    </div>
+
+    <button type="submit" class="cta-button">
+      <span class="cta-main">궁합 분석하기</span>
+      <span class="cta-sub">천간합 · 지지합 · 충 점수 분석</span>
+    </button>
+  </form>
+</section>
+
+<section class="section alt">
+  <div class="container narrow">
+    <h2 class="section-title">사주 궁합은 어떻게 보는가</h2>
+    <p>사주 궁합은 두 사람의 명식을 펼쳐놓고 천간과 지지가 어떻게 만나는지 살피는 방식입니다. 본 사이트는 다음 4가지 핵심 관계를 점수화합니다.</p>
+    <ul class="bullet-list">
+      <li><strong>일간 천간합</strong> — 두 사람의 일간이 갑기·을경·병신·정임·무계 5합 중 하나인지</li>
+      <li><strong>일간 오행 관계</strong> — 상생인지, 상극인지, 같은 오행인지</li>
+      <li><strong>일지 육합·충</strong> — 두 사람의 일지가 합(合)을 이루는지 충(沖)인지</li>
+      <li><strong>연지(띠) 관계</strong> — 사회적 호흡이 잘 맞는지</li>
+    </ul>
+    <p class="disclaimer">궁합은 두 사람의 인연을 결정하지 않습니다. 어떤 관계든 서로의 차이를 이해하고 노력하면 좋은 흐름으로 바꿀 수 있습니다.</p>
+  </div>
+</section>
+{% endblock %}

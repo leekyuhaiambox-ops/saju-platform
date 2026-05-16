@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}사주 용어 사전 — 명리학 용어 {{ total }}개 정리{% endblock %}
+{% block description %}사주(四柱), 천간, 지지, 십신, 십이운성, 24절기, 신살, 격국, 용신까지 사주명리학 핵심 용어 {{ total }}개를 한 곳에 정리.{% endblock %}
+{% block jsonld_extra %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTermSet","name":"사주 용어 사전","inLanguage":"ko-KR","mainEntityOfPage":"{{ request.url }}","publisher":{"@id":"{{ request.url_root }}#org"}}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">학습 가이드 · 용어 사전</p>
+    <h1>사주 용어 사전</h1>
+    <p class="lead">사주명리학을 공부하면서 마주치는 {{ total }}개 핵심 용어를 카테고리별로 정리했습니다.</p>
+  </div>
+</section>
+
+<section class="container narrow">
+  <p class="info-note">용어를 찾으시려면 Ctrl/Cmd + F로 페이지 내 검색이 빠릅니다.</p>
+
+  {% for category, items in grouped.items() %}
+  <section class="glossary-section">
+    <h2 class="section-title">{{ category }} ({{ items|length }}개)</h2>
+    <dl class="glossary-list">
+      {% for it in items %}
+      <dt class="glossary-term" id="term-{{ it.term }}">{{ it.term }}</dt>
+      <dd class="glossary-desc">{{ it.desc }}</dd>
+      {% endfor %}
+    </dl>
+  </section>
+  {% endfor %}
+</section>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_BOTTOM %}
+<div class="ad-container"><div class="container narrow"><p class="ad-label">{{ t('ad_label') }}</p>
+<ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}" data-ad-slot="{{ ADSENSE_SLOT_BOTTOM }}" data-ad-format="auto" data-full-width-responsive="true"></ins></div></div>
+{% endif %}
+{% endblock %}

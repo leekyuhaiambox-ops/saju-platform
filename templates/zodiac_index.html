@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}띠별 운세 12지 — 쥐·소·호랑이·토끼·용·뱀·말·양·원숭이·닭·개·돼지{% endblock %}
+{% block description %}12지 띠별 성향과 올해 운세 흐름. 자신의 띠를 클릭하면 깊이 있는 풀이와 오늘의 일진까지 함께 보실 수 있습니다.{% endblock %}
+{% block jsonld_extra %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"CollectionPage","headline":"12지 띠별 운세","inLanguage":"ko-KR","mainEntityOfPage":"{{ request.url }}","publisher":{"@id":"{{ request.url_root }}#org"}}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">띠별 운세</p>
+    <h1>12지 띠별 운세</h1>
+    <p class="lead">태어난 해의 지지(地支)가 결정하는 12동물 띠. 각 띠의 본질적 성향과 올해의 흐름을 확인하세요.</p>
+  </div>
+</section>
+
+<section class="container">
+  <div class="zodiac-grid">
+    {% for name, info in zodiacs.items() %}
+    <a href="{{ url_for('zodiac_detail', name=name) }}" class="zodiac-tile">
+      <div class="zodiac-name">{{ name }}<span class="zodiac-hanja">{{ info[0] }}</span></div>
+      <div class="zodiac-keyword">{{ info[1] }}</div>
+      <p class="zodiac-trait">{{ info[2] }}</p>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_BOTTOM %}
+<div class="ad-container"><div class="container narrow"><p class="ad-label">{{ t('ad_label') }}</p>
+<ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}" data-ad-slot="{{ ADSENSE_SLOT_BOTTOM }}" data-ad-format="auto" data-full-width-responsive="true"></ins></div></div>
+{% endif %}
+{% endblock %}

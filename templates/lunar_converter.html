@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}음력 → 양력 변환기 — 사주 입력 전에 음력 생일 변환{% endblock %}
+{% block description %}음력 생일을 양력으로 정확히 변환. 사주 풀이는 양력 입력이 표준입니다.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">유틸리티</p>
+    <h1>음력 → 양력 변환기</h1>
+    <p class="lead">사주 풀이는 24절기 기반 양력이 표준입니다. 음력 생일을 정확한 양력으로 변환하세요.</p>
+  </div>
+</section>
+
+<section class="form-section">
+  <div class="container narrow">
+    {% if solar %}
+    <div class="day-master-card" style="margin-bottom:2rem">
+      <p class="day-master-label">음력 {{ lunar[0] }}년 {{ lunar[1] }}월 {{ lunar[2] }}일{% if lunar[3] %} (윤달){% endif %}</p>
+      <p class="day-master-stem">{{ solar.year }}-{{ '%02d'|format(solar.month) }}-{{ '%02d'|format(solar.day) }}</p>
+      <p class="muted">{{ solar.strftime('%A') }} · 양력 기준</p>
+    </div>
+    <p style="text-align:center">
+      <a href="{{ url_for('result') }}?birth_date={{ solar.isoformat() }}" class="link-button">이 날짜로 사주 보기</a>
+    </p>
+    {% elif error %}
+    <div class="alert"><p>{{ error }}</p></div>
+    {% endif %}
+
+    <form class="saju-form" method="POST">
+      <h2>음력 입력</h2>
+      <label class="field">
+        <span class="field-label">음력 연도 <em>(1900~2049)</em></span>
+        <input type="number" name="lunar_year" min="1900" max="2049" required value="{{ lunar[0] if lunar }}">
+      </label>
+      <label class="field">
+        <span class="field-label">음력 월 <em>(1~12)</em></span>
+        <input type="number" name="lunar_month" min="1" max="12" required value="{{ lunar[1] if lunar }}">
+      </label>
+      <label class="field">
+        <span class="field-label">음력 일 <em>(1~30)</em></span>
+        <input type="number" name="lunar_day" min="1" max="30" required value="{{ lunar[2] if lunar }}">
+      </label>
+      <label class="checkbox-row">
+        <input type="checkbox" name="is_leap" {% if lunar and lunar[3] %}checked{% endif %}>
+        <span>윤달입니다</span>
+      </label>
+      <button type="submit" class="cta-button">
+        <span class="cta-main">양력으로 변환</span>
+        <span class="cta-sub">한국 표준 음력 데이터 기반</span>
+      </button>
+    </form>
+
+    <div class="info-card" style="margin-top:2rem">
+      <h3>왜 사주는 양력으로 봐야 하나요?</h3>
+      <p>사주의 한 해는 1월 1일이 아니라 입춘(立春)부터 시작합니다. 한 달의 경계도 음력 1일이 아니라 12개 ‘월건절기’에 따라 정해집니다. 즉 사주의 시간 체계는 ‘태양 황경 기반 24절기’가 표준이며, 이는 곧 양력 기반 시스템입니다.</p>
+      <p>음력 생일만 알고 계신 분들은 이 변환기로 양력 날짜를 먼저 확인한 뒤 <a href="{{ url_for('index') }}" class="strong-link">사주 풀이</a>를 받으시면 됩니다.</p>
+    </div>
+  </div>
+</section>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_BOTTOM %}
+<div class="ad-container"><div class="container narrow"><p class="ad-label">{{ t('ad_label') }}</p>
+<ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}" data-ad-slot="{{ ADSENSE_SLOT_BOTTOM }}" data-ad-format="auto" data-full-width-responsive="true"></ins></div></div>
+{% endif %}
+{% endblock %}

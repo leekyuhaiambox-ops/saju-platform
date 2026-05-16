@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}{{ name }}(十神) — 사주 십신 의미와 적성 완전 풀이{% endblock %}
+{% block description %}{{ name }}이 사주에 있을 때 의미. {{ info.headline }}. 적성, 주의사항, 인간관계까지.{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block jsonld_extra %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"{{ name }}(十神) 의미와 적성","inLanguage":"ko-KR","mainEntityOfPage":"{{ request.url }}","publisher":{"@id":"{{ request.url_root }}#org"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+ {"@type":"ListItem","position":1,"name":"홈","item":"{{ request.url_root }}"},
+ {"@type":"ListItem","position":2,"name":"십신","item":"{{ request.url_root }}ten-gods"},
+ {"@type":"ListItem","position":3,"name":"{{ name }}","item":"{{ request.url }}"}
+]}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb"><a href="{{ url_for('ten_gods_page') }}">십신</a></p>
+    <h1>{{ name }}({{ {'비견':'比肩','겁재':'劫財','식신':'食神','상관':'傷官','편재':'偏財','정재':'正財','편관':'偏官','정관':'正官','편인':'偏印','정인':'正印'}[name] }})</h1>
+    <p class="lead">{{ info.headline }}</p>
+  </div>
+</section>
+
+<article class="article container narrow">
+  <h2>{{ name }}의 본질</h2>
+  <p>{{ info.body }}</p>
+
+  {% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_INLINE %}
+  <div class="ad-container"><p class="ad-label">{{ t('ad_label') }}</p>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}" data-ad-slot="{{ ADSENSE_SLOT_INLINE }}" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+  {% endif %}
+
+  <h2>적합한 직업</h2>
+  <p>{{ info.career }}</p>
+
+  <h2>주의사항</h2>
+  <p>{{ info.caution }}</p>
+
+  <h2>인간관계</h2>
+  <p>{{ info.relationship }}</p>
+
+  <h2>내 사주에서 {{ name }} 확인하기</h2>
+  <p>본인 사주에서 {{ name }}이 어느 자리에 얼마나 있는지 궁금하다면 <a href="{{ url_for('index') }}" class="strong-link">무료 사주 풀이</a>에서 그래프로 한눈에 확인하세요.</p>
+
+  <div class="pillar-nav">
+    {% for nm in all_names %}
+    <a class="link-button {% if nm != name %}secondary{% endif %}" href="{{ url_for('ten_god_detail', name=nm) }}">{{ nm }}</a>
+    {% endfor %}
+  </div>
+</article>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_BOTTOM %}
+<div class="ad-container"><div class="container narrow"><p class="ad-label">{{ t('ad_label') }}</p>
+<ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}" data-ad-slot="{{ ADSENSE_SLOT_BOTTOM }}" data-ad-format="auto" data-full-width-responsive="true"></ins></div></div>
+{% endif %}
+{% endblock %}

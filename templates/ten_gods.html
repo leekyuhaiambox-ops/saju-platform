@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}십신(十神) 해설 — 사주 인간관계와 운기의 핵심{% endblock %}
+{% block description %}비견·겁재·식신·상관·편재·정재·편관·정관·편인·정인 — 사주의 십신 10가지 의미와 인생에서의 작용을 자세히 풀이합니다.{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block jsonld_extra %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"십신(十神) 해설 — 사주의 열 가지 별","inLanguage":"ko-KR","mainEntityOfPage":"{{ request.url }}","publisher":{"@id":"{{ request.url_root }}#org"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+ {"@type":"ListItem","position":1,"name":"홈","item":"{{ request.url_root }}"},
+ {"@type":"ListItem","position":2,"name":"십신","item":"{{ request.url }}"}
+]}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">학습 가이드 · 십신</p>
+    <h1>십신(十神) — 일간 중심의 열 가지 별</h1>
+    <p class="lead">나(일간)에 대한 다른 글자들의 오행 관계가 만들어내는 열 가지 사회적 별. 사주 해석에서 가장 핵심이 되는 개념입니다.</p>
+  </div>
+</section>
+
+<article class="article container narrow">
+  <p>십신은 사주의 일간(태어난 날의 천간)을 ‘나(我)’로 설정하고, 다른 일곱 글자가 나와 어떤 오행 관계인지에 따라 부여되는 이름입니다. 같은 오행이라도 음양이 같은가 다른가에 따라 의미가 달라집니다.</p>
+  <div class="five-pairs">
+    <div class="pair">
+      <h3>나와 같은 오행 — 자아·동료</h3>
+      <ul>
+        <li><strong>비견(比肩)</strong> — 음양이 같은 동지. 독립심·자존심·협력의 별.</li>
+        <li><strong>겁재(劫財)</strong> — 음양이 다른 경쟁자. 추진력은 강하지만 재물 손실에 주의.</li>
+      </ul>
+    </div>
+    <div class="pair">
+      <h3>내가 생하는 오행 — 표현·자식</h3>
+      <ul>
+        <li><strong>식신(食神)</strong> — 음양이 같은 부드러운 생산. 먹는 복·자기개발·꾸준한 표현.</li>
+        <li><strong>상관(傷官)</strong> — 음양이 다른 강렬한 표출. 창의·기획·반항·재능.</li>
+      </ul>
+    </div>
+    <div class="pair">
+      <h3>내가 극하는 오행 — 재물·실천</h3>
+      <ul>
+        <li><strong>편재(偏財)</strong> — 큰 돈이 들고 나는 활동성. 사업·이성·기회의 별.</li>
+        <li><strong>정재(正財)</strong> — 안정적 재산과 배우자. 꾸준한 노력으로 쌓는 재물.</li>
+      </ul>
+    </div>
+    <div class="pair">
+      <h3>나를 극하는 오행 — 명예·권위</h3>
+      <ul>
+        <li><strong>편관(偏官)</strong> — 강한 압박과 시련. 권력·군경·결단의 별.</li>
+        <li><strong>정관(正官)</strong> — 안정된 직장과 사회적 지위. 명예와 질서.</li>
+      </ul>
+    </div>
+    <div class="pair">
+      <h3>나를 생하는 오행 — 인덕·학문</h3>
+      <ul>
+        <li><strong>편인(偏印)</strong> — 독특한 영감과 사색. 종교·기획·고독한 학문.</li>
+        <li><strong>정인(正印)</strong> — 지혜·문서·어머니. 도와주는 인연과 학문의 별.</li>
+      </ul>
+    </div>
+  </div>
+
+  {% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_INLINE %}
+  <div class="ad-container">
+    <p class="ad-label">{{ t('ad_label') }}</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}"
+         data-ad-slot="{{ ADSENSE_SLOT_INLINE }}" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+  {% endif %}
+
+  <h2>각 십신의 깊은 의미</h2>
+  {% for god, meaning in meanings.items() %}
+  <section class="god-detail">
+    <h3>{{ god }}</h3>
+    <p>{{ meaning }}</p>
+    <p class="more">
+      {% if god == "비견" %}같은 오행 같은 음양으로 ‘나의 또 다른 모습’이라 할 수 있습니다. 사주에 비견이 많으면 자기 주장이 강하고 독립적이지만, 재물을 나눠 가지는 형국이라 사업 동업·재산 분쟁에 신경을 써야 합니다. 적당히 있으면 좋은 동료와 친구가 평생을 함께합니다.
+      {% elif god == "겁재" %}같은 오행 다른 음양으로 형제·라이벌의 별입니다. 강한 추진력과 도전 정신을 주지만, 재물(정재)을 빼앗는 성질이 있어 재물 손실·사기·동업 분쟁의 가능성이 있습니다. 사주에서 겁재를 잘 다스리면 운동 선수, 사업가, 군경 등 경쟁이 치열한 분야에서 두각을 보입니다.
+      {% elif god == "식신" %}내가 만들어내는 부드러운 생산 활동입니다. 식록(食祿) 즉 ‘먹고 사는 복’을 의미해 의식주가 풍족하고 마음의 여유가 있습니다. 자식·후배·창작물을 상징하며, 표현력과 친화력이 자산입니다. 사주에 식신이 잘 자리 잡으면 안정과 풍요의 삶을 살게 됩니다.
+      {% elif god == "상관" %}내가 만들어내는 날카로운 표현입니다. 창의력·재능·예술성이 뛰어나지만 권위·규율(정관)을 깨뜨리는 성질이 있어 조직 생활에서 마찰이 잦습니다. 자기 능력으로 인정받는 자영업, 예술가, 강사, 기획자에 적합합니다.
+      {% elif god == "편재" %}내가 다스리는 큰 돈이자 활동성입니다. 들고 나는 흐름이 커서 사업·투자에 강점이 있고, 남자에게는 활동적인 여성 인연을 의미합니다. 정재가 ‘저축’이라면 편재는 ‘사업 운영’입니다. 한꺼번에 큰 돈을 벌고 큰 돈을 쓰는 형국입니다.
+      {% elif god == "정재" %}내가 안정적으로 모으는 재물입니다. 월급·고정 자산·배우자(남자 기준)을 상징합니다. 정재가 강하면 검소·성실·실속의 삶을 살게 되며, 결혼 운도 안정적입니다. 충(沖)이나 합(合)에 의해 흔들리지 않게 보호하는 것이 관건입니다.
+      {% elif god == "편관" %}나를 극하는 강한 압박입니다. 칠살(七殺)이라고도 하며 시련·도전·권력의 별입니다. 인성(印星)으로 화살(化殺)되면 큰 권력으로 변하고, 그렇지 못하면 시련의 별이 됩니다. 군경·법조·정치·외과의·운동 선수처럼 강한 압박을 다스리는 직업이 어울립니다.
+      {% elif god == "정관" %}나를 다스리는 정당한 권위입니다. 직장·명예·자격증·사회적 지위를 의미합니다. 여자에게는 정관이 남편을 상징합니다. 정관이 잘 자리 잡으면 조직 생활이 원만하고 평판이 좋습니다.
+      {% elif god == "편인" %}나를 생하는 독특한 인성입니다. 영감·직관·종교성이 강하지만 외로운 학문성을 지닙니다. 식신을 극(편인도식)해 ‘먹는 복’을 위협할 수 있어 균형이 중요합니다. 종교인·예술가·심리상담사·연구자에게 자주 보이는 별입니다.
+      {% elif god == "정인" %}나를 생하는 따뜻한 인성입니다. 학문·문서·자격증·어머니·집을 의미합니다. 정인이 잘 자리 잡으면 평생 공부와 인덕이 따라옵니다. 학자·교사·공무원·공인중개사 등 안정과 신뢰가 자산인 직업에 어울립니다.
+      {% endif %}
+    </p>
+  </section>
+  {% endfor %}
+
+  <h2>십신을 보는 실전 팁</h2>
+  <ul class="bullet-list">
+    <li><strong>개수보다 위치</strong> — 같은 정인이라도 월주(부모궁)에 있는지 시주(말년·자녀궁)에 있는지에 따라 영향이 다릅니다.</li>
+    <li><strong>균형이 핵심</strong> — 어느 십신이 과도하게 많거나 전혀 없으면 그 영역이 인생의 과제가 됩니다.</li>
+    <li><strong>운(대운·세운)과의 상호작용</strong> — 사주 명식에 없는 십신도 운에서 들어오면 영향력이 커집니다.</li>
+    <li><strong>합·충에 의한 변화</strong> — 천간합·지지합·충 등에 의해 십신의 성질이 바뀌거나 약화될 수 있습니다.</li>
+  </ul>
+
+  <p>당신의 사주에서 어떤 십신이 강하고 약한지 궁금하다면 <a href="{{ url_for('index') }}" class="strong-link">사주 결과 페이지</a>를 확인해보세요. 십신 분포 그래프로 한눈에 보실 수 있습니다.</p>
+</article>
+
+{% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_BOTTOM %}
+<div class="ad-container">
+  <div class="container narrow">
+    <p class="ad-label">{{ t('ad_label') }}</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}"
+         data-ad-slot="{{ ADSENSE_SLOT_BOTTOM }}" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
