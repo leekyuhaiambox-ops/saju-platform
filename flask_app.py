@@ -67,6 +67,22 @@ def _detect_lang():
     else:
         g.lang = "ko"
 
+
+@app.after_request
+def _cors_headers(resp):
+    """Toss 미니앱·외부 클라이언트가 /api/* 호출 가능하도록 CORS 허용."""
+    if request.path.startswith("/api/"):
+        resp.headers["Access-Control-Allow-Origin"] = "*"
+        resp.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+        resp.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+        resp.headers["Access-Control-Max-Age"] = "86400"
+    return resp
+
+
+@app.route("/api/<path:any>", methods=["OPTIONS"])
+def _cors_preflight(any):
+    return ("", 204)
+
 # ─────────────────────────────────────────────────────────────────
 # 광고/추적 ID — 환경변수로 외부 주입 (배포 시 .env 또는 webapp 환경변수)
 # ─────────────────────────────────────────────────────────────────
@@ -975,11 +991,120 @@ def api_saju():
         h = int(data.get("hour", 12)); mi = int(data.get("minute", 0))
         gender = data.get("gender", "남")
         unknown_hour = bool(data.get("unknown_hour", False))
+        lang = data.get("lang", "ko")
         saju = compute_saju(y, m, d, h, mi, gender=gender, unknown_hour=unknown_hour)
+        daewoons = compute_daewoon(saju)
+        interp = interpret(saju)
+
+        # 일주 인덱스 계산
+        day_idx = 0
+        for i in range(60):
+            if i % 10 == saju.day_pillar.stem and i % 12 == saju.day_pillar.branch:
+                day_idx = i
+                break
+
+        # 영문 데이터 오버라이드
+        if lang == "en":
+            en_info = DAY_PILLAR_INTERPRETATIONS_EN.get(day_idx)
+            if en_info:
+                interp["day_pillar_name"] = en_info[0]
+                interp["day_pillar_headline"] = en_info[1]
+                interp["day_pillar_detail"] = en_info[2]
+
         return jsonify({
             "ok": True,
             "result": saju.to_dict(),
-            "interpretation": interpret(saju),
+            "interpretation": interp,
+            "daewoons": daewoons,
+            "day_pillar_index": day_idx,
+        })
+    except (KeyError, ValueError, TypeError) as e:
+        return jsonify({"ok": False, "error": str(e)}), 400
+
+
+@app.route("/api/today")
+def api_today():
+    """오늘의 일진 (선택: ?date=YYYY-MM-DD)."""
+    try:
+        ds = request.args.get("date")
+        d = datetime.strptime(ds, "%Y-%m-%d").date() if ds else date.today()
+        return jsonify({"ok": True, **{k: (v.isoformat() if isinstance(v, date) else v)
+                                       for k, v in daily_fortune(d).items()}})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 400
+
+
+@app.route("/api/pillars")
+def api_pillars():
+    """60갑자 일주별 핵심 풀이 전체 목록."""
+    src = DAY_PILLAR_INTERPRETATIONS_EN if request.args.get("lang") == "en" else DAY_PILLAR_INTERPRETATIONS
+    return jsonify({
+        "ok": True,
+        "pillars": [{"index": i, "name": src[i][0], "headline": src[i][1],
+                     "detail": src[i][2]} for i in range(60)],
+    })
+
+
+@app.route("/api/pillar/<int:idx>")
+def api_pillar_detail(idx):
+    """특정 일주 상세."""
+    if not (0 <= idx < 60):
+        return jsonify({"ok": False, "error": "index out of range"}), 404
+    src = DAY_PILLAR_INTERPRETATIONS_EN if request.args.get("lang") == "en" else DAY_PILLAR_INTERPRETATIONS
+    info = src[idx]
+    return jsonify({
+        "ok": True,
+        "index": idx,
+        "name": info[0],
+        "headline": info[1],
+        "detail": info[2],
+        "stem_kr": D.HEAVENLY_STEMS_KR[idx % 10],
+        "branch_kr": D.EARTHLY_BRANCHES_KR[idx % 12],
+        "stem_hanja": D.HEAVENLY_STEMS[idx % 10],
+        "branch_hanja": D.EARTHLY_BRANCHES[idx % 12],
+        "element": D.ELEMENTS_KR[D.STEM_ELEMENT[idx % 10]],
+    })
+
+
+@app.route("/api/zodiac/<name>")
+def api_zodiac(name):
+    """띠별 운세 — name = 쥐, 소, 호랑이, ... 또는 영문 rat/ox/tiger/..."""
+    en_to_kr = {"rat": "쥐", "ox": "소", "tiger": "호랑이", "rabbit": "토끼",
+                "dragon": "용", "snake": "뱀", "horse": "말", "goat": "양",
+                "monkey": "원숭이", "rooster": "닭", "dog": "개", "pig": "돼지"}
+    kr_name = en_to_kr.get(name.lower(), name)
+    if kr_name not in ZODIAC_TRAITS:
+        return jsonify({"ok": False, "error": "unknown zodiac"}), 404
+    fortune = zodiac_yearly_fortune(kr_name)
+    # daily_fortune 안의 date 객체 직렬화
+    today_info = {k: (v.isoformat() if isinstance(v, date) else v)
+                  for k, v in fortune["today"].items()}
+    return jsonify({
+        "ok": True,
+        "name": kr_name,
+        "trait": fortune["trait"],
+        "this_year": fortune["this_year"],
+        "this_year_number": fortune["this_year_number"],
+        "relations": fortune["relations"],
+        "today": today_info,
+    })
+
+
+@app.route("/api/compatibility", methods=["POST"])
+def api_compatibility():
+    """두 사람 사주 궁합 분석."""
+    data = request.get_json(silent=True) or {}
+    try:
+        p1 = data["p1"]; p2 = data["p2"]
+        result = compatibility(p1, p2)
+        return jsonify({
+            "ok": True,
+            "score": result["score"],
+            "grade": result["grade"],
+            "advice": result["advice"],
+            "notes": result["notes"],
+            "p1": result["p1"].to_dict(),
+            "p2": result["p2"].to_dict(),
         })
     except (KeyError, ValueError, TypeError) as e:
         return jsonify({"ok": False, "error": str(e)}), 400

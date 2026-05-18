@@ -731,6 +731,10 @@ em { font-style: normal; color: var(--text-mute); font-size: .88em; font-weight:
 .adfit-leaderboard {
   padding-top: 1rem;
 }
+/* 728×90은 데스크탑 전용 — 모바일에서 잘림 방지 (AdFit 정책) */
+@media (max-width: 767px) {
+  .adfit-leaderboard { display: none !important; }
+}
 .adfit-square {
   margin-top: 2rem;
   margin-bottom: 1rem;
@@ -740,11 +744,17 @@ em { font-style: normal; color: var(--text-mute); font-size: .88em; font-weight:
 }
 .adfit-container .ad-label {
   text-align: center;
-  font-size: .72rem;
-  color: var(--text-mute);
-  margin: 0 0 .5rem;
+  font-size: .82rem;             /* 0.72 → 0.82 — 더 읽기 쉽게 */
+  color: var(--text-dim);        /* mute → dim — 명도 한 단계 올림 */
+  margin: 0 0 .6rem;
   letter-spacing: .15em;
   text-transform: uppercase;
+  font-weight: 500;              /* 굵기 추가 */
+  border-bottom: 1px dashed var(--border);
+  padding-bottom: .3rem;
+  max-width: 80px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .adfit-container .kakao_ad_area {
   margin: 0 auto;
@@ -764,7 +774,10 @@ em { font-style: normal; color: var(--text-mute); font-size: .88em; font-weight:
 .adfit-skyscraper .kakao_ad_area {
   margin: 0;
 }
-@media (min-width: 1500px) {
+/* 1600px+에서만 표시 — 콘텐츠 영역(max 1180px)과 절대 겹치지 않음
+   계산: 콘텐츠 우측 끝 = (1600-1180)/2 + 1180 = 1390px,
+        스카이스크래퍼 시작 = 1600-16-160 = 1424px → 34px 여유 */
+@media (min-width: 1600px) {
   .adfit-skyscraper {
     display: block;
   }

@@ -85,7 +85,7 @@
 
   <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%231a0f2e'/%3E%3Ctext x='90' y='130' font-size='110' text-anchor='middle' fill='%23daa520' font-family='serif'%3E命%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=20260512-2">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=20260517-compliance">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;900&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
@@ -183,6 +183,16 @@
 
   {# AdFit 스크립트 — 한 번만 로드 #}
   {% if ADFIT_SLOT_LEADERBOARD or ADFIT_SLOT_MEDIUM or ADFIT_SLOT_SQUARE or ADFIT_SLOT_SKYSCRAPER %}
+  <script>
+    // 모바일(< 768px)에서는 728×90 컨테이너 자체를 DOM에서 제거 — AdFit 정책 준수
+    (function () {
+      if (window.innerWidth < 768) {
+        document.querySelectorAll('.adfit-leaderboard').forEach(function (c) {
+          c.parentNode && c.parentNode.removeChild(c);
+        });
+      }
+    })();
+  </script>
   <script type="text/javascript" src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
   <script>
     // 광고 fill 실패 시 컨테이너 자체를 숨김 (빈 "광고" 라벨 방지)
