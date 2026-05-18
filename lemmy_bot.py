@@ -134,6 +134,9 @@ def save_state(state: dict):
                           encoding="utf-8")
 
 
+MIN_DAYS_BETWEEN_POSTS = 3   # 봇 의심 회피: 3일에 1회만 게시
+
+
 def run_daily():
     try:
         jwt = login()
@@ -142,10 +145,18 @@ def run_daily():
         return
 
     state = load_state()
-    today = date.today().isoformat()
-    if state.get("last_post_date") == today:
-        print("Already posted today; exiting.")
-        return
+    today_d = date.today()
+    today = today_d.isoformat()
+    last = state.get("last_post_date")
+    if last:
+        try:
+            last_d = date.fromisoformat(last)
+            days_since = (today_d - last_d).days
+            if days_since < MIN_DAYS_BETWEEN_POSTS:
+                print(f"Last post {days_since}d ago — wait until {MIN_DAYS_BETWEEN_POSTS}d to avoid bot suspicion.")
+                return
+        except Exception:
+            pass
 
     posted = set(state.get("posted_indices", []))
     available = [i for i in range(len(REDDIT_POSTS)) if i not in posted]

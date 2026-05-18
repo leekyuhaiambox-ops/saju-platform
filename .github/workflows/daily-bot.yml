@@ -27,6 +27,16 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Random delay (anti-bot pattern)
+        # 봇 의심 회피: 매일 정확히 같은 시각 게시 X
+        # 0~7200초(0~2시간) 랜덤 지연 → 게시 시각 분산
+        # 수동 실행(workflow_dispatch)에서는 지연 없음
+        if: github.event_name == 'schedule'
+        run: |
+          DELAY=$((RANDOM % 7200))
+          echo "Random delay: ${DELAY} seconds (≈ $((DELAY / 60)) min)"
+          sleep ${DELAY}
+
       - name: Run all bots
         env:
           # ─── Lemmy ───
