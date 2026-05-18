@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  생활권 접근성 분석 — sitemap 버그 수정안
+  =========================================
+  현재 sitemap.xml 문제:
+    - /profile/* URL은 28개 있음 (포트폴리오 페이지로 보임)
+    - 메인 페이지 / 자체가 누락 ← SEO 결정적 결함
+    - sitemap이 메인 서비스(생활권 분석)를 색인엔진에 알려주지 않음
+
+  수정안: 메인 / 를 priority 1.0으로 추가. 기존 /profile/* URL은 유지.
+
+  배포 방법:
+    1. Flask sitemap 생성 핸들러 위치 찾기 (routes.py 또는 sitemap.py)
+    2. URL 리스트 맨 앞에 ('/', '1.0', 'weekly') 추가
+    3. PA 재배포 (touch wsgi.py 또는 `python _deploy.py`)
+    4. Google Search Console / Naver 서치어드바이저에서 sitemap 재제출
+
+  검증:
+    curl https://geoinfomatic.pythonanywhere.com/sitemap.xml | head
+    → 첫 번째 <url>이 https://geoinfomatic.pythonanywhere.com/ 인지 확인
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- ✅ FIX: 메인 페이지 (현재 sitemap에서 누락) -->
+  <url>
+    <loc>https://geoinfomatic.pythonanywhere.com/</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- 권장 추가: Pro 결제 페이지 (구현 후) -->
+  <url>
+    <loc>https://geoinfomatic.pythonanywhere.com/pro</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- 권장 추가: About / FAQ / Help 페이지 (있다면) -->
+  <url>
+    <loc>https://geoinfomatic.pythonanywhere.com/about</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://geoinfomatic.pythonanywhere.com/faq</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- 기존 /profile/* URLs (유지) -->
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile</loc><lastmod>2026-05-18</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/project/1</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/project/2</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/project/3</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/project/4</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/project/5</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/project/7</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/project/8</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/project/9</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/project/10</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/project/11</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/project/12</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/project/13</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/project/14</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/project/14/sub/1</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/project/14/sub/2</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/project/14/sub/3</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/project/17</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/project/18</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/project/19</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/project/20</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/project/21</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/experience/1</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/experience/2</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/experience/3</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://geoinfomatic.pythonanywhere.com/profile/experience/4</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+
+</urlset>

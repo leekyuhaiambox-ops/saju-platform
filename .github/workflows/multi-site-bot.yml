@@ -1,0 +1,98 @@
+# Multi-Site Bot — daily run for tarofortune + currency-map + geoinfomatic
+#
+# 매일 UTC 16:00 (KST 새벽 1시) + 0~2h 랜덤 지연으로 자동 게시.
+# 3사이트가 epoch_day 회전 — 매일 다른 사이트가 게시됨.
+#
+# 기존 daily-bot.yml과 공존 가능 (이 워크플로우가 더 새 기능 포함).
+# 운영자가 원하면 daily-bot.yml을 비활성화하고 이것만 사용.
+
+name: multi-site-bot
+
+on:
+  schedule:
+    - cron: '0 16 * * *'   # UTC 16:00 = KST 01:00
+  workflow_dispatch:
+    inputs:
+      force_site:
+        description: '강제 사이트 (tarofortune / currency-map / geoinfomatic). 비우면 epoch_day 회전.'
+        required: false
+        type: choice
+        options: ['', 'tarofortune', 'currency-map', 'geoinfomatic']
+        default: ''
+      dry_run:
+        description: '드라이런 (게시 안 함)'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write   # state 파일 자동 커밋용
+
+jobs:
+  run-bots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Random delay 0~2h (anti-bot)
+        if: github.event_name == 'schedule'
+        run: |
+          DELAY=$((RANDOM % 7200))
+          echo "Sleeping ${DELAY}s..."
+          sleep $DELAY
+
+      - name: Run multi-site orchestrator
+        env:
+          LEMMY_USERNAME: ${{ secrets.LEMMY_USERNAME }}
+          LEMMY_PASSWORD: ${{ secrets.LEMMY_PASSWORD }}
+          LEMMY_INSTANCE: ${{ secrets.LEMMY_INSTANCE }}
+          MASTODON_INSTANCE: ${{ secrets.MASTODON_INSTANCE }}
+          MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+          SITE_URL: ${{ secrets.SITE_URL }}
+        run: |
+          ARGS=""
+          if [ -n "${{ github.event.inputs.force_site }}" ]; then
+            ARGS="$ARGS --site ${{ github.event.inputs.force_site }}"
+          fi
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+
+          if [ -f "./marketing/shared/multi_site_orchestrator.py" ]; then
+            echo "▶ Using multi-site orchestrator (marketing/ inside repo)"
+            python -X utf8 ./marketing/shared/multi_site_orchestrator.py $ARGS
+          else
+            echo "▶ marketing/ not found — falling back to legacy run_all_bots.py"
+            python -X utf8 run_all_bots.py
+          fi
+
+      - name: Commit updated state files
+        if: github.event.inputs.dry_run != 'true'
+        run: |
+          git config user.name "multi-site-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add -A .lemmy_state.json .mastodon_state.json .devto_state.json \
+                    marketing/shared/state 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "chore(bot): update state files [skip ci]"
+          git push || echo "Nothing to push or push failed (continuing)"
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Multi-site bot run" >> $GITHUB_STEP_SUMMARY
+          echo "- Trigger: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Force site: ${{ github.event.inputs.force_site || '(auto rotate)' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Dry-run: ${{ github.event.inputs.dry_run || 'false' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Time: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_STEP_SUMMARY

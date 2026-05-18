@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pro 결제 — 생활권 접근성 분석</title>
+<meta name="robots" content="noindex">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif;background:#f7f9ff;min-height:100vh;padding:20px}
+.container{max-width:520px;margin:0 auto}
+.header{text-align:center;margin-bottom:24px}
+.header h1{font-size:20px;font-weight:800;color:#1a1a2e;margin-bottom:4px}
+.header p{color:#5b6478;font-size:13px}
+.summary-card{background:#fff;border-radius:14px;padding:18px 20px;margin-bottom:14px;box-shadow:0 2px 10px rgba(59,111,224,0.08)}
+.summary-row{display:flex;justify-content:space-between;padding:6px 0;font-size:14px;color:#1a1a2e}
+.summary-row.total{font-weight:800;font-size:16px;padding-top:12px;border-top:1.5px solid #f0f4ff;margin-top:8px}
+.widget-card{background:#fff;border-radius:14px;padding:16px;box-shadow:0 2px 10px rgba(59,111,224,0.08)}
+#payment-widget{min-height:200px}
+#agreement-widget{margin-top:14px;min-height:80px}
+#payment-button{width:100%;margin-top:18px;background:#3b6fe0;color:#fff;border:none;border-radius:12px;padding:15px 0;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 4px 16px rgba(59,111,224,0.32)}
+#payment-button:disabled{background:#cbd5e1;cursor:not-allowed;box-shadow:none}
+.back-link{display:block;text-align:center;margin-top:16px;color:#3b6fe0;text-decoration:none;font-size:13px;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>Pro 결제</h1>
+    <p>안전한 결제 처리: Toss Payments</p>
+  </div>
+
+  <div class="summary-card">
+    <div class="summary-row"><span>{{ order_name }}</span><span></span></div>
+    <div class="summary-row total"><span>총 결제 금액</span><span>₩{{ "{:,}".format(amount) }}</span></div>
+  </div>
+
+  <div class="widget-card">
+    <div id="payment-widget"></div>
+    <div id="agreement-widget"></div>
+    <button id="payment-button" disabled>준비 중...</button>
+  </div>
+
+  <a href="/pro" class="back-link">← 취소하고 돌아가기</a>
+</div>
+
+<script src="https://js.tosspayments.com/v1/payment-widget"></script>
+<script>
+(function() {
+  const clientKey = "{{ client_key }}";
+  const customerKey = "{{ customer_key }}";
+  const orderId = "{{ order_id }}";
+  const amount = {{ amount }};
+  const orderName = "{{ order_name }}";
+  const successUrl = "{{ success_url }}";
+  const failUrl = "{{ fail_url }}";
+
+  const widget = PaymentWidget(clientKey, customerKey);
+
+  widget.renderPaymentMethods("#payment-widget", { value: amount }, { variantKey: "DEFAULT" });
+  widget.renderAgreement("#agreement-widget", { variantKey: "AGREEMENT" });
+
+  const btn = document.getElementById("payment-button");
+  btn.textContent = "₩" + amount.toLocaleString() + " 결제하기";
+  btn.disabled = false;
+  btn.addEventListener("click", function() {
+    widget.requestPayment({
+      orderId,
+      orderName,
+      successUrl,
+      failUrl,
+      customerEmail: "",  // 선택: 사용자 이메일 prefill
+      customerName: ""
+    });
+  });
+})();
+</script>
+</body>
+</html>
