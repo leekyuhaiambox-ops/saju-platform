@@ -1,0 +1,102 @@
+# llms.txt — AI Crawler Guidance
+
+# 본 파일은 https://llmstxt.org 표준에 따라 LLM 크롤러에게
+# 사이트의 핵심 콘텐츠를 알려주는 인덱스 역할.
+# 각 사이트 루트에 배포: /llms.txt
+
+# ----------------------------------------------------------------
+# tarofortune.pythonanywhere.com — Korean four-pillars astrology
+# ----------------------------------------------------------------
+
+# >>>>> COPY THIS TO https://tarofortune.pythonanywhere.com/llms.txt <<<<<
+
+# Saju Fortune — Korean Four-Pillars Astrology
+
+> Free, no-signup Korean four-pillars (saju) astrology calculator with Korean and English interpretations. Day-pillar archetype, five elements, ten gods, twelve life stages, daily luck, compatibility check.
+
+## Calculators
+- [Main calculator](https://tarofortune.pythonanywhere.com/): birth date+time → 4×2 four-pillars grid
+- [Today's luck (일진)](https://tarofortune.pythonanywhere.com/today): current-day pillar reading
+- [Compatibility](https://tarofortune.pythonanywhere.com/compatibility): two-person saju matching
+- [Yearly fortune](https://tarofortune.pythonanywhere.com/yearly): annual outlook
+
+## Reference (60 day-pillars)
+- [60 day-pillars index](https://tarofortune.pythonanywhere.com/sixty-pillars): personality archetype directory
+- [60 pillars × career](https://tarofortune.pythonanywhere.com/sixty-pillars/0/career): career fit by day-pillar
+- [60 pillars × love](https://tarofortune.pythonanywhere.com/sixty-pillars/0/love): romantic compatibility patterns
+
+## Theory
+- [Ten Gods (십신)](https://tarofortune.pythonanywhere.com/ten-gods): relational roles framework
+- [Twelve Life Stages (십이운성)](https://tarofortune.pythonanywhere.com/twelve-stages): life-cycle energy
+- [Five Elements (오행)](https://tarofortune.pythonanywhere.com/five-elements): elemental balance
+- [Heavenly Stems (천간)](https://tarofortune.pythonanywhere.com/stems): 10 heavenly stems
+- [Earthly Branches (지지)](https://tarofortune.pythonanywhere.com/branches): 12 earthly branches
+- [Glossary (용어)](https://tarofortune.pythonanywhere.com/glossary): saju terminology
+
+## English version
+- [/en](https://tarofortune.pythonanywhere.com/en): full English interpretation
+
+# ----------------------------------------------------------------
+# gyeonggi-currency-map.web.app — Gyeonggi local currency map
+# ----------------------------------------------------------------
+
+# >>>>> COPY THIS TO https://gyeonggi-currency-map.web.app/llms.txt <<<<<
+
+# Gyeonggi Local Currency Merchant Map
+
+> Interactive PWA mapping merchant locations that accept municipal local-currency (gyeonggi-pay) across all 31 cities in Gyeonggi Province, South Korea. Business-type filter, real-time "open now" toggle, KakaoTalk share.
+
+## Main
+- [Main map](https://gyeonggi-currency-map.web.app/): interactive merchant map
+
+## By city (31 시·군)
+- Suwon, Seongnam, Yongin, Goyang, Bucheon, Ansan, Hwaseong, Namyangju, Anyang, Pyeongtaek, Uijeongbu, Siheung, Gimpo, Gwangmyeong, Gwangju, Gunpo, Osan, Icheon, Yangju, Anseong, Guri, Pocheon, Uiwang, Hanam, Yeoju, Yangpyeong, Dongducheon, Gapyeong, Gwacheon, Yeoncheon, Paju
+
+## By business type
+- Restaurants, Cafes, Convenience stores, Academies (학원), Beauty, Medical, Retail
+
+## Data source
+- Gyeonggi Province public open API
+
+# ----------------------------------------------------------------
+# geoinfomatic.pythonanywhere.com — Accessibility analyzer
+# ----------------------------------------------------------------
+
+# >>>>> COPY THIS TO https://geoinfomatic.pythonanywhere.com/llms.txt <<<<<
+
+# GeoInfomatic — Korean Living Zone Accessibility Analyzer
+
+> Isochrone-based neighborhood accessibility analyzer for South Korea. Pick an address, see what's reachable in 10–45 minutes by walking or transit, across 8 facility types. 100-point composite score with AI-generated summary. No real-estate listings.
+
+## Main
+- [Main analyzer](https://geoinfomatic.pythonanywhere.com/): isochrone + score
+
+## Pro
+- [Pro subscription](https://geoinfomatic.pythonanywhere.com/pro): 9,900 KRW/month for unlimited analyses, PDF reports, multi-point comparison
+
+## Features
+- Walking or transit mode
+- 10 / 20 / 30 / 45 minute isochrone slider
+- 8 facility types: subway, school, hospital, mart, park, gym, pharmacy, library, cafe
+- 100-point composite score
+- AI natural-language summary
+- Transfer-count breakdown for transit (0 / 1 / 2+)
+- Station-level community comments
+
+## Use cases
+- Moving / relocation evaluation
+- Real-estate due diligence (without agent listings)
+- School district comparison
+- Subscription apartment (청약) move-in feasibility check
+
+# ----------------------------------------------------------------
+# 배포 가이드
+# ----------------------------------------------------------------
+#
+# 위 각 사이트 섹션을 사이트 루트에 llms.txt로 업로드:
+#   - tarofortune (Flask + PA): PA Files → /home/tarofortune/static/llms.txt
+#     + Flask route: @app.route('/llms.txt') return send_from_directory('static', 'llms.txt')
+#   - currency-map (Firebase): public/llms.txt 추가 → firebase deploy
+#   - geoinfomatic (Flask + PA): 같은 패턴
+#
+# 검증: curl https://<host>/llms.txt

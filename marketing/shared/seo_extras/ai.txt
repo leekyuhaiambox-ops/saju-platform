@@ -1,0 +1,77 @@
+# ai.txt — AI Training Opt-in/Opt-out (Spawning AI 제안 표준)
+# https://spawning.ai/ai-txt
+
+# ============================================================================
+# tarofortune.pythonanywhere.com
+# ============================================================================
+#
+# 배포: /home/tarofortune/static/ai.txt + Flask route
+# 또는 robots.txt에 동일 정책 명시 (현재 saju robots.txt는 일반 허용)
+#
+# >>> COPY BELOW TO tarofortune (선택 — 운영자 정책 따라) <<<
+
+# Allow LLM training of public content
+User-Agent: *
+Allow: /
+Allow: /en
+
+# Block training of API endpoints (machine-readable data)
+Disallow: /api/
+
+# ============================================================================
+# gyeonggi-currency-map.web.app
+# ============================================================================
+#
+# 배포: public/ai.txt → firebase deploy
+#
+# >>> COPY BELOW TO currency-map <<<
+
+# Local-currency merchant data is public open data —
+# AI training of derived content welcomed for non-commercial use
+User-Agent: *
+Allow: /
+
+# Note: underlying merchant data is from Gyeonggi Province public API.
+# Direct redistribution of the raw merchant dataset should follow that API's terms.
+
+# ============================================================================
+# geoinfomatic.pythonanywhere.com
+# ============================================================================
+#
+# 현재 robots.txt가 모든 AI 학습 봇 차단 정책 — 운영자 의도적 선택
+# ai.txt도 동일 정책 명시
+#
+# >>> COPY BELOW TO geoinfomatic <<<
+
+# AI training NOT permitted for this site's content
+User-Agent: GPTBot
+Disallow: /
+
+User-Agent: ChatGPT-User
+Disallow: /
+
+User-Agent: CCBot
+Disallow: /
+
+User-Agent: anthropic-ai
+Disallow: /
+
+User-Agent: Claude-Web
+Disallow: /
+
+User-Agent: ClaudeBot
+Disallow: /
+
+User-Agent: Google-Extended
+Disallow: /
+
+User-Agent: PerplexityBot
+Disallow: /
+
+User-Agent: YouBot
+Disallow: /
+
+User-Agent: Applebot-Extended
+Disallow: /
+
+# Search indexing OK (Googlebot, NaverBot, Bingbot etc.) — robots.txt 참조

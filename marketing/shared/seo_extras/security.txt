@@ -1,0 +1,56 @@
+# security.txt — RFC 9116 표준
+# https://securitytxt.org
+#
+# 각 사이트 /.well-known/security.txt 에 배포.
+# 보안 연구자가 취약점 발견 시 책임감 있게 보고할 수 있게 안내.
+
+# ============================================================================
+# tarofortune.pythonanywhere.com
+# ============================================================================
+#
+# 배포 경로:
+#   /home/tarofortune/static/.well-known/security.txt
+#   + Flask route: @app.route('/.well-known/security.txt')
+#
+# ----------------------------------------------------------------------------
+# >>> COPY BELOW TO tarofortune <<<
+
+Contact: mailto:leekyuha.iambox@gmail.com
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: ko, en
+Canonical: https://tarofortune.pythonanywhere.com/.well-known/security.txt
+Policy: We welcome responsible disclosure. Please contact via email with proof-of-concept and we will respond within 7 business days. No bug bounty currently but we credit researchers in release notes when fixes are deployed.
+Acknowledgments: https://tarofortune.pythonanywhere.com/about#security-researchers
+
+# ============================================================================
+# gyeonggi-currency-map.web.app
+# ============================================================================
+#
+# 배포 경로:
+#   public/.well-known/security.txt → firebase deploy
+#
+# ----------------------------------------------------------------------------
+# >>> COPY BELOW TO currency-map <<<
+
+Contact: mailto:leekyuha.iambox@gmail.com
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: ko, en
+Canonical: https://gyeonggi-currency-map.web.app/.well-known/security.txt
+Policy: This is a static PWA reading public Gyeonggi open data. No user accounts, no personal data collection beyond Google Analytics + ad networks. Vulnerability reports welcome via email. Please do not test denial-of-service against the Firebase Hosting endpoints.
+
+# ============================================================================
+# geoinfomatic.pythonanywhere.com
+# ============================================================================
+#
+# 배포 경로:
+#   /home/geoinfomatic/static/.well-known/security.txt
+#   + Flask route handler
+#
+# ----------------------------------------------------------------------------
+# >>> COPY BELOW TO geoinfomatic <<<
+
+Contact: mailto:leekyuha.iambox@gmail.com
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: ko, en
+Canonical: https://geoinfomatic.pythonanywhere.com/.well-known/security.txt
+Policy: We process address strings for analysis but do not retain them. Pro subscription billing is handled via Toss Payments (PCI compliant). Vulnerability reports welcome via email — please include reproduction steps. Responsible disclosure with 90-day window before public release appreciated.

@@ -486,6 +486,54 @@ def robots_txt():
 
 
 # ─────────────────────────────────────────────────────────────────
+# llms.txt — LLM 크롤러용 사이트 인덱스 (llmstxt.org 표준)
+# ─────────────────────────────────────────────────────────────────
+@app.route("/llms.txt")
+def llms_txt():
+    body = """# Saju Fortune — Korean Four-Pillars Astrology
+
+> Free, no-signup Korean four-pillars (saju) astrology calculator with Korean and English interpretations. Day-pillar archetype, five elements, ten gods, twelve life stages, daily luck, compatibility check.
+
+## Calculators
+- [Main calculator](/): birth date+time -> 4x2 four-pillars grid
+- [Today's luck](/today): current-day pillar reading
+- [Compatibility](/compatibility): two-person saju matching
+- [Yearly fortune](/yearly): annual outlook
+
+## Reference (60 day-pillars)
+- [60 day-pillars index](/sixty-pillars): personality archetype directory
+- [60 pillars x career](/sixty-pillars/0/career): career fit by day-pillar
+- [60 pillars x love](/sixty-pillars/0/love): romantic compatibility patterns
+
+## Theory
+- [Ten Gods](/ten-gods): relational roles framework
+- [Twelve Life Stages](/twelve-stages): life-cycle energy
+- [Five Elements](/five-elements): elemental balance
+- [Heavenly Stems](/stems): 10 heavenly stems
+- [Earthly Branches](/branches): 12 earthly branches
+- [Glossary](/glossary): saju terminology
+
+## English version
+- [/en](/en): full English interpretation
+"""
+    return Response(body, mimetype="text/plain; charset=utf-8")
+
+
+# ─────────────────────────────────────────────────────────────────
+# security.txt — RFC 9116 책임감 있는 취약점 보고
+# ─────────────────────────────────────────────────────────────────
+@app.route("/.well-known/security.txt")
+def security_txt():
+    body = """Contact: mailto:leekyuha.iambox@gmail.com
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: ko, en
+Canonical: https://tarofortune.pythonanywhere.com/.well-known/security.txt
+Policy: We welcome responsible disclosure. Please contact via email with proof-of-concept and we will respond within 7 business days.
+"""
+    return Response(body, mimetype="text/plain; charset=utf-8")
+
+
+# ─────────────────────────────────────────────────────────────────
 # IndexNow 키 파일 (Bing·Yandex·Naver 소유권 증명)
 # ─────────────────────────────────────────────────────────────────
 @app.route("/" + INDEXNOW_KEY + ".txt")
