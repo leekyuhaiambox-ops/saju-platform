@@ -246,6 +246,73 @@
     </div>
   </footer>
 
+  <!-- ─── 3사이트 가족 cross-promotion (모든 페이지 노출) ─── -->
+  <div id="family-promo" style="background:#1a0f2e;color:#e8ddf5;padding:18px 16px;text-align:center;font-size:14px;border-top:1px solid #3a2654;">
+    <div style="font-weight:700;margin-bottom:10px;color:#c7a0ff;font-size:13px;">{{ '🛠 Made by the same dev:' if lang == 'en' else '🛠 같은 운영자의 다른 도구:' }}</div>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;max-width:920px;margin:0 auto;">
+      <a href="https://gyeonggi-currency-map.web.app/?ref=tarofortune&utm_source=tarofortune&utm_medium=cross-promo" target="_blank" rel="noopener" style="color:#e8ddf5;text-decoration:none;background:#2a1a4e;padding:10px 14px;border-radius:10px;border:1px solid #4a3675;display:inline-block;">
+        🗺 <strong>{{ '경기지역화폐 가맹점 지도' if lang == 'ko' else 'Gyeonggi Currency Map' }}</strong><br>
+        <span style="font-size:11px;opacity:0.75">{{ '31개 시·군 통합 지도' if lang == 'ko' else '31-city merchant PWA' }}</span>
+      </a>
+      <a href="https://geoinfomatic.pythonanywhere.com/?ref=tarofortune&utm_source=tarofortune&utm_medium=cross-promo" target="_blank" rel="noopener" style="color:#e8ddf5;text-decoration:none;background:#2a1a4e;padding:10px 14px;border-radius:10px;border:1px solid #4a3675;display:inline-block;">
+        🏘 <strong>{{ '생활권 접근성 분석' if lang == 'ko' else 'Living Zone Analyzer' }}</strong><br>
+        <span style="font-size:11px;opacity:0.75">{{ '이사 전 동네 점수' if lang == 'ko' else 'Neighborhood score, no listings' }}</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ─── 이메일 capture banner (24h 한 번만 노출) ─── -->
+  <div id="email-banner" style="display:none;position:fixed;bottom:20px;right:20px;max-width:340px;background:#fff;color:#1a0f2e;padding:18px 18px 16px;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.32);z-index:9999;font-size:14px;line-height:1.5;">
+    <button onclick="closeEmailBanner()" style="position:absolute;top:8px;right:10px;background:none;border:0;font-size:18px;cursor:pointer;color:#888;">×</button>
+    <div style="font-weight:800;margin-bottom:6px;color:#5e2da6;font-size:15px;">{{ '💌 새 사주 콘텐츠 알림 받기' if lang == 'ko' else '💌 New content updates' }}</div>
+    <div style="font-size:12px;color:#666;margin-bottom:10px;">{{ '새 풀이·도구 출시 시 메일 1통. 스팸 X.' if lang == 'ko' else 'One email when new tools or readings ship. No spam.' }}</div>
+    <form id="email-form" style="display:flex;gap:6px;" onsubmit="return submitEmail(event)">
+      <input type="email" id="email-input" required placeholder="{{ 'name@email.com' if lang == 'ko' else 'name@email.com' }}" style="flex:1;border:1.5px solid #ddd;border-radius:8px;padding:8px 10px;font-size:13px;outline:none;min-width:0;">
+      <button type="submit" style="background:#5e2da6;color:#fff;border:0;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;">{{ '구독' if lang == 'ko' else 'Join' }}</button>
+    </form>
+    <div id="email-msg" style="font-size:12px;color:#16a34a;margin-top:6px;display:none;">{{ '✓ 등록되었습니다' if lang == 'ko' else '✓ Subscribed' }}</div>
+  </div>
+
+  <script>
+    // Email banner — 24h 한 번만
+    (function(){
+      try {
+        var key = '_em_banner_seen';
+        var seen = localStorage.getItem(key);
+        var now = Date.now();
+        if (!seen || (now - parseInt(seen, 10)) > 24*3600*1000) {
+          setTimeout(function(){
+            var el = document.getElementById('email-banner');
+            if (el) el.style.display = 'block';
+          }, 8000);  // 8초 후 노출
+        }
+      } catch(e){}
+    })();
+    function closeEmailBanner(){
+      try { localStorage.setItem('_em_banner_seen', Date.now()); } catch(e){}
+      var el = document.getElementById('email-banner');
+      if (el) el.style.display = 'none';
+    }
+    function submitEmail(ev){
+      ev.preventDefault();
+      var input = document.getElementById('email-input');
+      var msg = document.getElementById('email-msg');
+      fetch('/api/email-capture', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({email: input.value, source: 'banner-' + (window.location.pathname || '/')})
+      }).then(function(r){return r.json();})
+        .then(function(d){
+          if (d.ok){
+            msg.style.display = 'block';
+            input.value = '';
+            try { localStorage.setItem('_em_banner_seen', Date.now()); } catch(e){}
+            setTimeout(closeEmailBanner, 2000);
+          }
+        }).catch(function(){});
+      return false;
+    }
+  </script>
+
   {% if ADSENSE_CLIENT_ID %}
   <script>
     document.querySelectorAll('.adsbygoogle').forEach(function(){

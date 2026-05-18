@@ -79,6 +79,167 @@ def _cors_headers(resp):
     return resp
 
 
+# ─────────────────────────────────────────────────────────────────
+# Referral / Affiliate tracking — 다른 사이트로 트래픽 송출 + 추적
+# ?ref=austriano / ?ref=mastodon / ?ref=lemmy / ?utm_source=...
+# ─────────────────────────────────────────────────────────────────
+REFERRAL_LOG = os.path.join(os.path.dirname(__file__), ".referral_log.jsonl")
+
+
+@app.before_request
+def _track_referral():
+    """랜딩 시 referrer / ref / utm_source 추적 → 쿠키 + JSONL log."""
+    if request.path.startswith(("/static/", "/api/", "/og/")):
+        return  # 정적·API는 무시
+    ref = (
+        request.args.get("ref")
+        or request.args.get("utm_source")
+        or request.cookies.get("_ref")
+    )
+    if ref:
+        g._set_ref = ref[:64]
+    # 로그는 첫 방문만 (cookie 없을 때)
+    if request.args.get("ref") or request.args.get("utm_source"):
+        try:
+            import json as _json
+            entry = {
+                "ts": datetime.utcnow().isoformat(),
+                "path": request.path,
+                "ref": (request.args.get("ref") or request.args.get("utm_source"))[:64],
+                "utm_medium": request.args.get("utm_medium", "")[:32],
+                "utm_campaign": request.args.get("utm_campaign", "")[:64],
+                "referer": request.headers.get("Referer", "")[:200],
+                "ua": request.headers.get("User-Agent", "")[:200],
+            }
+            with open(REFERRAL_LOG, "a", encoding="utf-8") as f:
+                f.write(_json.dumps(entry, ensure_ascii=False) + "\n")
+        except Exception:
+            pass
+
+
+@app.after_request
+def _set_ref_cookie(resp):
+    """referral 30일 쿠키 설정."""
+    ref = getattr(g, "_set_ref", None)
+    if ref:
+        resp.set_cookie("_ref", ref, max_age=30 * 86400, samesite="Lax")
+    return resp
+
+
+# ─────────────────────────────────────────────────────────────────
+# Email capture — newsletter / Pro 알림용
+# /api/email-capture: POST {email, source}
+# ─────────────────────────────────────────────────────────────────
+EMAIL_LOG = os.path.join(os.path.dirname(__file__), ".email_capture.jsonl")
+
+
+@app.route("/api/email-capture", methods=["POST", "OPTIONS"])
+def email_capture():
+    if request.method == "OPTIONS":
+        return ("", 204)
+    data = request.get_json(silent=True) or request.form.to_dict()
+    email = (data.get("email") or "").strip().lower()
+    source = (data.get("source") or "site")[:32]
+    if "@" not in email or "." not in email or len(email) > 120:
+        return jsonify({"ok": False, "error": "invalid_email"}), 400
+    try:
+        import json as _json
+        entry = {
+            "ts": datetime.utcnow().isoformat(),
+            "email": email,
+            "source": source,
+            "ref": request.cookies.get("_ref", ""),
+            "ua": request.headers.get("User-Agent", "")[:160],
+        }
+        with open(EMAIL_LOG, "a", encoding="utf-8") as f:
+            f.write(_json.dumps(entry, ensure_ascii=False) + "\n")
+    except Exception as e:
+        return jsonify({"ok": False, "error": "log_failed", "msg": str(e)[:60]}), 500
+    return jsonify({"ok": True, "msg": "subscribed"})
+
+
+# ─────────────────────────────────────────────────────────────────
+# Cross-promotion API — 3사이트 가족 노출
+# 모든 사이트에서 동일 JSON 호출해 footer cross-promote 가능
+# ─────────────────────────────────────────────────────────────────
+@app.route("/api/family", methods=["GET", "OPTIONS"])
+def family_sites():
+    if request.method == "OPTIONS":
+        return ("", 204)
+    sites = [
+        {
+            "key": "tarofortune", "kr_name": "사주명리 풀이",
+            "en_name": "Saju Astrology",
+            "url": "https://tarofortune.pythonanywhere.com",
+            "desc_kr": "60갑자 사주 풀이 무료 — 일주·오행·십신·일진",
+            "desc_en": "Korean four-pillars astrology, free, EN+KR",
+            "emoji": "🔮",
+        },
+        {
+            "key": "currency-map", "kr_name": "경기지역화폐 가맹점 지도",
+            "en_name": "Gyeonggi Currency Map",
+            "url": "https://gyeonggi-currency-map.web.app",
+            "desc_kr": "31개 시·군 경기페이 가맹점 통합 지도",
+            "desc_en": "31-city local currency merchant map (Korea)",
+            "emoji": "🗺",
+        },
+        {
+            "key": "geoinfomatic", "kr_name": "생활권 접근성 분석",
+            "en_name": "Living Zone Accessibility",
+            "url": "https://geoinfomatic.pythonanywhere.com",
+            "desc_kr": "이사·임장 도보 30분 생활권 점수",
+            "desc_en": "Isochrone neighborhood analyzer (Korea)",
+            "emoji": "🏘",
+        },
+    ]
+    return jsonify({"sites": sites, "self_key": "tarofortune"})
+
+
+# ─────────────────────────────────────────────────────────────────
+# Analytics aggregator — 외부에서 일일 KPI 조회용 (CRON_SECRET 인증)
+# ─────────────────────────────────────────────────────────────────
+@app.route("/api/analytics/daily", methods=["GET"])
+def analytics_daily():
+    """일일 referral·email capture KPI. CRON_SECRET 헤더 필요."""
+    if request.headers.get("X-Cron-Secret") != CRON_SECRET or not CRON_SECRET:
+        return jsonify({"ok": False, "error": "auth"}), 403
+    import json as _json
+    today = date.today().isoformat()
+    out = {"date": today, "referral_count": 0, "email_count": 0,
+           "by_ref": {}, "by_email_source": {}}
+    try:
+        if os.path.exists(REFERRAL_LOG):
+            with open(REFERRAL_LOG, encoding="utf-8") as f:
+                for line in f:
+                    try:
+                        e = _json.loads(line)
+                        if not e["ts"].startswith(today):
+                            continue
+                        out["referral_count"] += 1
+                        ref = e.get("ref", "?")
+                        out["by_ref"][ref] = out["by_ref"].get(ref, 0) + 1
+                    except Exception:
+                        pass
+    except Exception:
+        pass
+    try:
+        if os.path.exists(EMAIL_LOG):
+            with open(EMAIL_LOG, encoding="utf-8") as f:
+                for line in f:
+                    try:
+                        e = _json.loads(line)
+                        if not e["ts"].startswith(today):
+                            continue
+                        out["email_count"] += 1
+                        src = e.get("source", "?")
+                        out["by_email_source"][src] = out["by_email_source"].get(src, 0) + 1
+                    except Exception:
+                        pass
+    except Exception:
+        pass
+    return jsonify({"ok": True, **out})
+
+
 @app.route("/api/<path:any>", methods=["OPTIONS"])
 def _cors_preflight(any):
     return ("", 204)

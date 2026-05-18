@@ -10,7 +10,8 @@ name: multi-site-bot
 
 on:
   schedule:
-    - cron: '0 16 * * *'   # UTC 16:00 = KST 01:00
+    - cron: '0 16 * * *'   # 매일 UTC 16:00 = KST 01:00: 봇 게시 + KPI 수집
+    - cron: '0 14 * * 0'   # 매주 일요일 UTC 14:00 = KST 23:00: 자동 콘텐츠 생성
   workflow_dispatch:
     inputs:
       force_site:
@@ -21,6 +22,11 @@ on:
         default: ''
       dry_run:
         description: '드라이런 (게시 안 함)'
+        required: false
+        type: boolean
+        default: false
+      run_content_gen:
+        description: '자동 콘텐츠 생성 강제 실행'
         required: false
         type: boolean
         default: false
@@ -78,14 +84,41 @@ jobs:
             python -X utf8 run_all_bots.py
           fi
 
-      - name: Commit updated state files
+      - name: Collect daily KPIs
+        if: github.event.inputs.dry_run != 'true'
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          MASTODON_INSTANCE: ${{ secrets.MASTODON_INSTANCE }}
+          LEMMY_INSTANCE: ${{ secrets.LEMMY_INSTANCE }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -f "./marketing/shared/analytics_collector.py" ]; then
+            python -X utf8 ./marketing/shared/analytics_collector.py || echo "KPI collection failed (non-fatal)"
+          fi
+
+      - name: Generate new content (weekly only)
+        if: |
+          github.event.inputs.run_content_gen == 'true' ||
+          (github.event_name == 'schedule' && contains(github.event.schedule, '0 14 * * 0'))
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -n "$ANTHROPIC_API_KEY" ] && [ -f "./marketing/shared/auto_content_generator.py" ]; then
+            python -X utf8 ./marketing/shared/auto_content_generator.py || echo "content gen failed (non-fatal)"
+          else
+            echo "ANTHROPIC_API_KEY not set or generator missing — skipping"
+          fi
+
+      - name: Commit updated state files + new content
         if: github.event.inputs.dry_run != 'true'
         run: |
           git config user.name "multi-site-bot"
           git config user.email "bot@users.noreply.github.com"
           git add -A .lemmy_state.json .mastodon_state.json .devto_state.json \
-                    marketing/shared/state 2>/dev/null || true
-          git diff --staged --quiet || git commit -m "chore(bot): update state files [skip ci]"
+                    .referral_log.jsonl .email_capture.jsonl \
+                    marketing/shared/state \
+                    marketing/shared/content_pools 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "chore(bot): state + KPI + content [skip ci]"
           git push || echo "Nothing to push or push failed (continuing)"
 
       - name: Summary
@@ -95,4 +128,13 @@ jobs:
           echo "- Trigger: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
           echo "- Force site: ${{ github.event.inputs.force_site || '(auto rotate)' }}" >> $GITHUB_STEP_SUMMARY
           echo "- Dry-run: ${{ github.event.inputs.dry_run || 'false' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Content gen: ${{ github.event.inputs.run_content_gen || 'auto' }}" >> $GITHUB_STEP_SUMMARY
           echo "- Time: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_STEP_SUMMARY
+          if [ -f "./marketing/shared/state/daily_kpi/_latest.json" ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Latest KPI snapshot" >> $GITHUB_STEP_SUMMARY
+            echo '```json' >> $GITHUB_STEP_SUMMARY
+            head -c 2000 ./marketing/shared/state/daily_kpi/_latest.json >> $GITHUB_STEP_SUMMARY
+            echo '' >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi

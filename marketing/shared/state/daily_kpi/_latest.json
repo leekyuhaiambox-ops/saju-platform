@@ -1,0 +1,171 @@
+{
+  "collected_at": "2026-05-18T22:23:47.320974+00:00",
+  "date": "2026-05-19",
+  "tarofortune": {
+    "_error": "CRON_SECRET env missing — set on PA WSGI"
+  },
+  "mastodon": {
+    "followers": 0,
+    "total_statuses": 9,
+    "recent_count": 9,
+    "total_favs": 0,
+    "total_boosts": 0,
+    "total_replies": 0,
+    "top_toot": {
+      "url": "https://mastodon.social/@tarosaju/116597874022729269",
+      "favs": 0,
+      "boosts": 0,
+      "snippet": "<p>이사 결정 전 동네 점수 매기는 무료 도구.</p><p>도보 또는 대중교통 모드로 10~45분 내 도달 가능한 학교·병원·마트·공원·헬스장 등 8종 시설을 자동 분석해 100점 만점 종합 점수 + AI 한 줄 요약.</p><p>매물·광고 0개. 호갱노노에 없는 환승 0/1/2회 분"
+    }
+  },
+  "lemmy": {
+    "post_count": 7,
+    "total_score": 0,
+    "total_comments": 0,
+    "recent_posts": [
+      {
+        "url": "https://lemmy.world/post/47037760",
+        "title": "I built a free Saju (Korean four-pillars) astrology calculator with EN + KR interpretations",
+        "score": 1,
+        "comments": 0,
+        "community": "astrology",
+        "published": "2026-05-18"
+      },
+      {
+        "url": "https://lemmy.world/post/47037399",
+        "title": "Built an isochrone neighborhood analyzer for South Korea (no real-estate listings)",
+        "score": 1,
+        "comments": 0,
+        "community": "map_enthusiasts",
+        "published": "2026-05-18"
+      },
+      {
+        "url": "https://lemmy.world/post/47037372",
+        "title": "Built an interactive map for Gyeonggi local currency merchants (Korea, 31 cities)",
+        "score": 3,
+        "comments": 0,
+        "community": "osmand",
+        "published": "2026-05-18"
+      },
+      {
+        "url": "https://lemmy.world/post/46994809",
+        "title": "BaZi/Saju timing analysis (Daewoon, Sewoon, Wolwoon, Iljin)",
+        "score": 1,
+        "comments": 0,
+        "community": "astrology",
+        "published": "2026-05-17"
+      },
+      {
+        "url": "https://lemmy.world/post/46946198",
+        "title": "Saju compatibility — how it actually works (not what you see on TikTok)",
+        "score": 1,
+        "comments": 0,
+        "community": "astrology",
+        "published": "2026-05-16"
+      },
+      {
+        "url": "https://lemmy.world/post/46936197",
+        "title": "Day-pillar archetypes feel like 'sun signs but with 60 instead of 12'",
+        "score": -5,
+        "comments": 0,
+        "community": "astrology",
+        "published": "2026-05-16"
+      },
+      {
+        "url": "https://lemmy.world/post/46720877",
+        "title": "Day Pillar quick guide: Ren/Gui (Water) Day Masters",
+        "score": -2,
+        "comments": 0,
+        "community": "astrology",
+        "published": "2026-05-11"
+      }
+    ]
+  },
+  "devto": {
+    "article_count": 3,
+    "total_reactions": 0,
+    "total_comments": 0,
+    "total_reading_time": 4,
+    "recent": [
+      {
+        "title": "I Built a Free Korean Astrology Site — Tech Stack and Lessons",
+        "url": "https://dev.to/tarofortune/i-built-a-free-korean-astrology-site-tech-stack-and-lessons-1f4m",
+        "reactions": 0,
+        "comments": 0,
+        "published": "2026-05-16"
+      },
+      {
+        "title": "Day Master Theory: Why 60 Personality Archetypes Beat 12 Sun Signs",
+        "url": "https://dev.to/tarofortune/day-master-theory-why-60-personality-archetypes-beat-12-sun-signs-29g0",
+        "reactions": 0,
+        "comments": 0,
+        "published": "2026-05-16"
+      },
+      {
+        "title": "Building a Saju (Korean Astrology) Calculator from Scratch in Python",
+        "url": "https://dev.to/tarofortune/building-a-saju-korean-astrology-calculator-from-scratch-in-python-3cpc",
+        "reactions": 0,
+        "comments": 0,
+        "published": "2026-05-16"
+      }
+    ]
+  },
+  "github_actions": {
+    "total": 7,
+    "recent": [
+      {
+        "name": "multi-site-bot",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-05-18T21:52:21Z",
+        "html_url": "https://github.com/leekyuhaiambox-ops/saju-platform/actions/runs/26062630287"
+      },
+      {
+        "name": "Daily Bot — Auto-post to Lemmy / Mastodon / Dev.to + IndexNow",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "created_at": "2026-05-18T20:54:12Z",
+        "html_url": "https://github.com/leekyuhaiambox-ops/saju-platform/actions/runs/26059891017"
+      },
+      {
+        "name": "Daily Bot — Auto-post to Lemmy / Mastodon / Dev.to + IndexNow",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-05-18T12:28:24Z",
+        "html_url": "https://github.com/leekyuhaiambox-ops/saju-platform/actions/runs/26033475701"
+      },
+      {
+        "name": "Daily Bot — Auto-post to Lemmy / Mastodon / Dev.to + IndexNow",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-05-17T19:56:02Z",
+        "html_url": "https://github.com/leekyuhaiambox-ops/saju-platform/actions/runs/26001106780"
+      },
+      {
+        "name": "Daily Bot — Auto-post to Lemmy / Mastodon / Dev.to + IndexNow",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-05-16T19:48:21Z",
+        "html_url": "https://github.com/leekyuhaiambox-ops/saju-platform/actions/runs/25971254004"
+      },
+      {
+        "name": "Daily Bot — Auto-post to Lemmy / Mastodon / Dev.to + IndexNow",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-05-16T12:16:55Z",
+        "html_url": "https://github.com/leekyuhaiambox-ops/saju-platform/actions/runs/25961705144"
+      },
+      {
+        "name": "Daily Bot — Auto-post to Lemmy / Mastodon / Dev.to + IndexNow",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-05-16T12:15:22Z",
+        "html_url": "https://github.com/leekyuhaiambox-ops/saju-platform/actions/runs/25961676448"
+      }
+    ]
+  },
+  "indexnow": {
+    "cumulative_urls": 0,
+    "last_submission": null
+  }
+}

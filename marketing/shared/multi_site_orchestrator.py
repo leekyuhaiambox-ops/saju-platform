@@ -255,20 +255,34 @@ def post_to_devto(site: Site, post: dict, dry_run: bool = False) -> bool:
 # CHANNEL-SPECIFIC FORMATTERS
 # ---------------------------------------------------------------------------
 
+def _tag_url(base_url: str, channel: str) -> str:
+    """게시 채널을 referral 파라미터로 태깅 → /api/analytics/daily 에서 추적."""
+    sep = "&" if "?" in base_url else "?"
+    return (f"{base_url.rstrip('/')}{sep}ref={channel}"
+            f"&utm_source={channel}&utm_medium=social&utm_campaign=multi-site-bot")
+
+
 def _format_mastodon(site: Site, post: dict) -> str:
     tags = " ".join(f"#{t}" for t in post.get("tags", site.primary_tags))
+    tagged_url = _tag_url(site.url, "mastodon")
     body = post["body"]
-    if site.url not in body:
-        body += f"\n\n{site.url}"
+    # 본문에 site.url 있으면 tagged_url로 치환
+    if site.url in body:
+        body = body.replace(site.url, tagged_url, 1)
+    else:
+        body += f"\n\n{tagged_url}"
     if tags not in body:
         body += f"\n\n{tags}"
     return body[:500]  # Mastodon 기본 500자
 
 
 def _format_lemmy(site: Site, post: dict) -> str:
+    tagged_url = _tag_url(site.url, "lemmy")
     body = post["body"]
-    if site.url not in body:
-        body += f"\n\n**Try it:** {site.url}"
+    if site.url in body:
+        body = body.replace(site.url, tagged_url, 1)
+    else:
+        body += f"\n\n**Try it:** {tagged_url}"
     return body
 
 
@@ -277,9 +291,12 @@ def _format_devto(site: Site, post: dict) -> str:
     front_matter = (
         f"---\ntitle: {post['title']}\npublished: true\ntags: {', '.join(tags)}\n---\n\n"
     )
+    tagged_url = _tag_url(site.url, "devto")
     body = post["body"]
-    if site.url not in body:
-        body += f"\n\n**Live demo:** {site.url}\n"
+    if site.url in body:
+        body = body.replace(site.url, tagged_url, 1)
+    else:
+        body += f"\n\n**Live demo:** {tagged_url}\n"
     return front_matter + body
 
 

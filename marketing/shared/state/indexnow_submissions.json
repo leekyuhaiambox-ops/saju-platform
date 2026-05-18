@@ -1,0 +1,13 @@
+{
+  "last_submission": "2026-05-18T22:00:00Z",
+  "counts": {
+    "tarofortune.pythonanywhere.com": 202,
+    "gyeonggi-currency-map.web.app": 15,
+    "geoinfomatic.pythonanywhere.com": 23
+  },
+  "history": [
+    {"ts": "2026-05-18T22:00:00Z", "host": "tarofortune.pythonanywhere.com", "count": 202},
+    {"ts": "2026-05-18T22:00:00Z", "host": "gyeonggi-currency-map.web.app", "count": 15},
+    {"ts": "2026-05-18T22:00:00Z", "host": "geoinfomatic.pythonanywhere.com", "count": 23}
+  ]
+}
