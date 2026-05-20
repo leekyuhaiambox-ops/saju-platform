@@ -10,8 +10,9 @@ name: multi-site-bot
 
 on:
   schedule:
-    - cron: '0 16 * * *'   # 매일 UTC 16:00 = KST 01:00: 봇 게시 + KPI 수집
-    - cron: '0 14 * * 0'   # 매주 일요일 UTC 14:00 = KST 23:00: 자동 콘텐츠 생성
+    # 매일 UTC 16:00 (KST 01:00) — 봇 게시 + KPI 수집 + 자동 콘텐츠 생성 한 번에
+    # 콘텐츠 생성 비용: OpenAI gpt-4o-mini 기준 약 ₩440/월
+    - cron: '0 16 * * *'
   workflow_dispatch:
     inputs:
       force_site:
@@ -96,10 +97,10 @@ jobs:
             python -X utf8 ./marketing/shared/analytics_collector.py || echo "KPI collection failed (non-fatal)"
           fi
 
-      - name: Generate new content (weekly only)
+      - name: Generate new content (daily)
         if: |
-          github.event.inputs.run_content_gen == 'true' ||
-          (github.event_name == 'schedule' && contains(github.event.schedule, '0 14 * * 0'))
+          github.event.inputs.dry_run != 'true' &&
+          (github.event_name == 'schedule' || github.event.inputs.run_content_gen == 'true')
         env:
           # 둘 중 하나만 박으면 작동 (OpenAI 우선, fallback Anthropic)
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -110,6 +111,7 @@ jobs:
             exit 0
           fi
           if [ -f "./marketing/shared/auto_content_generator.py" ]; then
+            # 매일 모든 사이트 × 영문+한국어 = 6개 콘텐츠/일 자동 생성
             python -X utf8 ./marketing/shared/auto_content_generator.py || echo "content gen failed (non-fatal)"
           fi
 

@@ -264,8 +264,13 @@ def generate_for_site(site_key: str, lang: str = "en", provider: str = "openai")
     return item
 
 
-def append_to_pool(site_key: str, item: dict) -> bool:
-    """content_pools/<site>.json에 추가."""
+def append_to_pool(site_key: str, item: dict, max_size: int = 60) -> bool:
+    """content_pools/<site>.json에 추가. max_size 초과 시 가장 오래된 항목 제거.
+
+    매일 6개씩 누적되면 한 달에 180개까지 부풀 수 있음.
+    max_size=60으로 자동 정리 → 약 10일치 풀 유지 (한국어 30 + 영문 30).
+    오래된 항목이 먼저 제거되므로 항상 신선한 콘텐츠만 회전.
+    """
     p = POOLS_DIR / f"{site_key}.json"
     pool = []
     if p.exists():
@@ -274,6 +279,16 @@ def append_to_pool(site_key: str, item: dict) -> bool:
         except Exception:
             pool = []
     pool.append(item)
+
+    # 같은 lang끼리 grouped 잘라내기 — 영문과 한국어 균형 유지
+    if len(pool) > max_size:
+        per_lang_limit = max_size // 2  # lang당 절반씩
+        kept_en = [p for p in pool if p.get("lang") == "en"][-per_lang_limit:]
+        kept_kr = [p for p in pool if p.get("lang") == "kr"][-per_lang_limit:]
+        # lang 미정 항목은 끝부분만
+        kept_other = [p for p in pool if p.get("lang") not in ("en", "kr")][-5:]
+        pool = kept_other + kept_en + kept_kr
+
     p.write_text(json.dumps(pool, ensure_ascii=False, indent=2), encoding="utf-8")
     return True
 
