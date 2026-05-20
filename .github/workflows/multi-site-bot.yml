@@ -101,12 +101,16 @@ jobs:
           github.event.inputs.run_content_gen == 'true' ||
           (github.event_name == 'schedule' && contains(github.event.schedule, '0 14 * * 0'))
         env:
+          # 둘 중 하나만 박으면 작동 (OpenAI 우선, fallback Anthropic)
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          if [ -n "$ANTHROPIC_API_KEY" ] && [ -f "./marketing/shared/auto_content_generator.py" ]; then
+          if [ -z "$OPENAI_API_KEY" ] && [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "Neither OPENAI_API_KEY nor ANTHROPIC_API_KEY set — skipping"
+            exit 0
+          fi
+          if [ -f "./marketing/shared/auto_content_generator.py" ]; then
             python -X utf8 ./marketing/shared/auto_content_generator.py || echo "content gen failed (non-fatal)"
-          else
-            echo "ANTHROPIC_API_KEY not set or generator missing — skipping"
           fi
 
       - name: Commit updated state files + new content
