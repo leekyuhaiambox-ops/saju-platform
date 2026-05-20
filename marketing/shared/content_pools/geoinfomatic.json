@@ -3,30 +3,82 @@
     "lang": "en",
     "title": "Built an isochrone-based neighborhood analyzer for Korea (no real-estate listings)",
     "body": "Most real-estate sites in Korea push listings. I wanted the opposite: a pure neighborhood analyzer without listings or ads pushing properties.\n\nWhat it does:\n- Pick any address in South Korea\n- Choose walk or transit mode\n- Slider: 10 / 20 / 30 / 45 min radius\n- See subway stations + 8 facility types (school, hospital, mart, park, gym, pharmacy, library, cafe) reachable inside that isochrone\n- AI summary in natural language\n- 100-point composite score\n- Transfer-count breakdown (0/1/2 transfers) for transit mode\n\nFreemium: 5 free runs/day, 9,900 KRW/month Pro for unlimited.\n\nDemo: https://geoinfomatic.pythonanywhere.com/\n\nStack: Flask + Leaflet + OSRM (walking graph) + public transit data + custom isochrone overlay.",
-    "tags": ["gis", "flask", "leaflet", "urbanplanning", "showdev"]
+    "tags": [
+      "gis",
+      "flask",
+      "leaflet",
+      "urbanplanning",
+      "showdev"
+    ]
   },
   {
     "lang": "en",
     "title": "Why I built a real-estate tool with zero real-estate listings",
     "body": "Every property site in Korea (Hogang-no-no, Zigbang, Dabang) shows the same listings with the same agents.\n\nWhat people actually need when moving:\n- How far is the subway? (door to platform)\n- Can my kid walk to school?\n- Is there a mart within 10 min on foot?\n- How long to my workplace, with transfers?\n\nThat's what I built: https://geoinfomatic.pythonanywhere.com/\n\nNo listings. No agents. Just an honest accessibility map.\n\nFunded by 5 free analyses/day + 9,900 KRW Pro tier. Built solo with Flask + Leaflet.",
-    "tags": ["webdev", "civictech", "leaflet", "showdev"]
+    "tags": [
+      "webdev",
+      "civictech",
+      "leaflet",
+      "showdev"
+    ]
   },
   {
     "lang": "en",
     "title": "Computing isochrones on a budget: open data + Leaflet polygons",
     "body": "I needed to draw 10/20/30/45-minute walking & transit reachability polygons over Korean cities without paying for a routing API.\n\nWhat I did:\n- Walking: pre-computed OSRM mesh + Voronoi diagram per city\n- Transit: graph traversal over open subway + bus data, with transfer penalties\n- Rendering: Leaflet polygon overlays with stroke = travel-time contour\n- Caching: server-side LRU keyed on (lat, lng, mode, max_min)\n\nResult: sub-second analyses on Flask + a 2GB PythonAnywhere tier.\n\nLive demo: https://geoinfomatic.pythonanywhere.com/",
-    "tags": ["gis", "leaflet", "flask", "algorithms"]
+    "tags": [
+      "gis",
+      "leaflet",
+      "flask",
+      "algorithms"
+    ]
   },
   {
     "lang": "kr",
     "title": "이사 전에 동네 점수 매기는 무료 도구 — 매물·광고 없는 순수 분석",
     "body": "호갱노노·직방 다 매물이 메인이라 객관적인 동네 분석이 어렵잖아요.\n\n매물 없이 도보·대중교통 기준 10~45분 내 도달 가능한 시설만 분석해주는 도구 만들었습니다.\n\n분석 시설 8종: 지하철·학교·병원·마트·공원·헬스장·약국·도서관·카페\n\n- 도보 vs 대중교통 모드\n- 환승 0회/1회/2회 분리 결과\n- 100점 만점 종합 점수\n- AI 요약 (\"이 동네는 학군지 강점, 마트 접근성 평균 미만\")\n- 역별 커뮤니티 댓글\n\n일 5회 무료, 그 이상은 월 9,900원 Pro. 임장 시즌에만 결제 권장.\n\n링크: https://geoinfomatic.pythonanywhere.com/",
-    "tags": ["생활권", "이사", "임장", "부동산", "학군"]
+    "tags": [
+      "생활권",
+      "이사",
+      "임장",
+      "부동산",
+      "학군"
+    ]
   },
   {
     "lang": "kr",
     "title": "학군지 도보 거리 분석 — 학교·학원·도서관 한 번에",
     "body": "자녀 학군 보고 이사 결정할 때, 학교·학원·도서관 도보 거리를 일일이 카카오맵에서 찍어보는 거 너무 번거롭잖아요.\n\n주소 한 번 입력하면 도보 30분 내 모든 교육 시설이 지도에 표시되고 점수까지 매겨주는 도구:\n\nhttps://geoinfomatic.pythonanywhere.com/\n\n분석할 시설을 학교+학원+도서관으로 켜고, 도보 모드 + 30분으로 돌리면 한 번에 결과. \n\n일 5회 무료고 매물 광고 0개입니다.",
-    "tags": ["학군", "초등학군", "이사", "학원가", "생활권"]
+    "tags": [
+      "학군",
+      "초등학군",
+      "이사",
+      "학원가",
+      "생활권"
+    ]
+  },
+  {
+    "lang": "en",
+    "title": "Discovering Neighborhoods Through Isochrones and AI Insights",
+    "body": "As I explored the different neighborhoods in Korea using my isochrone analyzer, I realized just how much access to nearby facilities can impact your daily life. The 100-point score we provide is more than just numbers; it's a reflection of convenience and community. It's fascinating to see how my tech stack, built on open data and Leaflet, can offer such valuable insights. Dive into your neighborhood at https://geoinfomatic.pythonanywhere.com! #NeighborhoodAnalysis #Isochrones #KoreanTech",
+    "tags": [
+      "Neighborhoods",
+      "Isochrones",
+      "AI",
+      "TechForGood",
+      "Korea"
+    ]
+  },
+  {
+    "lang": "kr",
+    "title": "내가 선택한 동네의 매력, 몇 분 거리일까?",
+    "body": "요즘 걷는 걸 좋아하게 됐는데, Living Zone Accessibility 덕분에 동네를 탐험하는 재미가 배가 됐어요. 10~45분 거리 내 시설들을 AI가 분석해주는 게 정말 유용해요. 요즘엔 이 사이트를 통해 숨은 보석 같은 카페와 공원들을 발견하고, 친구들에게 추천하고 있답니다. 자세한 내용은 https://geoinfomatic.pythonanywhere.com에서 확인해보세요! #동네탐험 #소소한행복 #AI분석 #주변시설 #걷기좋은곳",
+    "tags": [
+      "동네탐험",
+      "소소한행복",
+      "AI분석",
+      "주변시설",
+      "걷기좋은곳"
+    ]
   }
 ]

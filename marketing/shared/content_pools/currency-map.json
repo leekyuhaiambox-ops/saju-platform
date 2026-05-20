@@ -3,30 +3,81 @@
     "lang": "en",
     "title": "Built an interactive map for Gyeonggi Province local currency merchants (31 cities)",
     "body": "I built an interactive map (React + Vite + Leaflet, Firebase Hosting) that shows local currency merchant locations across Gyeonggi Province in South Korea.\n\nWhat makes it useful:\n- 31 cities unified (each city used to have its own page with no map)\n- Business-type chip filter (restaurants, cafes, convenience, academies, salons...)\n- \"Open now\" real-time filter — only shows merchants currently open\n- PWA installable — no app store, just add to home screen\n- KakaoTalk share with OG card preview\n\nBuilt solo over a few weeks. Source data from official Gyeonggi Province open API.\n\nLive: https://gyeonggi-currency-map.web.app/",
-    "tags": ["reactjs", "leaflet", "pwa", "openstreetmap", "showdev"]
+    "tags": [
+      "reactjs",
+      "leaflet",
+      "pwa",
+      "openstreetmap",
+      "showdev"
+    ]
   },
   {
     "lang": "en",
     "title": "PWA with React + Leaflet: lessons from a 31-city map app",
     "body": "Notes from shipping a real-world PWA in Korea:\n\n1. Vite SSG is worth it. SPAs lose Korean SEO because Naver's crawler doesn't fully render JS.\n2. Leaflet > Mapbox for cost-sensitive projects. Free OSM tiles + zero cost.\n3. Firebase Hosting rewrites let you have deep URLs (/city/suwon) without a backend.\n4. KakaoTalk share is non-negotiable in Korea — 70%+ of social traffic.\n5. PWA install banner: don't auto-prompt, let the user discover.\n\nProject: https://gyeonggi-currency-map.web.app/",
-    "tags": ["pwa", "reactjs", "webdev", "firebase"]
+    "tags": [
+      "pwa",
+      "reactjs",
+      "webdev",
+      "firebase"
+    ]
   },
   {
     "lang": "en",
     "title": "Korea local currency = 10% cashback. I made it findable.",
     "body": "Gyeonggi Province in Korea has a local currency (gyeonggi-pay) — load money, get 10% back. 14M residents are eligible.\n\nProblem: the official app and city sites are terrible. You can't easily find which restaurant near you accepts it.\n\nSolved with a single interactive map: https://gyeonggi-currency-map.web.app/\n\nNo backend, no server costs — Firebase Hosting + React + Leaflet + public API.\n\nSource code coming when I clean it up.",
-    "tags": ["showdev", "reactjs", "civictech", "leaflet"]
+    "tags": [
+      "showdev",
+      "reactjs",
+      "civictech",
+      "leaflet"
+    ]
   },
   {
     "lang": "kr",
     "title": "경기지역화폐 가맹점 31개 시·군 통합 지도 만들었어요",
     "body": "경기도 지역화폐 받아도 어디서 쓸지 몰라서 그냥 두던 분 많으시죠.\n\n각 시·군 공식 사이트는 따로따로 있고, 카카오맵엔 \"지역화폐\" 필터가 없어서 답답했는데, 한 지도에 31개 시·군을 다 통합한 PWA를 만들었습니다.\n\n특징:\n- 음식점·카페·미용실 업종별 칩 필터\n- \"영업중\" 필터로 지금 갈 수 있는 곳만\n- 앱 설치 없이 폰 홈 화면 추가 가능\n- 카카오톡 공유 시 가맹점 카드 미리보기\n\n링크: https://gyeonggi-currency-map.web.app/\n\n광고 없고 무료. 데이터는 경기도 공식 오픈API.",
-    "tags": ["경기지역화폐", "경기페이", "지역화폐", "가맹점", "지도"]
+    "tags": [
+      "경기지역화폐",
+      "경기페이",
+      "지역화폐",
+      "가맹점",
+      "지도"
+    ]
   },
   {
     "lang": "kr",
     "title": "성남·수원·용인 지역화폐 어디서 쓰지? 한 지도에서 다 보임",
     "body": "성남·수원·용인 등 경기도 31개 시·군 지역화폐 가맹점을 단일 지도에서 검색할 수 있는 사이트.\n\n핵심:\n- 도시 이동해도 같은 UI (성남에서 수원 출장 가도 동일)\n- 업종 필터 + 영업중 필터로 \"지금 갈 수 있는 곳\"만\n- 모바일에서 카카오톡으로 친구에게 가맹점 한 큐 공유\n\nhttps://gyeonggi-currency-map.web.app/",
-    "tags": ["성남지역화폐", "수원지역화폐", "용인지역화폐", "경기페이"]
+    "tags": [
+      "성남지역화폐",
+      "수원지역화폐",
+      "용인지역화폐",
+      "경기페이"
+    ]
+  },
+  {
+    "lang": "en",
+    "title": "Discover Local Gems with Real-Time Filters on My Map!",
+    "body": "As I built the Gyeonggi Currency Map, one feature that stands out is the real-time 'open now' filter. It’s fascinating to see how it changes user behavior—people can find local merchants in a snap! Leveraging Firebase for dynamic data updates was a rewarding experience. I hope this tool helps more folks support local businesses! Check it out: https://gyeonggi-currency-map.web.app #LocalBusiness #Korea #PWA #React #Mapping",
+    "tags": [
+      "LocalBusiness",
+      "Korea",
+      "PWA",
+      "React",
+      "Mapping"
+    ]
+  },
+  {
+    "lang": "kr",
+    "title": "지역화폐로 더 가까이, 소소한 발견의 기쁨!",
+    "body": "최근 경기지역화폐를 활용해 지도를 탐험하고 있는데, 숨겨진 가게들을 발견하는 재미가 쏠쏠하네요. 특히, '지금 열고 있는' 필터를 사용하면 언제 어디서든 편리하게 찾아갈 수 있어요. 나만의 소소한 가게를 찾아보세요! 😊 자세한 내용은 여기서 확인해 보세요: https://gyeonggi-currency-map.web.app #지역화폐 #경기지도 #소소한발견 #로컬가게 #지금열고있어요",
+    "tags": [
+      "지역화폐",
+      "경기지도",
+      "소소한발견",
+      "로컬가게",
+      "지금열고있어요"
+    ]
   }
 ]
