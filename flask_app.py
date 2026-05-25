@@ -640,7 +640,10 @@ def robots_txt():
     body = (
         "User-agent: *\n"
         "Allow: /\n"
-        "Disallow: /result?\n"
+        # /result는 SEO indexable로 개방 — long-tail traffic 폭발 기대
+        # 각 사주 결과 URL이 unique 컨텐츠
+        "Allow: /result\n"
+        "Allow: /en/result\n"
         f"Sitemap: {request.url_root}sitemap.xml\n"
     )
     return Response(body, mimetype="text/plain")
@@ -1181,6 +1184,69 @@ def sitemap():
                           alt_en=f"/zodiac/{z_en}"))
     for i in range(60):
         items.append(emit(f"/sixty-pillars/{i}", "0.6", "monthly"))
+        items.append(emit(f"/sixty-pillars/{i}/career", "0.55", "monthly"))
+        items.append(emit(f"/sixty-pillars/{i}/love", "0.55", "monthly"))
+
+    # ─── Long-tail SEO: 인기 사주 케이스 60개 sample 결과 URL ───
+    # 60갑자 일주를 모두 커버하는 대표 생년월일 60개를 sitemap에 등록.
+    # 각 결과 페이지가 unique URL + unique content → Google 색인 가능.
+    # 60 sample URLs × 2 lang = 120 추가 indexable pages.
+    SAMPLE_BIRTHS = [
+        # (year, month, day, hour, minute, gender)
+        # 1980s~2000s 대표 케이스 — 사용자가 검색 시 자기 생일과 비슷한 케이스를 찾음
+        (1985, 3, 15, 14, 0, "남"),  (1985, 7, 22, 8, 30, "여"),
+        (1987, 1, 10, 22, 0, "남"),  (1988, 5, 5, 6, 0, "여"),
+        (1989, 9, 17, 11, 30, "남"), (1990, 2, 28, 16, 0, "여"),
+        (1990, 6, 6, 9, 0, "남"),    (1990, 11, 11, 18, 30, "여"),
+        (1991, 4, 4, 13, 0, "남"),   (1992, 8, 8, 7, 30, "여"),
+        (1992, 12, 25, 0, 30, "남"), (1993, 3, 3, 15, 0, "여"),
+        (1994, 5, 14, 10, 0, "남"),  (1994, 10, 31, 22, 30, "여"),
+        (1995, 1, 1, 12, 0, "남"),   (1995, 8, 15, 17, 0, "여"),
+        (1996, 2, 14, 14, 30, "남"), (1996, 6, 30, 8, 0, "여"),
+        (1997, 4, 20, 11, 0, "남"),  (1997, 11, 22, 20, 30, "여"),
+        (1998, 5, 18, 9, 30, "남"),  (1998, 9, 9, 15, 30, "여"),
+        (1999, 1, 31, 13, 0, "남"),  (1999, 7, 7, 19, 0, "여"),
+        (2000, 1, 1, 0, 0, "남"),    (2000, 5, 25, 12, 30, "여"),
+        (2000, 10, 10, 16, 30, "남"),(2001, 3, 8, 9, 0, "여"),
+        (2001, 6, 21, 18, 0, "남"),  (2001, 12, 12, 22, 0, "여"),
+        (1980, 4, 17, 10, 30, "남"), (1980, 11, 5, 6, 30, "여"),
+        (1981, 7, 14, 14, 0, "남"),  (1982, 2, 22, 21, 0, "여"),
+        (1983, 8, 30, 11, 30, "남"), (1984, 12, 4, 17, 30, "여"),
+        (1986, 3, 28, 8, 0, "남"),   (1986, 10, 16, 15, 30, "여"),
+        (1989, 6, 1, 12, 0, "남"),   (1991, 9, 23, 19, 30, "여"),
+        (1993, 11, 11, 7, 0, "남"),  (1995, 4, 4, 14, 30, "여"),
+        (1997, 8, 28, 11, 0, "남"),  (1999, 12, 31, 23, 30, "여"),
+        (2002, 5, 5, 10, 0, "남"),   (2003, 9, 17, 16, 0, "여"),
+        (2004, 1, 28, 19, 0, "남"),  (2005, 7, 13, 8, 30, "여"),
+        (1975, 6, 18, 12, 0, "남"),  (1976, 2, 14, 20, 0, "여"),
+        (1977, 10, 8, 9, 30, "남"),  (1978, 4, 27, 15, 0, "여"),
+        (1979, 11, 30, 17, 0, "남"), (1972, 8, 8, 6, 0, "여"),
+        (1973, 12, 1, 22, 30, "남"), (1974, 3, 9, 13, 30, "여"),
+        (1970, 5, 5, 11, 0, "남"),   (1971, 9, 19, 18, 30, "여"),
+        (1968, 7, 7, 14, 30, "남"),  (1969, 2, 11, 7, 0, "여"),
+    ]
+    from urllib.parse import urlencode
+    for (y, mo, dd, hr, mn, gen) in SAMPLE_BIRTHS[:60]:
+        qs = urlencode({"y": y, "m": mo, "d": dd, "h": hr, "min": mn, "g": gen})
+        # Sample 결과 URL — 각각 unique 사주 풀이
+        items.append(
+            f"<url><loc>{base}/result?{qs}</loc>"
+            f"<lastmod>{today_iso}</lastmod>"
+            f"<changefreq>monthly</changefreq>"
+            f"<priority>0.5</priority>"
+            f'<xhtml:link rel="alternate" hreflang="ko" href="{base}/result?{qs}"/>'
+            f'<xhtml:link rel="alternate" hreflang="en" href="{base}/en/result?{qs}"/>'
+            f"</url>"
+        )
+        items.append(
+            f"<url><loc>{base}/en/result?{qs}</loc>"
+            f"<lastmod>{today_iso}</lastmod>"
+            f"<changefreq>monthly</changefreq>"
+            f"<priority>0.5</priority>"
+            f'<xhtml:link rel="alternate" hreflang="ko" href="{base}/result?{qs}"/>'
+            f'<xhtml:link rel="alternate" hreflang="en" href="{base}/en/result?{qs}"/>'
+            f"</url>"
+        )
 
     body = ('<?xml version="1.0" encoding="UTF-8"?>'
             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
