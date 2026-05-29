@@ -108,13 +108,26 @@ Site: {name_en}
 URL: {url}
 Context: {context}
 
+CRITICAL — proven high-score patterns (Lemmy +5/+6 received with these):
+- Lead with a CONCRETE NUMBER in first line (e.g., "31 cities", "14M residents", "10-45 min")
+- Bullet-point list of 3-5 features (not paragraphs)
+- Name SPECIFIC tech stack: "React + Vite + Leaflet + Firebase" not "modern web tech"
+- State the differentiator EXPLICITLY: "no real-estate listings", "no signup", "no backend"
+- Self-deprecating + factual tone: "I built", "solo", "freemium ad-supported"
+
+ANTI-PATTERNS (proven downvotes -2/-3 received with these):
+- Vague feelings ("It's fascinating", "rewarding experience")
+- Generic emojis as decoration
+- Corporate intros ("As I explored...", "I realized...")
+- Self-help language ("convenience and community")
+- Long abstract sentences without numbers
+
 Requirements:
 - Authentic, first-person, no corporate tone
 - 300-450 characters (Mastodon-safe length)
 - Mention the URL exactly once
-- Include 3-5 hashtags at the end
-- A specific angle/observation, NOT generic ad copy
-- Avoid clichés ("revolutionize", "game-changer", etc.)
+- Include 3-5 hashtags at the end (lowercase, no spaces)
+- A specific angle/observation/lesson, NOT generic ad copy
 - {lang_specific}
 
 Forbidden topics for this post (already covered, don't repeat):
@@ -123,8 +136,8 @@ Forbidden topics for this post (already covered, don't repeat):
 Output STRICTLY in JSON, no other text:
 {{
   "lang": "{lang}",
-  "title": "<short headline, 60-80 chars>",
-  "body": "<full post body with URL and hashtags>",
+  "title": "<short headline, 60-80 chars, leads with concrete claim or number>",
+  "body": "<full post body with URL and hashtags, starts with a specific number or claim>",
   "tags": ["tag1", "tag2", "tag3", "tag4", "tag5"]
 }}
 """

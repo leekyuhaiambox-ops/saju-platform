@@ -697,6 +697,13 @@ Policy: We welcome responsible disclosure. Please contact via email with proof-o
     return Response(body, mimetype="text/plain; charset=utf-8")
 
 
+# RSS feed는 line 868~의 기존 구현 사용 (/feed.xml + /en/feed.xml).
+# 추가 alias /rss.xml 만 제공 — 어그리게이터 호환성.
+@app.route("/rss.xml")
+def rss_alias():
+    return redirect(url_for("rss_feed"), code=301)
+
+
 # ─────────────────────────────────────────────────────────────────
 # IndexNow 키 파일 (Bing·Yandex·Naver 소유권 증명)
 # ─────────────────────────────────────────────────────────────────
