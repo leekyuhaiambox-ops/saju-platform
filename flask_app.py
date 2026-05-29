@@ -326,11 +326,31 @@ def result():
 
     try:
         name = (form.get("name") or "").strip()[:30]
-        gender = form.get("gender", "남" if not is_en else "M")
+        gender = form.get("gender", form.get("g", "남" if not is_en else "M"))
         birth_date_str = form.get("birth_date", "")
         birth_time_str = form.get("birth_time", "")
-        unknown_hour = form.get("unknown_hour") == "on"
+        unknown_hour = form.get("unknown_hour") == "on" or form.get("uh") == "1"
         is_lunar = False
+
+        # ─── BACKWARD COMPATIBLE: sitemap·OG URL (y/m/d/h/min) 도 지원 ───
+        # OG image URL과 sitemap의 60 sample URLs가 y/m/d 쓰기 때문에
+        # 결과 페이지가 indexable 되려면 두 포맷 모두 받아야 함.
+        if not birth_date_str:
+            y = form.get("y")
+            mo = form.get("m")
+            d = form.get("d")
+            if y and mo and d:
+                try:
+                    birth_date_str = f"{int(y):04d}-{int(mo):02d}-{int(d):02d}"
+                except (ValueError, TypeError):
+                    pass
+                h = form.get("h")
+                mi = form.get("min")
+                if h is not None and mi is not None:
+                    try:
+                        birth_time_str = f"{int(h):02d}:{int(mi):02d}"
+                    except (ValueError, TypeError):
+                        pass
 
         if not birth_date_str:
             return redirect(url_for("index"))

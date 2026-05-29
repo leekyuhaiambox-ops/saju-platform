@@ -58,6 +58,24 @@
       </p>
     </div>
     <p class="result-summary">{{ interp.summary_line }}</p>
+
+    {# ─── 즉시 viral 공유 hook — 결과 hero 안에 prominent하게 ─── #}
+    <div style="margin-top:20px;padding:16px;background:rgba(254,229,0,0.12);border:2px solid #fee500;border-radius:14px;text-align:center;">
+      <div style="font-size:13px;color:#fff;margin-bottom:10px;font-weight:600;">
+        {% if lang == 'en' %}🎁 Compare with friends — share this reading{% else %}🎁 친구·연인 일주랑 비교해보세요{% endif %}
+      </div>
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+        <button onclick="shareKakao()" style="background:#fee500;color:#3c1e1e;border:0;border-radius:24px;padding:10px 18px;font-size:14px;font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(254,229,0,0.4);">
+          {% if lang == 'en' %}KakaoTalk{% else %}💬 카카오톡으로 공유{% endif %}
+        </button>
+        <button onclick="navigator.share?navigator.share({title:document.title,url:location.href}):copyLink(this)" style="background:#fff;color:#3c1e1e;border:0;border-radius:24px;padding:10px 18px;font-size:14px;font-weight:800;cursor:pointer;">
+          {% if lang == 'en' %}📲 Share / Copy{% else %}📲 공유·링크복사{% endif %}
+        </button>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:rgba(255,255,255,0.7);">
+        {% if lang == 'en' %}60 archetypes — find out yours and your friend's{% else %}60갑자 중 친구는 몇 번째 일주일까?{% endif %}
+      </div>
+    </div>
   </div>
 </section>
 
