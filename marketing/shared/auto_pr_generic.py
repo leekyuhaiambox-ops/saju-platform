@@ -43,6 +43,158 @@ PRESETS = {
 Solo-built, freemium ad-supported. Happy to revise the section if a different placement is preferred.
 """,
     },
+
+    "mjhea0/awesome-flask": {
+        "section": "##",
+        "section_keywords": ["Open Source Projects", "Open-Source", "Showcase", "Projects", "Apps"],
+        "additions": [
+            "- [Saju Fortune](https://tarofortune.pythonanywhere.com) - Free Korean four-pillars (saju) astrology calculator with EN+KR interpretations. 60 day-pillar archetypes, five elements, ten gods, twelve life stages, daily luck, compatibility. Flask + Pillow for dynamic OG cards, no DB, deployed on PythonAnywhere free tier.",
+            "- [GeoInfomatic — Living Zone Accessibility](https://geoinfomatic.pythonanywhere.com) - Isochrone-based neighborhood accessibility analyzer for Korea. Walk or transit, 10-45 min radius, 8 facility types, AI summary, 100-point composite score. Flask + Leaflet + OSRM walking graph + custom transit graph.",
+        ],
+        "pr_title": "Add two production Flask apps: Saju Fortune + GeoInfomatic",
+        "pr_body": """Adds two real-world Flask applications running on the PythonAnywhere free tier.
+
+1. **Saju Fortune** — https://tarofortune.pythonanywhere.com
+   Korean four-pillars astrology calculator (EN+KR). Uses Meeus astronomical algorithms for solar-term boundary calculations. Dynamic OG card generation with Pillow. No database — pure computation.
+
+2. **GeoInfomatic — Living Zone Accessibility** — https://geoinfomatic.pythonanywhere.com
+   Isochrone-based neighborhood analyzer. Walking/transit isochrones drawn with Leaflet polygons. Custom Korean subway+bus graph traversal with transfer penalties. Freemium model.
+
+Both are solo-built and demonstrate what's possible on Flask + PA's free tier. Happy to revise placement.
+""",
+    },
+
+    "osmlab/awesome-openstreetmap": {
+        "section": "##",
+        "section_keywords": ["Map", "Application", "Showcase", "Projects", "Use Cases", "Examples"],
+        "additions": [
+            "- [Gyeonggi Currency Map](https://gyeonggi-currency-map.web.app) - PWA mapping local-currency merchant locations across 31 cities of Gyeonggi Province (South Korea, 14M residents). OSM tiles via Leaflet, public open data, real-time \"open now\" filter.",
+            "- [GeoInfomatic — Living Zone Accessibility](https://geoinfomatic.pythonanywhere.com) - Isochrone-based neighborhood accessibility analyzer for Korea. OSM-based walking graph (OSRM), isochrones rendered as Leaflet polygons, multi-facility analysis (school/hospital/mart/park/etc).",
+        ],
+        "pr_title": "Add two OSM-powered apps from Korea (currency map + isochrone analyzer)",
+        "pr_body": """Two real-world OSM consumers in production in South Korea:
+
+1. **Gyeonggi Currency Map** — https://gyeonggi-currency-map.web.app
+   31-city merchant search PWA over OSM tiles via Leaflet. Used by residents who get 6-10% cashback on top-ups but struggle to find participating merchants.
+
+2. **GeoInfomatic** — https://geoinfomatic.pythonanywhere.com
+   Walking isochrones generated from an OSRM walking-graph mesh, overlaid as Leaflet polygons. Multi-facility analysis (school, hospital, mart, park, gym, pharmacy, library, cafe) within reach.
+
+Both solo-built. Sharing because both are non-toy real-world OSM use cases. Happy to revise sections.
+""",
+    },
+
+    "etewiah/awesome-real-estate": {
+        "section": "##",
+        "section_keywords": ["Tools", "Apps", "Resources", "Useful", "Analytics"],
+        "additions": [
+            "- [GeoInfomatic — Living Zone Accessibility (Korea)](https://geoinfomatic.pythonanywhere.com) - Isochrone-based neighborhood accessibility analyzer for South Korea. Pick any address, see 10/20/30/45-min walking or transit reachability with 8 facility types overlaid. 100-point composite score with AI summary. No real-estate listings — pure accessibility analysis for moving / due-diligence decisions. Freemium.",
+        ],
+        "pr_title": "Add GeoInfomatic (Korean neighborhood accessibility analyzer, no listings)",
+        "pr_body": """Adds **GeoInfomatic** — a real-estate decision-support tool specifically built without property listings.
+
+- URL: https://geoinfomatic.pythonanywhere.com
+- Use case: moving / relocation / urban-planning / school-district comparison
+- Output: 100-point composite accessibility score + AI natural-language summary
+- Transit mode breaks results down by transfer count (0/1/2+) which most tools skip
+
+Solo-built. Freemium model (5 free analyses/day, $7/month Pro for unlimited + PDF reports). Open to feedback / different placement.
+""",
+    },
+
+    "sshuair/awesome-gis": {
+        "section": "##",
+        "section_keywords": ["Application", "Apps", "Web", "Showcase", "Examples", "Map", "Project"],
+        "additions": [
+            "- [Gyeonggi Currency Map](https://gyeonggi-currency-map.web.app) - PWA mapping merchants accepting Gyeonggi Province's municipal local-currency across 31 cities (Korea, 14M residents). OSM tiles via Leaflet, public open data, real-time \"open now\" filter, KakaoTalk share. React + Vite + Firebase Hosting.",
+            "- [GeoInfomatic — Living Zone Accessibility (Korea)](https://geoinfomatic.pythonanywhere.com) - Isochrone-based neighborhood accessibility analyzer. Walking/transit reachability with 8 facility types overlaid. Custom Korean subway+bus graph + OSRM walking mesh. Flask + Leaflet on PythonAnywhere free tier.",
+        ],
+        "pr_title": "Add two real-world GIS apps from Korea (currency map + isochrone analyzer)",
+        "pr_body": """Two production GIS web apps used in South Korea:
+
+1. **Gyeonggi Currency Map** — https://gyeonggi-currency-map.web.app
+   31-city merchant search PWA on Leaflet + OSM. Public open data (province API).
+
+2. **GeoInfomatic** — https://geoinfomatic.pythonanywhere.com
+   Isochrone-based accessibility analyzer with multi-facility overlay (school/hospital/mart/park/etc). Walking via OSRM mesh, transit via custom Korean graph.
+
+Both solo-developed and demonstrate practical GIS deployment on free-tier infrastructure. Happy to revise placement.
+""",
+    },
+
+    "johackim/awesome-indiehackers": {
+        "section": "##",
+        "section_keywords": ["Project", "Products", "Showcase", "Indie", "SaaS", "Startup", "Example", "Apps"],
+        "additions": [
+            "- [Saju Fortune](https://tarofortune.pythonanywhere.com) - Korean four-pillars astrology calculator (EN+KR). Ad-supported, no signup. Solo-built on Flask + PythonAnywhere free tier. ~700 daily organic visits.",
+            "- [Gyeonggi Currency Map](https://gyeonggi-currency-map.web.app) - 31-city local-currency merchant map PWA (Korea). Ad-supported. React + Firebase Hosting.",
+            "- [GeoInfomatic — Living Zone Accessibility](https://geoinfomatic.pythonanywhere.com) - Korean neighborhood isochrone analyzer. Freemium ($7/mo Pro). Flask + Leaflet.",
+        ],
+        "pr_title": "Add 3 solo-built Korean indie projects (saju + map + accessibility)",
+        "pr_body": """Three indie projects from a solo Korean dev, all running on free-tier infrastructure with ad-supported or freemium monetization:
+
+1. **Saju Fortune** — https://tarofortune.pythonanywhere.com
+2. **Gyeonggi Currency Map** — https://gyeonggi-currency-map.web.app
+3. **GeoInfomatic** — https://geoinfomatic.pythonanywhere.com
+
+All built solo, no investor money, demonstrating what's possible on PythonAnywhere + Firebase free tiers with Korean public open data. Happy to revise placement / section.
+""",
+    },
+
+    "xcomptek/awesome-saas-boilerplates": {
+        "section": "##",
+        "section_keywords": ["FastAPI", "Other"],  # Python framework section
+        "additions": [
+            "- [GeoInfomatic — Living Zone Accessibility](https://geoinfomatic.pythonanywhere.com) - Production Flask SaaS (Korean neighborhood isochrone analyzer). Freemium model: 5 free analyses/day, $7/month Pro for unlimited + PDF reports + multi-point comparison. Flask + Leaflet + Toss Payments. Solo-built on PythonAnywhere free tier.",
+        ],
+        "pr_title": "Add GeoInfomatic (production Flask freemium example)",
+        "pr_body": """Adds **GeoInfomatic** — a Flask-based bootstrapped SaaS in production.
+
+- URL: https://geoinfomatic.pythonanywhere.com
+- Model: Freemium (5 free/day, $7/mo Pro)
+- Stack: Flask + Leaflet on PythonAnywhere free tier, Toss Payments for Korean subscriptions
+
+Flask isn't FastAPI but Python SaaS — happy to revise placement (perhaps a Flask section, or Other).
+""",
+    },
+
+    "garimasingh128/awesome-python-projects": {
+        "section": "##",
+        "section_keywords": ["Web", "Application", "Project", "Apps", "App", "Productivity"],
+        "additions": [
+            "- [Saju Fortune](https://tarofortune.pythonanywhere.com) - Korean four-pillars (saju) astrology calculator. Flask + Pillow for dynamic OG cards, Meeus astronomical algorithms for solar-term boundary detection, no database. EN+KR. Solo-built, ad-supported, deployed on PythonAnywhere free tier.",
+            "- [GeoInfomatic — Living Zone Accessibility](https://geoinfomatic.pythonanywhere.com) - Isochrone-based Korean neighborhood analyzer. Walking/transit reachability, multi-facility overlay, AI summary. Flask + Leaflet + OSRM. Freemium model.",
+        ],
+        "pr_title": "Add two production Python (Flask) projects: Saju + GeoInfomatic",
+        "pr_body": """Two Flask-based projects in production:
+
+1. **Saju Fortune** — https://tarofortune.pythonanywhere.com
+   Korean astrology calculator. Meeus astronomical algorithms, Pillow OG cards, no DB.
+
+2. **GeoInfomatic** — https://geoinfomatic.pythonanywhere.com
+   Isochrone neighborhood analyzer. Flask + Leaflet + OSRM walking graph.
+
+Both solo-built on PythonAnywhere free tier. Happy to revise section placement.
+""",
+    },
+
+    "RunaCapital/awesome-oss-alternatives": {
+        "section": "##",
+        "section_keywords": ["Useful Links", "Startup List"],
+        "additions": [
+            "- [GeoInfomatic](https://geoinfomatic.pythonanywhere.com) — Korean isochrone-based neighborhood accessibility analyzer. Bootstrapped freemium alternative to commercial Walk Score / location intelligence tools.",
+        ],
+        "pr_title": "Add GeoInfomatic to Useful Links (bootstrapped accessibility analyzer)",
+        "pr_body": """Adds **GeoInfomatic** to the Useful Links section.
+
+- URL: https://geoinfomatic.pythonanywhere.com
+- Acts as a bootstrapped alternative to paid Walk Score / location intelligence APIs for the Korean market
+- 100% open data (OSM + Korean public transit)
+- Solo-built, freemium model ($7/mo Pro)
+
+Not a traditional startup — happy to revise placement.
+""",
+    },
 }
 
 
