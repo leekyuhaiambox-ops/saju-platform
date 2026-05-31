@@ -59,21 +59,25 @@
     </div>
     <p class="result-summary">{{ interp.summary_line }}</p>
 
-    {# ─── 즉시 viral 공유 hook — 결과 hero 안에 prominent하게 ─── #}
+    {# ─── 즉시 viral 공유 hook — 8개 채널 글로벌 ─── #}
     <div style="margin-top:20px;padding:16px;background:rgba(254,229,0,0.12);border:2px solid #fee500;border-radius:14px;text-align:center;">
       <div style="font-size:13px;color:#fff;margin-bottom:10px;font-weight:600;">
         {% if lang == 'en' %}🎁 Compare with friends — share this reading{% else %}🎁 친구·연인 일주랑 비교해보세요{% endif %}
       </div>
-      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
-        <button onclick="shareKakao()" style="background:#fee500;color:#3c1e1e;border:0;border-radius:24px;padding:10px 18px;font-size:14px;font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(254,229,0,0.4);">
-          {% if lang == 'en' %}KakaoTalk{% else %}💬 카카오톡으로 공유{% endif %}
-        </button>
-        <button onclick="navigator.share?navigator.share({title:document.title,url:location.href}):copyLink(this)" style="background:#fff;color:#3c1e1e;border:0;border-radius:24px;padding:10px 18px;font-size:14px;font-weight:800;cursor:pointer;">
-          {% if lang == 'en' %}📲 Share / Copy{% else %}📲 공유·링크복사{% endif %}
-        </button>
+      {% set share_url = request.url|urlencode %}
+      {% set share_title = (interp.day_pillar_name ~ ' Day Pillar — ' ~ interp.day_pillar_headline)|urlencode %}
+      <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">
+        <button onclick="shareKakao()" title="KakaoTalk" style="background:#fee500;color:#3c1e1e;border:0;border-radius:50%;width:44px;height:44px;font-size:18px;cursor:pointer;box-shadow:0 2px 8px rgba(254,229,0,0.4);">💬</button>
+        <a href="https://t.me/share/url?url={{ share_url }}&text={{ share_title }}" target="_blank" rel="noopener" title="Telegram" style="background:#0088cc;color:#fff;border:0;border-radius:50%;width:44px;height:44px;font-size:18px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;">✈</a>
+        <a href="https://api.whatsapp.com/send?text={{ share_title }}%20{{ share_url }}" target="_blank" rel="noopener" title="WhatsApp" style="background:#25d366;color:#fff;border:0;border-radius:50%;width:44px;height:44px;font-size:20px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;">📱</a>
+        <a href="https://social-plugins.line.me/lineit/share?url={{ share_url }}&text={{ share_title }}" target="_blank" rel="noopener" title="LINE" style="background:#06c755;color:#fff;border:0;border-radius:50%;width:44px;height:44px;font-size:18px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;">L</a>
+        <a href="https://twitter.com/intent/tweet?text={{ share_title }}&url={{ share_url }}" target="_blank" rel="noopener" title="X (Twitter)" style="background:#000;color:#fff;border:0;border-radius:50%;width:44px;height:44px;font-size:18px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;">𝕏</a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u={{ share_url }}" target="_blank" rel="noopener" title="Facebook" style="background:#1877f2;color:#fff;border:0;border-radius:50%;width:44px;height:44px;font-size:18px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;">f</a>
+        <a href="https://www.reddit.com/submit?url={{ share_url }}&title={{ share_title }}" target="_blank" rel="noopener" title="Reddit" style="background:#ff4500;color:#fff;border:0;border-radius:50%;width:44px;height:44px;font-size:18px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;">r</a>
+        <button onclick="navigator.share?navigator.share({title:document.title,url:location.href}):copyLink(this)" title="Copy / Native share" style="background:#fff;color:#3c1e1e;border:0;border-radius:50%;width:44px;height:44px;font-size:18px;cursor:pointer;">🔗</button>
       </div>
       <div style="margin-top:10px;font-size:11px;color:rgba(255,255,255,0.7);">
-        {% if lang == 'en' %}60 archetypes — find out yours and your friend's{% else %}60갑자 중 친구는 몇 번째 일주일까?{% endif %}
+        {% if lang == 'en' %}60 archetypes — share with friends and find out theirs too{% else %}60갑자 중 친구는 몇 번째 일주일까?{% endif %}
       </div>
     </div>
   </div>
