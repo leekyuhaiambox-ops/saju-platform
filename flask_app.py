@@ -244,6 +244,83 @@ def analytics_daily():
 def _cors_preflight(any):
     return ("", 204)
 
+
+# ─────────────────────────────────────────────────────────────────
+# Long-tail SEO 페이지 — 검색 키워드 매칭 (자동 양산)
+# ─────────────────────────────────────────────────────────────────
+SEO_PAGES = {
+    "saju-free": {
+        "title_ko": "사주 무료 풀이 — 회원가입 없이 1분 완성",
+        "title_en": "Free Saju Reading — No Signup, 1 Minute",
+        "h1_ko": "사주 무료 풀이",
+        "h1_en": "Free Saju Reading",
+        "desc_ko": "회원가입·이메일 없이 무료 사주 풀이. 생년월일 입력 1분이면 60갑자 일주 + 오행 + 십신 + 일진 분석 결과를 받을 수 있습니다.",
+        "desc_en": "Free Korean saju (four-pillars) reading. No signup, no email. Enter birth date for instant 60-day-pillar archetype + five elements + ten gods analysis.",
+        "keywords_ko": "사주 무료, 무료 사주풀이, 사주풀이 무료, 사주 사이트, 무료 사주 사이트",
+    },
+    "what-is-day-pillar": {
+        "title_ko": "일주가 뭐예요? — 60갑자 일주 쉽게 이해하기",
+        "title_en": "What is a Day Pillar? — Understanding the 60 Day-Pillars",
+        "h1_ko": "일주가 뭐예요?",
+        "h1_en": "What is a Day Pillar?",
+        "desc_ko": "사주에서 일주(日柱)는 태어난 날의 천간·지지 조합입니다. 10개의 천간 × 12개의 지지 중 60가지 조합만 존재하며, 이것이 본인의 성격·기질을 결정하는 핵심 축입니다.",
+        "desc_en": "In Korean saju astrology, the Day Pillar is the heavenly-stem + earthly-branch combination of your birth day. Only 60 of the possible 120 combinations are valid due to the sexagenary cycle, and this is your core personality archetype.",
+        "keywords_ko": "일주, 일주 뜻, 60갑자, 일주 풀이, 일주 의미",
+    },
+    "saju-vs-mbti": {
+        "title_ko": "사주 vs MBTI — 어떤 게 더 정확할까?",
+        "title_en": "Saju vs MBTI — Which is More Accurate?",
+        "h1_ko": "사주 vs MBTI 비교",
+        "h1_en": "Saju vs MBTI Comparison",
+        "desc_ko": "MBTI는 16가지 성격 유형, 사주는 60가지 일주 유형. 사주가 더 세분화되어 있지만 MBTI는 자기보고식 검증이 있어 각각의 장단점이 있습니다.",
+        "desc_en": "MBTI offers 16 personality types; Saju Day Pillar offers 60 archetypes. Saju is more granular but MBTI has self-report validation. Each has trade-offs.",
+        "keywords_ko": "사주 MBTI, MBTI 사주, 성격 검사, 사주 정확도",
+    },
+    "today-luck": {
+        "title_ko": "오늘의 운세 — 일진 무료 확인",
+        "title_en": "Today's Luck — Daily Fortune Free",
+        "h1_ko": "오늘의 운세",
+        "h1_en": "Today's Luck",
+        "desc_ko": "오늘의 일진(日辰)을 무료로 확인. 오늘 날짜의 천간·지지로 본 운세, 오늘 좋은 띠와 피해야 할 띠, 오늘의 행운 방향 등.",
+        "desc_en": "Free daily luck check based on today's heavenly-stem and earthly-branch. Lucky zodiacs of the day, directions to avoid, and energy forecast.",
+        "keywords_ko": "오늘의 운세, 오늘 일진, 일진 무료, 오늘 운세",
+    },
+    "saju-for-beginners": {
+        "title_ko": "사주 입문 — 처음 보는 사람을 위한 5분 가이드",
+        "title_en": "Saju for Beginners — A 5-Minute Intro",
+        "h1_ko": "사주 입문 5분 가이드",
+        "h1_en": "Saju for Beginners",
+        "desc_ko": "사주(四柱)는 태어난 연·월·일·시 네 기둥을 분석하는 동아시아 명리학입니다. 이 페이지는 처음 보는 사람을 위한 5분 가이드로, 사주의 기본 개념과 자신의 사주를 확인하는 방법을 설명합니다.",
+        "desc_en": "Saju (four-pillars) is an East Asian system that analyzes the year, month, day, and hour pillars of your birth. This beginner's guide explains the basics in 5 minutes and shows you how to read your own chart.",
+        "keywords_ko": "사주 입문, 사주 처음, 사주 보는법, 사주 기본",
+    },
+}
+
+
+def _seo_page_render(slug: str, lang: str = "ko") -> str:
+    """Long-tail SEO 페이지 자동 렌더."""
+    cfg = SEO_PAGES.get(slug)
+    if not cfg:
+        abort(404)
+    is_en = (lang == "en")
+    title = cfg["title_en"] if is_en else cfg["title_ko"]
+    h1 = cfg["h1_en"] if is_en else cfg["h1_ko"]
+    desc = cfg["desc_en"] if is_en else cfg["desc_ko"]
+    keywords = cfg.get("keywords_ko", "")
+    base = request.url_root.rstrip("/")
+    canonical = f"{base}{request.path}"
+    return render_template("seo_page.html",
+                           title=title, h1=h1, description=desc,
+                           keywords=keywords, slug=slug, canonical=canonical)
+
+
+@app.route("/guide/<slug>")
+@app.route("/en/guide/<slug>")
+def seo_page(slug):
+    if slug not in SEO_PAGES:
+        abort(404)
+    return _seo_page_render(slug, g.lang)
+
 # ─────────────────────────────────────────────────────────────────
 # 광고/추적 ID — 환경변수로 외부 주입 (배포 시 .env 또는 webapp 환경변수)
 # ─────────────────────────────────────────────────────────────────
@@ -1213,6 +1290,11 @@ def sitemap():
         items.append(emit(f"/sixty-pillars/{i}", "0.6", "monthly"))
         items.append(emit(f"/sixty-pillars/{i}/career", "0.55", "monthly"))
         items.append(emit(f"/sixty-pillars/{i}/love", "0.55", "monthly"))
+
+    # ─── Long-tail SEO 가이드 페이지 5개 (한·영) ───
+    for guide_slug in ["saju-free", "what-is-day-pillar", "saju-vs-mbti",
+                        "today-luck", "saju-for-beginners"]:
+        items.append(emit(f"/guide/{guide_slug}", "0.8", "monthly"))
 
     # ─── Long-tail SEO: 인기 사주 케이스 60개 sample 결과 URL ───
     # 60갑자 일주를 모두 커버하는 대표 생년월일 60개를 sitemap에 등록.

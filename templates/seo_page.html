@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block description %}{{ description }}{% endblock %}
+{% block content %}
+<section class="container narrow" style="padding:30px 20px;">
+  <article style="max-width:760px;margin:0 auto;line-height:1.75;">
+    <h1 style="font-size:32px;font-weight:900;margin-bottom:8px;">{{ h1 }}</h1>
+    <p class="lead" style="font-size:17px;color:#5e5066;margin-bottom:24px;">{{ description }}</p>
+
+    {% if slug == 'saju-free' %}
+      <h2>왜 무료인가요?</h2>
+      <p>본 사이트는 광고 수익만으로 운영되며 사주 풀이 자체는 100% 무료입니다. 회원가입·이메일·전화번호 입력이 필요하지 않습니다. 생년월일·생시 입력만으로 즉시 결과를 받을 수 있습니다.</p>
+      <h2>무엇을 알 수 있나요?</h2>
+      <ul>
+        <li>60갑자 중 본인의 일주 (성격 archetype)</li>
+        <li>오행(五行) 균형 — 목·화·토·금·수 강약</li>
+        <li>십신(十神) — 비견·겁재·식신·상관·정재·편재·정관·편관·정인·편인</li>
+        <li>십이운성(十二運星) — 장생부터 양까지 12 생명력 단계</li>
+        <li>대운(大運) — 10년 단위 인생 흐름</li>
+        <li>오늘의 일진(日辰)</li>
+      </ul>
+      <h2>지금 무료로 시작</h2>
+      <p><a href="/" style="display:inline-block;background:#5e2da6;color:#fff;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:700;font-size:16px;">사주 무료 풀이 시작 →</a></p>
+
+    {% elif slug == 'what-is-day-pillar' %}
+      <h2>일주의 구조</h2>
+      <p>일주는 두 글자로 표시됩니다. 위 글자는 <strong>천간(天干)</strong>으로 갑·을·병·정·무·기·경·신·임·계 10개 중 하나, 아래 글자는 <strong>지지(地支)</strong>로 자·축·인·묘·진·사·오·미·신·유·술·해 12개 중 하나입니다.</p>
+      <h2>왜 60가지인가요?</h2>
+      <p>10 × 12 = 120 조합이지만, 천간·지지의 음양(陽陰)이 같아야 결합되므로 60가지만 유효합니다. 이것을 <strong>육십갑자(六十甲子)</strong>라고 부르며, 60일을 한 주기로 순환합니다.</p>
+      <h2>본인의 일주 확인</h2>
+      <p><a href="/" style="display:inline-block;background:#5e2da6;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;">내 일주 무료 확인 →</a> · <a href="/sixty-pillars">60갑자 일주 전체 보기</a></p>
+
+    {% elif slug == 'saju-vs-mbti' %}
+      <h2>구조 비교</h2>
+      <table style="width:100%;border-collapse:collapse;margin:16px 0;">
+        <thead><tr style="background:#f0e8fa;"><th style="padding:10px;text-align:left;">항목</th><th style="padding:10px;">MBTI</th><th style="padding:10px;">사주 일주</th></tr></thead>
+        <tbody>
+          <tr><td style="padding:10px;">유형 수</td><td style="text-align:center;">16</td><td style="text-align:center;">60</td></tr>
+          <tr><td style="padding:10px;">기반</td><td style="text-align:center;">자기보고 설문</td><td style="text-align:center;">생년월일시 계산</td></tr>
+          <tr><td style="padding:10px;">변화 가능</td><td style="text-align:center;">상황에 따라 변동</td><td style="text-align:center;">평생 불변</td></tr>
+          <tr><td style="padding:10px;">검증</td><td style="text-align:center;">통계적 신뢰도 있음</td><td style="text-align:center;">통계 검증 X, 전통</td></tr>
+        </tbody>
+      </table>
+      <h2>활용 가이드</h2>
+      <p>MBTI는 현재의 자기 인식 도구, 사주는 평생 변하지 않는 기질의 지도. 둘 다 활용하면 자기 이해가 풍부해집니다.</p>
+      <p><a href="/" style="display:inline-block;background:#5e2da6;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;">내 사주 무료 확인 →</a></p>
+
+    {% elif slug == 'today-luck' %}
+      <h2>오늘의 일진 확인</h2>
+      <p>오늘의 일진은 오늘 날짜의 천간·지지 조합으로, 60일 주기로 순환합니다. 본인의 일주와 오늘의 일진이 충돌(沖)하거나 합(合)하면 평소와 다른 에너지를 느끼게 됩니다.</p>
+      <p><a href="/today" style="display:inline-block;background:#5e2da6;color:#fff;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:700;font-size:16px;">오늘의 일진 무료 확인 →</a></p>
+      <h2>띠별 오늘 운세도 확인</h2>
+      <p>본인 띠로 빠르게 보는 오늘의 운세 — <a href="/zodiac/쥐">쥐</a> · <a href="/zodiac/소">소</a> · <a href="/zodiac/호랑이">호랑이</a> · <a href="/zodiac/토끼">토끼</a> · <a href="/zodiac/용">용</a> · <a href="/zodiac/뱀">뱀</a> · <a href="/zodiac/말">말</a> · <a href="/zodiac/양">양</a> · <a href="/zodiac/원숭이">원숭이</a> · <a href="/zodiac/닭">닭</a> · <a href="/zodiac/개">개</a> · <a href="/zodiac/돼지">돼지</a></p>
+
+    {% elif slug == 'saju-for-beginners' %}
+      <h2>1. 사주의 4기둥</h2>
+      <p>사주는 <strong>년주(年柱)·월주(月柱)·일주(日柱)·시주(時柱)</strong> 네 기둥으로 구성됩니다. 각 기둥은 천간 + 지지 두 글자, 총 8글자(=팔자)가 본인의 사주명식입니다.</p>
+      <h2>2. 핵심은 일주</h2>
+      <p>네 기둥 중 가장 중요한 것은 일주의 천간 — 이를 <strong>일간(日干)</strong> 또는 <strong>일주의 천간</strong>이라 부르며, 본인을 상징합니다.</p>
+      <h2>3. 오행의 균형</h2>
+      <p>8글자 안에 목(木)·화(火)·토(土)·금(金)·수(水) 다섯 원소가 얼마나 균형 있게 분포하는지 봅니다. 특정 원소가 강하면 그 성향이 두드러집니다.</p>
+      <h2>4. 십신과 십이운성</h2>
+      <p>일간과 다른 글자의 관계로 <strong>십신(十神)</strong>을, 일간의 에너지 단계로 <strong>십이운성(十二運星)</strong>을 분석합니다.</p>
+      <h2>5. 본인 사주 보기</h2>
+      <p><a href="/" style="display:inline-block;background:#5e2da6;color:#fff;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:700;font-size:16px;">사주 무료 풀이 시작 →</a></p>
+      <p style="margin-top:14px;color:#888;font-size:14px;">더 깊이 알고 싶으시면 <a href="/basics">사주 기초 가이드</a>를 보세요.</p>
+    {% endif %}
+
+    <hr style="border:0;border-top:1px solid #eee;margin:36px 0 24px;">
+    <p style="font-size:14px;color:#888;">관련: <a href="/">홈</a> · <a href="/sixty-pillars">60갑자 일주</a> · <a href="/today">오늘의 일진</a> · <a href="/compatibility">궁합</a> · <a href="/basics">사주 기초</a></p>
+  </article>
+</section>
+
+{# JSON-LD Article schema #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ h1|e }}",
+  "description": "{{ description|e }}",
+  "author": {"@type": "Person", "name": "austriano"},
+  "publisher": {"@type": "Organization", "name": "사주명리 풀이",
+    "logo": {"@type": "ImageObject", "url": "{{ url_for('static', filename='img/og-default.png', _external=True) }}"}
+  },
+  "datePublished": "2026-05-31",
+  "inLanguage": "{{ lang }}"
+}
+</script>
+{% endblock %}
