@@ -178,6 +178,57 @@ Both solo-built on PythonAnywhere free tier. Happy to revise section placement.
 """,
     },
 
+    "pluja/awesome-privacy": {
+        "section": "##",
+        "section_keywords": ["Other", "Tools", "Misc", "Web", "Productivity", "Lifestyle"],
+        "additions": [
+            "- [Saju Fortune (사주명리 풀이)](https://tarofortune.pythonanywhere.com) — Korean four-pillars astrology calculator. **No signup, no email, no tracking pixels** beyond standard GA. All computation done server-side without storing birth data. Useful as a privacy-respecting alternative to commercial astrology apps that profile users.",
+        ],
+        "pr_title": "Add Saju Fortune (privacy-respecting Korean astrology calculator)",
+        "pr_body": """Adds **Saju Fortune** — a free Korean four-pillars astrology calculator that respects user privacy:
+
+- URL: https://tarofortune.pythonanywhere.com
+- **No signup or email** required to use the calculator
+- **Birth data not stored** server-side (pure stateless computation)
+- No tracking pixels beyond standard Google Analytics
+- Alternative to commercial astrology apps that profile users and resell birth data
+
+Solo-built, ad-supported. Happy to revise placement.
+""",
+    },
+
+    "yudataguy/Awesome-Japanese": {
+        "section": "##",
+        "section_keywords": ["Culture", "Lifestyle", "Other", "Tools", "Astrology", "Spiritual"],
+        "additions": [
+            "- [Saju Fortune (사주명리 풀이)](https://tarofortune.pythonanywhere.com) — Korean four-pillars (saju, 사주) astrology — closely related to Japanese **shichu-suimei** (四柱推命). Same 60-day-pillar (六十干支) cycle and same five-element framework as Japanese tradition. Free English + Korean readings.",
+        ],
+        "pr_title": "Add Saju Fortune — Korean four-pillars (related to Japanese 四柱推命)",
+        "pr_body": """Adds **Saju Fortune** — a Korean four-pillars astrology calculator. The Korean tradition (saju, 사주) shares its underlying system with Japanese **shichu-suimei** (四柱推命) and Chinese BaZi (八字) — same 60-day-pillar cycle (六十干支), same five-element framework.
+
+- URL: https://tarofortune.pythonanywhere.com
+- Free, no signup
+- English + Korean (Japanese translation not yet, but core concepts overlap with shichu-suimei)
+
+For Japanese readers familiar with shichu-suimei, this provides instant access to the same calculation engine. Happy to revise placement.
+""",
+    },
+
+    "jnv/lists": {
+        "section": "##",
+        "section_keywords": ["Non-technical"],
+        "additions": [
+            "- [Awesome Saju](https://github.com/leekyuhaiambox-ops/awesome-saju) — Korean four-pillars (saju, 사주) astrology — calculators, day-pillar references, theory, in Korean and English.",
+        ],
+        "pr_title": "Add Awesome Saju (Korean four-pillars astrology)",
+        "pr_body": """Adds [Awesome Saju](https://github.com/leekyuhaiambox-ops/awesome-saju) — a curated list of resources for Korean four-pillars astrology (사주, saju), an East Asian system also known as BaZi (八字) in Chinese.
+
+The list covers free calculators, 60 day-pillar references, theory (ten gods, twelve life stages, five elements), compatibility tools, and beginner guides — in both Korean and English.
+
+Fits under Non-technical. Happy to revise placement or wording.
+""",
+    },
+
     "RunaCapital/awesome-oss-alternatives": {
         "section": "##",
         "section_keywords": ["Useful Links", "Startup List"],
