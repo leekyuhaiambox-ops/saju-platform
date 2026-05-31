@@ -321,6 +321,57 @@ def seo_page(slug):
         abort(404)
     return _seo_page_render(slug, g.lang)
 
+
+# ─────────────────────────────────────────────────────────────────
+# 띠별 × 월별 운세 페이지 양산 — long-tail SEO 폭발 (12×12=144 unique pages)
+# 예: /zodiac-month/쥐/2026/6  →  "2026년 6월 쥐띠 운세"
+# 검색 키워드 매칭: "2026 6월 쥐띠 운세", "2026 호랑이띠 6월" 등
+# ─────────────────────────────────────────────────────────────────
+ZODIAC_KR = ["쥐", "소", "호랑이", "토끼", "용", "뱀",
+             "말", "양", "원숭이", "닭", "개", "돼지"]
+ZODIAC_EN = ["rat", "ox", "tiger", "rabbit", "dragon", "snake",
+             "horse", "goat", "monkey", "rooster", "dog", "pig"]
+ZODIAC_TRAIT_KR = {
+    "쥐": "민첩·기회 포착", "소": "근면·인내",
+    "호랑이": "용기·리더십", "토끼": "온화·균형",
+    "용": "비전·카리스마", "뱀": "직관·전략",
+    "말": "활동·자유", "양": "온정·예술",
+    "원숭이": "재치·창의", "닭": "정직·정밀",
+    "개": "충성·정의", "돼지": "관대·풍요",
+}
+
+
+@app.route("/zodiac-month/<zodiac>/<int:year>/<int:month>")
+@app.route("/en/zodiac-month/<zodiac>/<int:year>/<int:month>")
+def zodiac_month(zodiac, year, month):
+    """띠별 × 월별 운세 long-tail SEO 페이지."""
+    is_en = (g.lang == "en")
+    # 입력 정규화: 한·영 zodiac 모두 받음
+    if zodiac in ZODIAC_KR:
+        idx = ZODIAC_KR.index(zodiac)
+    elif zodiac.lower() in ZODIAC_EN:
+        idx = ZODIAC_EN.index(zodiac.lower())
+    else:
+        abort(404)
+    if not (1 <= month <= 12) or not (2020 <= year <= 2030):
+        abort(404)
+
+    kr_name = ZODIAC_KR[idx]
+    en_name = ZODIAC_EN[idx].capitalize()
+    trait = ZODIAC_TRAIT_KR[kr_name]
+
+    if is_en:
+        title = f"{year} {en_name} Zodiac Forecast — {year}-{month:02d}"
+        h1 = f"{en_name} Zodiac Forecast for {year}-{month:02d}"
+    else:
+        title = f"{year}년 {month}월 {kr_name}띠 운세 — 무료 분석"
+        h1 = f"{year}년 {month}월 {kr_name}띠 운세"
+
+    return render_template("zodiac_month.html",
+                           title=title, h1=h1,
+                           zodiac_kr=kr_name, zodiac_en=en_name,
+                           year=year, month=month, trait=trait, idx=idx)
+
 # ─────────────────────────────────────────────────────────────────
 # 광고/추적 ID — 환경변수로 외부 주입 (배포 시 .env 또는 webapp 환경변수)
 # ─────────────────────────────────────────────────────────────────
@@ -1295,6 +1346,17 @@ def sitemap():
     for guide_slug in ["saju-free", "what-is-day-pillar", "saju-vs-mbti",
                         "today-luck", "saju-for-beginners"]:
         items.append(emit(f"/guide/{guide_slug}", "0.8", "monthly"))
+
+    # ─── 띠별 × 월별 운세 페이지 (long-tail SEO 폭발) ───
+    # 2026년 + 2027년 × 12띠 × 12월 = 288 KR + 288 EN = 576 URLs
+    _today_year = date.today().year
+    from urllib.parse import quote as _q
+    for yr in [_today_year, _today_year + 1]:
+        for z_kr, z_en in zip(zodiacs_kr, zodiacs_en):
+            for mo in range(1, 13):
+                items.append(emit(f"/zodiac-month/{_q(z_kr)}/{yr}/{mo}",
+                                  "0.4", "monthly",
+                                  alt_en=f"/zodiac-month/{z_en}/{yr}/{mo}"))
 
     # ─── Long-tail SEO: 인기 사주 케이스 60개 sample 결과 URL ───
     # 60갑자 일주를 모두 커버하는 대표 생년월일 60개를 sitemap에 등록.

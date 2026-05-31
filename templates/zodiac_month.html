@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block description %}{% if lang == 'en' %}{{ zodiac_en }} zodiac forecast for {{ year }}-{{ "%02d"|format(month) }}. Free Korean astrology reading covering luck, career, love.{% else %}{{ year }}년 {{ month }}월 {{ zodiac_kr }}띠 운세 — 무료 분석. 사랑·돈·직장·건강·주의사항을 한국 전통 명리학으로 풀이.{% endif %}{% endblock %}
+
+{% block content %}
+<section class="container narrow" style="padding:30px 20px;">
+  <article style="max-width:760px;margin:0 auto;line-height:1.75;">
+    <h1 style="font-size:30px;font-weight:900;margin-bottom:8px;">{{ h1 }}</h1>
+    <p style="font-size:16px;color:#5e5066;margin-bottom:24px;">
+      {% if lang == 'en' %}
+        {{ year }}-{{ "%02d"|format(month) }} fortune outlook for the <strong>{{ zodiac_en }}</strong> zodiac.
+      {% else %}
+        {{ year }}년 {{ month }}월 <strong>{{ zodiac_kr }}띠</strong> 운세.
+      {% endif %}
+    </p>
+
+    {% if lang == 'ko' %}
+    <h2>{{ zodiac_kr }}띠 기본 성향</h2>
+    <p>{{ zodiac_kr }}띠는 <strong>{{ trait }}</strong>의 기운을 가진 띠로, 12지 중 {{ idx + 1 }}번째에 해당합니다. {{ year }}년 {{ month }}월은 {{ zodiac_kr }}띠에게 {% if month in [3,7,11] %}활동 에너지가 강해지는 시기{% elif month in [1,5,9] %}내실을 다지는 시기{% else %}변화의 흐름을 살피는 시기{% endif %}입니다.</p>
+
+    <h2>{{ year }}년 {{ month }}월 핵심 운세</h2>
+    <ul>
+      <li><strong>전체운</strong>: {% if month % 4 == 0 %}안정과 성장의 균형{% elif month % 4 == 1 %}새로운 시작과 도전{% elif month % 4 == 2 %}수확과 정리{% else %}관계 정리와 재충전{% endif %}이 키워드입니다.</li>
+      <li><strong>재물운</strong>: {% if (month + idx) % 3 == 0 %}예상 외 수입의 가능성이 있지만 지출도 함께 늘어나니 가계부 관리가 중요합니다.{% elif (month + idx) % 3 == 1 %}꾸준한 수입은 유지되며 큰 변화는 없습니다.{% else %}투자·부업의 기회가 보이는 시기. 단 검증되지 않은 권유는 주의.{% endif %}</li>
+      <li><strong>애정운</strong>: {% if (month + idx + year) % 4 == 0 %}새로운 인연의 가능성. 기존 관계는 깊어지는 시기.{% elif (month + idx + year) % 4 == 1 %}오해의 소지가 있는 달. 대화를 자주 하는 게 답.{% elif (month + idx + year) % 4 == 2 %}안정적인 관계 유지.{% else %}자기 시간을 더 갖는 게 좋은 시기.{% endif %}</li>
+      <li><strong>직장운</strong>: {% if (month * 2 + idx) % 5 == 0 %}새 프로젝트 기회.{% elif (month * 2 + idx) % 5 == 1 %}안정적이지만 큰 발전은 다음 달.{% elif (month * 2 + idx) % 5 == 2 %}동료·상사와 협력이 핵심.{% elif (month * 2 + idx) % 5 == 3 %}본인의 실력이 두드러지는 시기.{% else %}꾸준함이 답.{% endif %}</li>
+      <li><strong>건강운</strong>: {% if month in [12, 1, 2] %}겨울철 호흡기·관절 관리.{% elif month in [3, 4, 5] %}환절기 알레르기·피부 관리.{% elif month in [6, 7, 8] %}여름철 수분 섭취·열사병 주의.{% else %}가을철 우울감·수면 패턴 관리.{% endif %}</li>
+    </ul>
+
+    <h2>{{ zodiac_kr }}띠 {{ month }}월 행운 키워드</h2>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:14px 0;">
+      <span style="background:#f0e8fa;padding:6px 14px;border-radius:18px;font-size:14px;">행운의 색: {% if idx % 5 == 0 %}파랑{% elif idx % 5 == 1 %}빨강{% elif idx % 5 == 2 %}노랑{% elif idx % 5 == 3 %}흰색{% else %}초록{% endif %}</span>
+      <span style="background:#f0e8fa;padding:6px 14px;border-radius:18px;font-size:14px;">행운의 숫자: {{ (idx * 3 + month) % 9 + 1 }}</span>
+      <span style="background:#f0e8fa;padding:6px 14px;border-radius:18px;font-size:14px;">행운의 방향: {% if month % 4 == 0 %}동쪽{% elif month % 4 == 1 %}남쪽{% elif month % 4 == 2 %}서쪽{% else %}북쪽{% endif %}</span>
+    </div>
+
+    <h2>더 정밀한 분석</h2>
+    <p>띠별 운세는 12지 중 본인의 띠로 본 큰 흐름입니다. 본인의 생년월일·생시까지 입력한 <strong>사주 일주별 분석</strong>이 훨씬 더 정밀합니다.</p>
+    <p><a href="/" style="display:inline-block;background:#5e2da6;color:#fff;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:700;">내 사주 무료 풀이 →</a></p>
+
+    {% else %}
+    <h2>{{ zodiac_en }} Basic Traits</h2>
+    <p>The {{ zodiac_en }} is the #{{ idx + 1 }} of the 12 Chinese zodiacs. For {{ year }}-{{ "%02d"|format(month) }}, this sign carries {% if month in [3,7,11] %}strong activity energy{% elif month in [1,5,9] %}internal consolidation{% else %}observation of change{% endif %}.</p>
+
+    <h2>{{ year }}-{{ "%02d"|format(month) }} Outlook</h2>
+    <ul>
+      <li><strong>Overall</strong>: {% if month % 4 == 0 %}Balance of stability and growth{% elif month % 4 == 1 %}New beginnings and challenge{% elif month % 4 == 2 %}Harvest and consolidation{% else %}Relationship and recharge{% endif %}.</li>
+      <li><strong>Wealth</strong>: {% if (month + idx) % 3 == 0 %}Unexpected income possible but watch expenses.{% elif (month + idx) % 3 == 1 %}Steady income, no major changes.{% else %}Investment opportunities — verify before committing.{% endif %}</li>
+      <li><strong>Love</strong>: {% if (month + idx + year) % 4 == 0 %}New connections possible.{% elif (month + idx + year) % 4 == 1 %}Misunderstandings possible.{% elif (month + idx + year) % 4 == 2 %}Stable relationships.{% else %}Time for self.{% endif %}</li>
+      <li><strong>Career</strong>: {% if (month * 2 + idx) % 5 == 0 %}New project opportunities.{% elif (month * 2 + idx) % 5 == 1 %}Stable but slow.{% elif (month * 2 + idx) % 5 == 2 %}Collaboration is key.{% elif (month * 2 + idx) % 5 == 3 %}Your skills stand out.{% else %}Steadiness wins.{% endif %}</li>
+      <li><strong>Health</strong>: {% if month in [12, 1, 2] %}Watch respiratory and joints.{% elif month in [3, 4, 5] %}Allergies and skin.{% elif month in [6, 7, 8] %}Hydrate, prevent heatstroke.{% else %}Autumn — mind sleep.{% endif %}</li>
+    </ul>
+
+    <h2>For More Precision</h2>
+    <p>Zodiac-month forecasts cover broad trends. For a personal reading, enter your birth date + time:</p>
+    <p><a href="/en" style="display:inline-block;background:#5e2da6;color:#fff;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:700;">Free Saju Reading →</a></p>
+    {% endif %}
+
+    <hr style="border:0;border-top:1px solid #eee;margin:36px 0 24px;">
+    <p style="font-size:14px;color:#888;">
+      {% if lang == 'ko' %}
+        관련: <a href="/today">오늘의 일진</a> · <a href="/">사주 무료 풀이</a> · <a href="/guide/saju-for-beginners">사주 입문</a>
+      {% else %}
+        Related: <a href="/en/today">Today's luck</a> · <a href="/en">Free reading</a> · <a href="/en/guide/saju-for-beginners">Beginners guide</a>
+      {% endif %}
+    </p>
+  </article>
+</section>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ h1|e }}",
+  "author": {"@type": "Person", "name": "austriano"},
+  "datePublished": "{{ year }}-{{ '%02d'|format(month) }}-01",
+  "inLanguage": "{{ lang }}"
+}
+</script>
+{% endblock %}
