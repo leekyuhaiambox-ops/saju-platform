@@ -97,6 +97,19 @@ jobs:
             python -X utf8 ./marketing/shared/analytics_collector.py || echo "KPI collection failed (non-fatal)"
           fi
 
+      - name: 📊 Daily report → GitHub Issue (운영자 알림)
+        if: github.event.inputs.dry_run != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          PA_TOKEN: ${{ secrets.PA_TOKEN }}
+          MASTODON_INSTANCE: ${{ secrets.MASTODON_INSTANCE }}
+          LEMMY_INSTANCE: ${{ secrets.LEMMY_INSTANCE }}
+        run: |
+          if [ -f "./marketing/shared/daily_report.py" ]; then
+            python -X utf8 ./marketing/shared/daily_report.py || echo "Daily report failed (non-fatal)"
+          fi
+
       - name: Generate new content (daily)
         if: |
           github.event.inputs.dry_run != 'true' &&
