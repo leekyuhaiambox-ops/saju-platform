@@ -110,6 +110,29 @@ jobs:
             python -X utf8 ./marketing/shared/daily_report.py || echo "Daily report failed (non-fatal)"
           fi
 
+      - name: 📧 Daily report → Email (geostaticss@gmail.com 직접 발송)
+        if: github.event.inputs.dry_run != 'true'
+        env:
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          REPORT_TO: ${{ secrets.REPORT_TO }}
+          REPORT_FROM: ${{ secrets.REPORT_FROM }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          PA_TOKEN: ${{ secrets.PA_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MASTODON_INSTANCE: ${{ secrets.MASTODON_INSTANCE }}
+          LEMMY_INSTANCE: ${{ secrets.LEMMY_INSTANCE }}
+        run: |
+          if [ -z "$SMTP_USER" ] || [ -z "$SMTP_PASS" ]; then
+            echo "SMTP_USER/SMTP_PASS not set — skipping email (GitHub Issue 알림은 작동 중)"
+            exit 0
+          fi
+          if [ -f "./marketing/shared/send_daily_report_email.py" ]; then
+            python -X utf8 ./marketing/shared/send_daily_report_email.py || echo "Email send failed (non-fatal)"
+          fi
+
       - name: Generate new content (daily)
         if: |
           github.event.inputs.dry_run != 'true' &&
