@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}{{ s.name }} 성격·연애·궁합 — 별자리 운세 ({{ s.date_range }}){% endblock %}
+{% block description %}{{ s.name }}({{ s.name_en }}) 성격, 연애 스타일, 직업, 강점·약점, 궁합 별자리. {{ s.personality[:70] }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block jsonld_extra %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"{{ s.name }} 성격과 궁합","inLanguage":"ko-KR","mainEntityOfPage":"{{ request.url }}","publisher":{"@id":"{{ request.url_root }}#org"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+ {"@type":"ListItem","position":1,"name":"홈","item":"{{ request.url_root }}"},
+ {"@type":"ListItem","position":2,"name":"별자리 운세","item":"{{ request.url_root }}horoscope"},
+ {"@type":"ListItem","position":3,"name":"{{ s.name }}","item":"{{ request.url }}"}
+]}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb"><a href="{{ url_for('horoscope_index') }}">별자리 운세</a></p>
+    <h1>{{ s.name }}</h1>
+    <p class="lead">{{ s.date_range }}</p>
+    <p class="meta">{{ s.name_en }} · {{ s.element }}의 별자리 · 지배행성 {{ s.planet }}</p>
+  </div>
+</section>
+
+<article class="article container narrow">
+  <h2>{{ s.name }} 성격</h2>
+  <p>{{ s.personality }}</p>
+
+  <h2>연애 스타일</h2>
+  <p>{{ s.love }}</p>
+
+  {% if ADFIT_SLOT_MEDIUM %}
+  <div class="adfit-container adfit-medium">
+    <p class="ad-label">{{ t('ad_label') }}</p>
+    <ins class="kakao_ad_area" style="display:none;" data-ad-unit="{{ ADFIT_SLOT_MEDIUM }}" data-ad-width="300" data-ad-height="250"></ins>
+  </div>
+  {% endif %}
+
+  <h2>직업·적성</h2>
+  <p>{{ s.career }}</p>
+
+  <h2>강점과 약점</h2>
+  <ul class="bullet-list">
+    <li><strong>강점</strong> — {{ s.strength }}</li>
+    <li><strong>약점</strong> — {{ s.weakness }}</li>
+  </ul>
+
+  <h2>{{ s.name }} 궁합</h2>
+  <p>가장 잘 맞는 별자리: <strong>{{ s.best|join(', ') }}</strong></p>
+  <p>주의가 필요한 별자리: {{ s.worst|join(', ') }}</p>
+
+  <div class="dream-cta-box">
+    <h3>별자리는 태양, 사주는 인생 전체</h3>
+    <p>별자리는 태어난 달의 태양 위치만 봅니다. 태어난 연·월·일·시 전체를 보는 사주로 더 깊은 나를 확인해보세요.</p>
+    <a href="{{ url_for('index') }}" class="link-button">내 사주 무료로 보기</a>
+    <a href="{{ url_for('today_fortune') }}" class="link-button secondary">오늘의 운세</a>
+  </div>
+
+  <h2>다른 별자리</h2>
+  <div class="related-dreams">
+    {% for o in others %}
+    <a href="{{ url_for('horoscope_detail', slug=o.slug) }}" class="related-dream-chip">{{ o.name }}</a>
+    {% endfor %}
+  </div>
+</article>
+
+<section class="section alt">
+  <div class="container narrow">
+    <p class="disclaimer">별자리 운세는 서양 점성술 전통의 성격 유형론으로, 재미와 자기 이해를 위한 것입니다.</p>
+  </div>
+</section>
+{% endblock %}

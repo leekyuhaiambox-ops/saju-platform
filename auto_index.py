@@ -40,6 +40,20 @@ def submit_indexnow():
     for slug in ["pig", "feces", "dragon", "snake", "teeth", "poo_lottery",
                  "poop_step", "money", "death", "blood"]:
         urls.append(base + "/dream/" + slug)
+    # 별자리·혈액형·MBTI (고볼륨 한국어 검색)
+    urls += [base + "/horoscope", base + "/blood", base + "/blood-compat", base + "/mbti"]
+    try:
+        from saju.horoscope import SIGNS as _SIGNS
+        for _s in _SIGNS:
+            urls.append(base + "/horoscope/" + _s[0])
+    except Exception:
+        pass
+    for _bt in ["A", "B", "O", "AB"]:
+        urls.append(base + "/blood/" + _bt)
+    for _mt in ["INFP", "ENFP", "INFJ", "INTJ", "ISTP", "ISFJ", "ESFP",
+                "ENTP", "ISTJ", "ESTJ", "ESFJ", "ENFJ", "ENTJ", "INTP",
+                "ISFP", "ESTP"]:
+        urls.append(base + "/mbti/" + _mt)
     return submit_urls(HOST, urls)
 
 

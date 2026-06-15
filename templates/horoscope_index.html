@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}별자리 운세 — 12별자리 성격·연애·궁합 (무료){% endblock %}
+{% block description %}양자리부터 물고기자리까지 12별자리 성격, 연애 스타일, 별자리 궁합, 올해 운세를 무료로. 내 별자리 확인하고 사주도 함께 보세요.{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block jsonld_extra %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"CollectionPage","name":"별자리 운세","inLanguage":"ko-KR","mainEntityOfPage":"{{ request.url }}","publisher":{"@id":"{{ request.url_root }}#org"}}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">별자리 운세</p>
+    <h1>별자리 운세</h1>
+    <p class="lead">12별자리의 성격, 연애 스타일, 궁합. 내 별자리를 찾아 깊이 들여다보세요.</p>
+  </div>
+</section>
+
+<section class="container">
+  <div class="pillar-grid">
+    {% for s in signs %}
+    <a class="pillar-tile" href="{{ url_for('horoscope_detail', slug=s.slug) }}">
+      <div class="pillar-tile-name">{{ s.name }}</div>
+      <div class="pillar-tile-headline">{{ s.date_range }} · {{ s.element }}</div>
+      <div class="pillar-tile-element">{{ s.name_en }} · {{ s.planet }}</div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+{% if ADFIT_SLOT_SQUARE %}
+<div class="adfit-container adfit-square">
+  <p class="ad-label">{{ t('ad_label') }}</p>
+  <ins class="kakao_ad_area" style="display:none;" data-ad-unit="{{ ADFIT_SLOT_SQUARE }}" data-ad-width="250" data-ad-height="250"></ins>
+</div>
+{% endif %}
+
+<section class="section alt">
+  <div class="container narrow">
+    <h2 class="section-title">별자리 + 사주, 둘 다 보면 더 정확</h2>
+    <p>별자리는 태양의 위치, 사주는 태어난 시각 전체를 봅니다. 함께 보면 입체적인 자기 이해가 됩니다.</p>
+    <p style="text-align:center"><a href="{{ url_for('index') }}" class="link-button">내 사주 무료로 보기</a></p>
+  </div>
+</section>
+{% endblock %}

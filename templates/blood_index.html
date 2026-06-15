@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}혈액형 성격·궁합 — A/B/O/AB형 완전 분석 (무료){% endblock %}
+{% block description %}A형, B형, O형, AB형 혈액형별 성격과 연애 스타일, 혈액형 궁합을 무료로 확인하세요. 재미로 보는 혈액형 심리 분석.{% endblock %}
+{% block og_type %}article{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">혈액형</p>
+    <h1>혈액형 성격·궁합</h1>
+    <p class="lead">A·B·O·AB형, 각 혈액형의 성격과 연애, 그리고 궁합을 알아보세요.</p>
+  </div>
+</section>
+
+<section class="container">
+  <div class="pillar-grid">
+    {% for bt in order %}
+    <a class="pillar-tile" href="{{ url_for('blood_detail', bt=bt) }}">
+      <div class="pillar-tile-name">{{ blood_types[bt].name }}</div>
+      <div class="pillar-tile-headline">{{ blood_types[bt].headline }}</div>
+      <div class="pillar-tile-element">자세히 보기 →</div>
+    </a>
+    {% endfor %}
+  </div>
+  <p style="text-align:center;margin-top:1.5rem">
+    <a href="{{ url_for('blood_compat_page') }}" class="link-button">혈액형 궁합 보기 →</a>
+  </p>
+</section>
+
+{% if ADFIT_SLOT_SQUARE %}
+<div class="adfit-container adfit-square">
+  <p class="ad-label">{{ t('ad_label') }}</p>
+  <ins class="kakao_ad_area" style="display:none;" data-ad-unit="{{ ADFIT_SLOT_SQUARE }}" data-ad-width="250" data-ad-height="250"></ins>
+</div>
+{% endif %}
+
+<section class="section alt">
+  <div class="container narrow">
+    <h2 class="section-title">혈액형보다 깊은 성격 분석, 사주</h2>
+    <p>혈액형은 4가지, 사주 일주는 60가지 유형입니다. 더 정밀한 나를 무료로 확인해보세요.</p>
+    <p style="text-align:center"><a href="{{ url_for('index') }}" class="link-button">내 사주 무료로 보기</a></p>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}MBTI 궁합 — 16유형 성격과 환상의 궁합 (무료){% endblock %}
+{% block description %}16가지 MBTI 유형별 성격과 환상의 궁합을 확인하세요. ENFP, ISTJ, INTJ 등 내 MBTI 궁합과 사주 일주까지 함께.{% endblock %}
+{% block og_type %}article{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">MBTI</p>
+    <h1>MBTI 유형·궁합</h1>
+    <p class="lead">16가지 MBTI 유형의 성격과 환상의 궁합. 내 유형을 찾아보세요.</p>
+  </div>
+</section>
+
+<section class="container">
+  <div class="pillar-grid">
+    {% for m in types %}
+    <a class="pillar-tile" href="{{ url_for('mbti_detail', t=m.type) }}">
+      <div class="pillar-tile-name">{{ m.type }}</div>
+      <div class="pillar-tile-headline">{{ m.name }}</div>
+      <div class="pillar-tile-element">{{ m.desc[:24] }}…</div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+{% if ADFIT_SLOT_SQUARE %}
+<div class="adfit-container adfit-square">
+  <p class="ad-label">{{ t('ad_label') }}</p>
+  <ins class="kakao_ad_area" style="display:none;" data-ad-unit="{{ ADFIT_SLOT_SQUARE }}" data-ad-width="250" data-ad-height="250"></ins>
+</div>
+{% endif %}
+
+<section class="section alt">
+  <div class="container narrow">
+    <h2 class="section-title">MBTI는 16가지, 사주 일주는 60가지</h2>
+    <p>MBTI가 마음에 들었다면, 더 세밀한 60가지 사주 일주 유형도 무료로 확인해보세요.</p>
+    <p style="text-align:center"><a href="{{ url_for('index') }}" class="link-button">내 사주 일주 보기</a></p>
+  </div>
+</section>
+{% endblock %}

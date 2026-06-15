@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}혈액형 궁합 — A/B/O/AB 혈액형 궁합 보기{% endblock %}
+{% block description %}두 사람의 혈액형 궁합을 점수로 확인하세요. A형 O형 궁합, B형 AB형 궁합 등 16가지 조합 무료 분석.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb"><a href="{{ url_for('blood_index') }}">혈액형</a></p>
+    <h1>혈액형 궁합</h1>
+    <p class="lead">두 사람의 혈액형을 선택하면 궁합 점수가 나옵니다.</p>
+  </div>
+</section>
+
+{% if result %}
+<section class="section">
+  <div class="container narrow" style="text-align:center">
+    <div class="day-master-card" style="max-width:420px;margin:0 auto">
+      <p class="day-master-label">{{ blood_types[result.a].name }} ♥ {{ blood_types[result.b].name }}</p>
+      <p class="day-master-stem" style="font-size:3rem">{{ result.score }}점</p>
+    </div>
+    <p class="result-summary" style="margin-top:1.2rem">{{ result.msg }}</p>
+  </div>
+</section>
+{% endif %}
+
+<section class="container narrow">
+  <form class="saju-form" method="GET" action="{{ url_for('blood_compat_page') }}">
+    <h2>혈액형 선택</h2>
+    <div class="couple-grid">
+      <div class="person-block">
+        <h3>나</h3>
+        <div class="radio-group" style="flex-wrap:wrap">
+          {% for o in order %}
+          <label class="radio"><input type="radio" name="a" value="{{ o }}" {% if result and result.a == o %}checked{% elif not result and o == 'A' %}checked{% endif %}><span>{{ o }}형</span></label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="person-block">
+        <h3>상대</h3>
+        <div class="radio-group" style="flex-wrap:wrap">
+          {% for o in order %}
+          <label class="radio"><input type="radio" name="b" value="{{ o }}" {% if result and result.b == o %}checked{% elif not result and o == 'O' %}checked{% endif %}><span>{{ o }}형</span></label>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="cta-button"><span class="cta-main">궁합 보기</span></button>
+  </form>
+</section>
+
+<section class="section alt">
+  <div class="container narrow">
+    <h2 class="section-title">진짜 궁합은 사주로</h2>
+    <p>혈액형 궁합은 16가지뿐이지만, 사주 궁합은 두 사람의 일간·일지를 정밀하게 봅니다.</p>
+    <p style="text-align:center"><a href="{{ url_for('compatibility_page') }}" class="link-button">사주 궁합 무료로 보기</a></p>
+  </div>
+</section>
+{% endblock %}

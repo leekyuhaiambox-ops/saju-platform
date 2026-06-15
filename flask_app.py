@@ -1064,6 +1064,79 @@ def dream_detail(slug):
 
 
 # ─────────────────────────────────────────────────────────────────
+# 별자리 운세 (서양 12별자리) — 고볼륨 검색
+# ─────────────────────────────────────────────────────────────────
+@app.route("/horoscope")
+def horoscope_index():
+    from saju.horoscope import all_signs
+    return render_template("horoscope_index.html", signs=all_signs())
+
+
+@app.route("/horoscope/<slug>")
+def horoscope_detail(slug):
+    from saju.horoscope import get_sign, all_signs
+    s = get_sign(slug)
+    if not s:
+        abort(404)
+    others = [x for x in all_signs() if x["slug"] != slug]
+    return render_template("horoscope_detail.html", s=s, others=others)
+
+
+# ─────────────────────────────────────────────────────────────────
+# 혈액형 성격·궁합
+# ─────────────────────────────────────────────────────────────────
+@app.route("/blood")
+def blood_index():
+    from saju.personality import BLOOD_TYPES, BLOOD_ORDER
+    return render_template("blood_index.html",
+                           blood_types=BLOOD_TYPES, order=BLOOD_ORDER)
+
+
+@app.route("/blood/<bt>")
+def blood_detail(bt):
+    from saju.personality import BLOOD_TYPES, BLOOD_ORDER
+    bt = bt.upper()
+    if bt not in BLOOD_TYPES:
+        abort(404)
+    return render_template("blood_detail.html",
+                           bt=bt, info=BLOOD_TYPES[bt],
+                           order=BLOOD_ORDER, all_types=BLOOD_TYPES)
+
+
+@app.route("/blood-compat", methods=["GET", "POST"])
+def blood_compat_page():
+    from saju.personality import blood_compat, BLOOD_TYPES, BLOOD_ORDER
+    result = None
+    a = request.values.get("a", "").upper()
+    b = request.values.get("b", "").upper()
+    if a in BLOOD_TYPES and b in BLOOD_TYPES:
+        score, msg = blood_compat(a, b)
+        result = {"a": a, "b": b, "score": score, "msg": msg}
+    return render_template("blood_compat.html", result=result,
+                           order=BLOOD_ORDER, blood_types=BLOOD_TYPES)
+
+
+# ─────────────────────────────────────────────────────────────────
+# MBTI 궁합 + 유형별
+# ─────────────────────────────────────────────────────────────────
+@app.route("/mbti")
+def mbti_index():
+    from saju.personality import all_mbti
+    return render_template("mbti_index.html", types=all_mbti())
+
+
+@app.route("/mbti/<t>")
+def mbti_detail(t):
+    from saju.personality import get_mbti, all_mbti
+    info = get_mbti(t)
+    if not info:
+        abort(404)
+    best = get_mbti(info["best"])
+    others = [x for x in all_mbti() if x["type"] != info["type"]]
+    return render_template("mbti_detail.html", info=info, best=best, others=others)
+
+
+# ─────────────────────────────────────────────────────────────────
 # RSS 피드 — 일일 운세 + 60갑자 일주별 풀이
 # 외부 어그리게이터/리더에 노출 → 자연 트래픽 유입
 # ─────────────────────────────────────────────────────────────────
@@ -1460,6 +1533,23 @@ def sitemap():
             f"<url><loc>{base}/dream/{_d[0]}</loc><lastmod>{today_iso}</lastmod>"
             f"<changefreq>monthly</changefreq><priority>0.7</priority></url>"
         )
+
+    # ─── 별자리·혈액형·MBTI (한국어 전용, 고볼륨 검색) ───
+    def _ko(path, prio="0.7", freq="monthly"):
+        return (f"<url><loc>{base}{path}</loc><lastmod>{today_iso}</lastmod>"
+                f"<changefreq>{freq}</changefreq><priority>{prio}</priority></url>")
+    from saju.horoscope import SIGNS as _SIGNS
+    from saju.personality import BLOOD_ORDER as _BO, MBTI_TYPES as _MT
+    items.append(_ko("/horoscope", "0.8", "weekly"))
+    for _s in _SIGNS:
+        items.append(_ko(f"/horoscope/{_s[0]}"))
+    items.append(_ko("/blood", "0.8", "weekly"))
+    items.append(_ko("/blood-compat", "0.7", "weekly"))
+    for _bt in _BO:
+        items.append(_ko(f"/blood/{_bt}"))
+    items.append(_ko("/mbti", "0.8", "weekly"))
+    for _mt in _MT:
+        items.append(_ko(f"/mbti/{_mt}"))
 
     # ─── 띠별 × 월별 운세 페이지 (long-tail SEO 폭발) ───
     # 2026년 + 2027년 × 12띠 × 12월 = 288 KR + 288 EN = 576 URLs

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}{{ info.name }} 성격·연애·궁합 — {{ info.headline }}{% endblock %}
+{% block description %}{{ info.name }} 성격: {{ info.headline }}. {{ info.personality[:70] }} 연애 스타일과 궁합까지.{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block jsonld_extra %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"{{ info.name }} 성격과 궁합","inLanguage":"ko-KR","mainEntityOfPage":"{{ request.url }}","publisher":{"@id":"{{ request.url_root }}#org"}}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb"><a href="{{ url_for('blood_index') }}">혈액형</a></p>
+    <h1>{{ info.name }}</h1>
+    <p class="lead">{{ info.headline }}</p>
+  </div>
+</section>
+
+<article class="article container narrow">
+  <h2>{{ info.name }} 성격</h2>
+  <p>{{ info.personality }}</p>
+
+  <h2>연애 스타일</h2>
+  <p>{{ info.love }}</p>
+
+  {% if ADFIT_SLOT_MEDIUM %}
+  <div class="adfit-container adfit-medium">
+    <p class="ad-label">{{ t('ad_label') }}</p>
+    <ins class="kakao_ad_area" style="display:none;" data-ad-unit="{{ ADFIT_SLOT_MEDIUM }}" data-ad-width="300" data-ad-height="250"></ins>
+  </div>
+  {% endif %}
+
+  <h2>직업·적성</h2>
+  <p>{{ info.work }}</p>
+
+  <h2>강점과 약점</h2>
+  <ul class="bullet-list">
+    <li><strong>강점</strong> — {{ info.strength }}</li>
+    <li><strong>약점</strong> — {{ info.weakness }}</li>
+  </ul>
+
+  <h2>{{ info.name }} 궁합</h2>
+  <p>가장 잘 맞는 혈액형: <strong>{{ info.best }}</strong> — {{ info.best_why }}</p>
+  <p style="margin-top:1rem"><a href="{{ url_for('blood_compat_page', a=bt) }}" class="link-button">{{ info.name }} 궁합 자세히 보기</a></p>
+
+  <div class="dream-cta-box">
+    <h3>혈액형 4가지 vs 사주 60가지</h3>
+    <p>더 정밀한 성격 분석은 사주 일주에서. 무료로 내 일주를 확인해보세요.</p>
+    <a href="{{ url_for('index') }}" class="link-button">내 사주 무료로 보기</a>
+  </div>
+
+  <h2>다른 혈액형</h2>
+  <div class="related-dreams">
+    {% for o in order %}{% if o != bt %}
+    <a href="{{ url_for('blood_detail', bt=o) }}" class="related-dream-chip">{{ all_types[o].name }}</a>
+    {% endif %}{% endfor %}
+  </div>
+</article>
+
+<section class="section alt">
+  <div class="container narrow">
+    <p class="disclaimer">혈액형 성격론은 과학적 근거가 입증되지 않은 대중 심리로, 재미로 즐겨주세요.</p>
+  </div>
+</section>
+{% endblock %}
