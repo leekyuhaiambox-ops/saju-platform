@@ -43,8 +43,16 @@ from saju.detail_pages import (
 import threading
 import subprocess
 
+from saju import analytics
+
 # ─── 외부 cron용 웹훅 시크릿 ─────────────────────────
 CRON_SECRET = os.environ.get("CRON_SECRET", "")
+# ─── 관리자 대시보드 시크릿 (환경변수 없으면 기본값) ───
+ADMIN_SECRET = os.environ.get("ADMIN_SECRET", "saju2026admin")
+# ─── 쿠팡 파트너스 ID (가입 후 환경변수로 주입) ───
+COUPANG_PARTNERS_ID = os.environ.get("COUPANG_PARTNERS_ID", "")
+# ─── 후원/프리미엄 활성 여부 ───
+from saju.support import get_support_links, PREMIUM_FEATURES, PREMIUM_PRICE
 
 
 app = Flask(__name__)
@@ -66,6 +74,17 @@ def _detect_lang():
         g.lang = "en"
     else:
         g.lang = "ko"
+    # 방문자 분석 기록 (실패해도 서비스 영향 X)
+    try:
+        analytics.record(
+            path=p,
+            referer=request.headers.get("Referer", ""),
+            user_agent=request.headers.get("User-Agent", ""),
+            lang=g.lang,
+            query_string=request.query_string.decode("utf-8", errors="replace"),
+        )
+    except Exception:
+        pass
 
 
 @app.after_request
@@ -425,6 +444,7 @@ def inject_globals():
         "STEM_EN": STEM_EN,
         "BRANCH_EN": BRANCH_EN,
         "ELEMENT_NAMES_EN": ELEMENT_NAMES_EN,
+        "support_links": get_support_links(),
     }
 
 
@@ -526,6 +546,13 @@ def result():
                 f"is in '{TWELVE_STAGE_EN.get(saju.twelve_stages['day'], '')[:30]}…' state at the day branch."
             )
 
+        # 쿠팡 파트너스 추천 (오행 기준, 한국어만)
+        coupang_rec = None
+        if not is_en:
+            from saju.coupang import get_element_recommendations
+            coupang_rec = get_element_recommendations(
+                saju.day_master_element, COUPANG_PARTNERS_ID, sub_id="result")
+
         return render_template("result.html",
                                saju=saju,
                                interp=interp,
@@ -534,7 +561,8 @@ def result():
                                stems_kr=D.HEAVENLY_STEMS_KR,
                                branches_kr=D.EARTHLY_BRANCHES_KR,
                                stems_hanja=D.HEAVENLY_STEMS,
-                               branches_hanja=D.EARTHLY_BRANCHES)
+                               branches_hanja=D.EARTHLY_BRANCHES,
+                               coupang_rec=coupang_rec)
     except (ValueError, KeyError) as e:
         err = f"Invalid input: {e}" if is_en else f"입력 형식이 올바르지 않습니다: {e}"
         return render_template("result.html", error=err)
@@ -600,12 +628,18 @@ def today_fortune(date_str=None):
     yesterday = target - timedelta(days=1)
     tomorrow = target + timedelta(days=1)
     # 띠별 일일 키워드 12개 (간략)
+    coupang_rec = None
+    if g.lang != "en":
+        from saju.coupang import get_element_recommendations
+        coupang_rec = get_element_recommendations(
+            fortune.get("day_element", ""), COUPANG_PARTNERS_ID, sub_id="today")
     return render_template("today.html",
                            fortune=fortune,
                            target=target,
                            yesterday=yesterday.isoformat(),
                            tomorrow=tomorrow.isoformat(),
-                           zodiac_traits=ZODIAC_TRAITS)
+                           zodiac_traits=ZODIAC_TRAITS,
+                           coupang_rec=coupang_rec)
 
 
 # ─────────────────────────────────────────────────────────────────
@@ -652,9 +686,17 @@ def zodiac_detail(name):
 @app.route("/en/compatibility", methods=["GET", "POST"])
 def compatibility_page():
     if request.method == "GET":
+        # 결과 페이지에서 넘어온 본인 정보 prefill (바이럴 루프)
+        prefill = {
+            "name": request.args.get("p1_name", "")[:30],
+            "gender": request.args.get("p1_gender", ""),
+            "birth_date": request.args.get("p1_birth_date", ""),
+            "birth_time": request.args.get("p1_birth_time", ""),
+        }
         return render_template("compatibility.html",
                                today=date.today().isoformat(),
-                               max_date=date.today().isoformat())
+                               max_date=date.today().isoformat(),
+                               prefill=prefill)
     try:
         p1 = {
             "name": request.form.get("p1_name", "").strip()[:30],
@@ -959,6 +1001,42 @@ def cron_webhook(task):
         _run_in_thread(_all)
         return jsonify({"ok": True, "task": "all", "scheduled": True})
     return jsonify({"ok": False, "error": f"Unknown task: {task}"}), 400
+
+
+# ─────────────────────────────────────────────────────────────────
+# 관리자 방문자 분석 대시보드 — /admin/stats?key=SECRET
+# ─────────────────────────────────────────────────────────────────
+@app.route("/admin/stats")
+def admin_stats():
+    if request.args.get("key", "") != ADMIN_SECRET:
+        abort(403)
+    try:
+        days = int(request.args.get("days", 14))
+    except ValueError:
+        days = 14
+    days = max(1, min(90, days))
+    data = analytics.summary(days)
+    if request.args.get("format") == "json":
+        return jsonify(data)
+    return render_template("admin_stats.html", stats=data)
+
+
+# ─────────────────────────────────────────────────────────────────
+# 프리미엄 심층 리포트 안내 (PG 결제 붙이면 활성, 지금은 출시 알림)
+# ─────────────────────────────────────────────────────────────────
+@app.route("/premium")
+@app.route("/en/premium")
+def premium():
+    return render_template("premium.html",
+                           features=PREMIUM_FEATURES,
+                           price=PREMIUM_PRICE)
+
+
+# 후원 페이지
+@app.route("/support")
+@app.route("/en/support")
+def support_page():
+    return render_template("support.html")
 
 
 # ─────────────────────────────────────────────────────────────────

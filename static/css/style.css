@@ -783,3 +783,76 @@ em { font-style: normal; color: var(--text-mute); font-size: .88em; font-weight:
   }
 }
 
+
+/* ─── 쿠팡 파트너스 추천 ─────────────────────── */
+.coupang-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.coupang-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.2rem;
+  text-decoration: none;
+  color: var(--text);
+  transition: transform .15s, border-color .15s;
+  display: flex;
+  flex-direction: column;
+}
+.coupang-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  color: var(--text);
+}
+.coupang-label {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--accent-2);
+  margin-bottom: .4rem;
+}
+.coupang-why {
+  font-size: .85rem;
+  color: var(--text-dim);
+  flex: 1;
+  line-height: 1.4;
+}
+.coupang-cta {
+  margin-top: .8rem;
+  font-size: .82rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+.coupang-disclosure {
+  font-size: .72rem;
+  color: var(--text-mute);
+  text-align: center;
+  margin-top: 1rem;
+  line-height: 1.5;
+}
+
+/* ─── 바이럴 궁합 배너 ─────────────────────── */
+.viral-compat-banner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: linear-gradient(135deg, rgba(208,74,74,0.18), rgba(218,165,32,0.14));
+  border: 2px solid var(--accent-3);
+  border-radius: 16px;
+  padding: 1.1rem 1.4rem;
+  text-decoration: none;
+  color: var(--text);
+  transition: transform .15s, box-shadow .15s;
+}
+.viral-compat-banner:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(218,165,32,0.28);
+  color: var(--text);
+}
+.viral-compat-emoji { font-size: 2.2rem; line-height: 1; }
+.viral-compat-text { flex: 1; display: flex; flex-direction: column; gap: .25rem; }
+.viral-compat-text strong { font-size: 1.1rem; color: var(--accent-2); }
+.viral-compat-text span { font-size: .85rem; color: var(--text-dim); }
+.viral-compat-arrow { font-size: 1.6rem; color: var(--accent); font-weight: 900; }

@@ -26,25 +26,25 @@
 
     <div class="couple-grid">
       <div class="person-block">
-        <h3>첫 번째 사람</h3>
+        <h3>{% if prefill and prefill.birth_date %}나 (입력됨){% else %}첫 번째 사람{% endif %}</h3>
         <label class="field">
           <span class="field-label">이름 <em>(선택)</em></span>
-          <input type="text" name="p1_name" maxlength="30" autocomplete="off">
+          <input type="text" name="p1_name" maxlength="30" autocomplete="off" value="{{ prefill.name if prefill else '' }}">
         </label>
         <fieldset class="field">
           <legend class="field-label">성별</legend>
           <div class="radio-group">
-            <label class="radio"><input type="radio" name="p1_gender" value="남" checked><span>남</span></label>
-            <label class="radio"><input type="radio" name="p1_gender" value="여"><span>여</span></label>
+            <label class="radio"><input type="radio" name="p1_gender" value="남" {% if not prefill or prefill.gender != '여' %}checked{% endif %}><span>남</span></label>
+            <label class="radio"><input type="radio" name="p1_gender" value="여" {% if prefill and prefill.gender == '여' %}checked{% endif %}><span>여</span></label>
           </div>
         </fieldset>
         <label class="field">
           <span class="field-label">생년월일 <em>(양력)</em></span>
-          <input type="date" name="p1_birth_date" required min="1900-01-01" max="{{ max_date }}">
+          <input type="date" name="p1_birth_date" required min="1900-01-01" max="{{ max_date }}" value="{{ prefill.birth_date if prefill else '' }}">
         </label>
         <label class="field">
           <span class="field-label">출생 시각 <em>(선택)</em></span>
-          <input type="time" name="p1_birth_time">
+          <input type="time" name="p1_birth_time" value="{{ prefill.birth_time if prefill else '' }}">
         </label>
       </div>
 

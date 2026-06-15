@@ -6,6 +6,9 @@
 # 구독자 이메일은 비공개 데이터
 .subscribers.txt
 
+# 방문자 분석 로그 (비공개)
+_analytics/
+
 # ─── Python ───
 __pycache__/
 *.pyc

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}후원하기 — 사주명리 무료 운영 응원{% endblock %}
+{% block description %}사주명리는 광고 외엔 무료로 운영됩니다. 도움이 되셨다면 커피 한 잔으로 응원해주세요.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">후원</p>
+    <h1>이 사이트가 도움이 되셨나요?</h1>
+    <p class="lead">사주명리는 누구나 무료로 쓸 수 있도록 운영됩니다. 커피 한 잔의 응원이 큰 힘이 됩니다.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container narrow" style="text-align:center;">
+    {% if support_links and support_links.active %}
+    <div style="display:flex;flex-direction:column;gap:1rem;max-width:360px;margin:0 auto;">
+      {% for link in support_links.links %}
+      <a href="{{ link.url }}" target="_blank" rel="noopener"
+         class="link-button" style="background:{{ link.color }};color:{{ link.color_text|default('#fff') }};padding:1rem;font-size:1.05rem;">
+        {{ link.emoji }} {{ link.label }}
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="muted">후원 채널이 곧 열립니다.</p>
+    {% endif %}
+
+    <div style="margin-top:2.5rem;padding:1.5rem;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;">
+      <h3 style="color:var(--accent-2);">후원금은 이렇게 쓰입니다</h3>
+      <ul class="bullet-list" style="text-align:left;display:inline-block;">
+        <li>서버 운영비 (더 빠른 사주 계산)</li>
+        <li>새로운 기능 개발 (월별 운세, 신살 분석 등)</li>
+        <li>광고 없는 깔끔한 환경 유지 노력</li>
+      </ul>
+    </div>
+
+    <p style="margin-top:2rem;">
+      <a href="{{ '/en/' if lang == 'en' else '/' }}" class="link-button secondary">내 사주 보러 가기</a>
+    </p>
+  </div>
+</section>
+{% endblock %}

@@ -24,12 +24,17 @@ def submit_indexnow():
         base + f"/today/{(today + timedelta(days=1)).isoformat()}",
         base + "/weekly",
         base + "/monthly",
+        base + "/compatibility",
+        base + f"/yearly/{today.year}",
         base + "/en/",
         base + "/en/today",
         base + f"/en/today/{today.isoformat()}",
         base + "/feed.xml",
         base + "/en/feed.xml",
     ]
+    # 띠별 운세 12개 (고볼륨 한국어 키워드) 매일 색인 갱신
+    for z in ["쥐", "소", "호랑이", "토끼", "용", "뱀", "말", "양", "원숭이", "닭", "개", "돼지"]:
+        urls.append(base + "/zodiac/" + parse.quote(z))
     return submit_urls(HOST, urls)
 
 

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-{% block title %}{{ SITE_NAME }} — {% if lang == 'en' %}Free Authentic Saju Reading{% else %}무료 정통 사주 풀이{% endif %}{% endblock %}
-{% block description %}{% if lang == 'en' %}Enter your birth date and time for a precise reading of the Four Pillars, Ten Gods, Twelve Life Stages, and Five Elements — 1,800 years of East Asian wisdom, free.{% else %}생년월일시만 입력하면 1,800년 동양철학 사주명리학으로 사기둥·십신·십이운성·오행을 정밀하게 풀어드립니다. 완전 무료.{% endif %}{% endblock %}
+{% block title %}{% if lang == 'en' %}Free Saju (Korean Astrology) Reading — Day Pillar, Ten Gods, Five Elements{% else %}무료 사주 보기 — 사주풀이·오늘의 운세·일주·궁합 무료{% endif %}{% endblock %}
+{% block description %}{% if lang == 'en' %}Free, accurate Korean Saju (four-pillar / BaZi) reading. Enter your birth date and time for Day Master, Ten Gods, Twelve Stages, Five Elements, and 100-year luck flow. No signup.{% else %}무료 사주 보기 — 생년월일시만 입력하면 정통 사주풀이를 즉시 무료로. 일주·오행·십신·십이운성·대운·오늘의 운세·궁합까지 회원가입 없이 한 번에 확인하세요.{% endif %}{% endblock %}
 {% block jsonld_extra %}
 {% if lang == 'en' %}
 <script type="application/ld+json">

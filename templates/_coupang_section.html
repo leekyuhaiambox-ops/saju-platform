@@ -1,0 +1,19 @@
+{# 쿠팡 파트너스 추천 섹션 partial — coupang_rec 변수 필요 #}
+{% if coupang_rec and coupang_rec.active %}
+<section class="section">
+  <div class="container narrow">
+    <h2 class="section-title">{% if coupang_rec.element %}{{ coupang_rec.element }} 기운을 채우는 추천{% else %}함께 보면 좋은 아이템{% endif %}</h2>
+    <p class="section-sub">사주 결과에 어울리는 아이템을 골라봤어요.</p>
+    <div class="coupang-grid">
+      {% for item in coupang_rec.items %}
+      <a class="coupang-card" href="{{ item.url }}" target="_blank" rel="noopener sponsored nofollow">
+        <div class="coupang-label">{{ item.label }}</div>
+        <div class="coupang-why">{{ item.why }}</div>
+        <div class="coupang-cta">쿠팡에서 보기 →</div>
+      </a>
+      {% endfor %}
+    </div>
+    <p class="coupang-disclosure">{{ coupang_rec.disclosure }}</p>
+  </div>
+</section>
+{% endif %}

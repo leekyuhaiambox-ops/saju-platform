@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}프리미엄 심층 사주 리포트 — 12개월 운세·연애·직업·재물{% endblock %}
+{% block description %}무료 사주를 넘어선 심층 분석. 12개월 월별 운세, 연애·직업·재물운, 신살 전체 분석을 PDF로. 출시 알림 신청.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">프리미엄 리포트</p>
+    <h1>프리미엄 심층 사주 리포트</h1>
+    <p class="lead">무료 풀이로 맛봤다면, 이제 1년 전체를 깊이 들여다볼 시간.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container narrow">
+    <div class="feature-grid">
+      {% for f in features %}
+      <div class="feature">
+        <div class="feature-icon">{{ f.icon }}</div>
+        <h3>{{ f.title }}</h3>
+        <p>{{ f.desc }}</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="day-master-card" style="margin:2.5rem auto;max-width:420px;text-align:center;">
+      <p class="day-master-label">프리미엄 리포트</p>
+      <p class="day-master-stem" style="font-size:2.2rem;">₩{{ price }}</p>
+      <p class="muted">1회 결제 · PDF 영구 소장</p>
+    </div>
+
+    {# 출시 알림 신청 (결제 PG 붙기 전) #}
+    <div class="saju-form" style="max-width:480px;margin:0 auto;">
+      <h2 style="text-align:center;">출시 알림 신청</h2>
+      <p style="text-align:center;color:var(--text-dim);font-size:.9rem;margin-bottom:1.2rem;">
+        프리미엄 리포트가 준비되면 가장 먼저 알려드릴게요. (출시 기념 할인 예정)
+      </p>
+      <form id="premiumNotify" onsubmit="return submitNotify(event)">
+        <label class="field">
+          <input type="email" name="email" required placeholder="이메일 주소"
+                 style="width:100%;padding:.8rem;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:8px;">
+        </label>
+        <button type="submit" class="cta-button">
+          <span class="cta-main">출시 알림 받기</span>
+        </button>
+      </form>
+      <p id="notifyMsg" style="text-align:center;margin-top:1rem;color:var(--accent);display:none;"></p>
+    </div>
+  </div>
+</section>
+
+{% include "_coupang_section.html" %}
+
+{% block scripts %}
+<script>
+function submitNotify(e){
+  e.preventDefault();
+  var email = e.target.email.value;
+  fetch('/api/subscribe', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({email: email, source: 'premium_waitlist'})
+  }).then(r=>r.json()).then(d=>{
+    var msg = document.getElementById('notifyMsg');
+    msg.style.display='block';
+    msg.textContent = d.ok ? '✓ 신청 완료! 출시되면 알려드릴게요.' : '오류가 발생했어요. 다시 시도해주세요.';
+    if(d.ok) e.target.reset();
+  });
+  return false;
+}
+</script>
+{% endblock %}
+{% endblock %}

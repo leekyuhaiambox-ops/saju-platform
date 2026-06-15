@@ -319,11 +319,29 @@
     {% set day_idx_calc = namespace(v=0) %}
     {% for i in range(60) %}{% if i % 10 == saju.day_pillar.stem and i % 12 == saju.day_pillar.branch %}{% set day_idx_calc.v = i %}{% endif %}{% endfor %}
     <a href="{{ lang_prefix }}/sixty-pillars/{{ day_idx_calc.v }}" class="link-button">{{ t('btn_pillar_detail') }}</a>
-    <a href="{{ lang_prefix }}/compatibility" class="link-button secondary">{{ t('btn_compatibility') }}</a>
     <a href="{{ lang_prefix }}/today" class="link-button secondary">{{ t('btn_today_fortune') }}</a>
     <a href="{{ lang_prefix }}/" class="link-button secondary">{{ t('btn_other_saju') }}</a>
   </div>
 </section>
+
+{# ─── 강력 바이럴 후크: 친구와 궁합 (본인 정보 prefill) ─── #}
+{% if not error and saju %}
+<section class="section" style="padding-top:0;">
+  <div class="container narrow">
+    {% set compat_prefill = '?p1_name=' ~ (saju.name or '나')|urlencode ~ '&p1_gender=' ~ saju.gender|urlencode ~ '&p1_birth_date=' ~ '%04d-%02d-%02d'|format(saju.year, saju.month, saju.day) ~ ('&p1_birth_time=%02d:%02d'|format(saju.hour, saju.minute) if not unknown_hour else '') %}
+    <a href="{{ lang_prefix }}/compatibility{{ compat_prefill }}" class="viral-compat-banner">
+      <div class="viral-compat-emoji">💞</div>
+      <div class="viral-compat-text">
+        <strong>{% if lang == 'en' %}Check compatibility with someone{% else %}좋아하는 사람과 궁합 보기{% endif %}</strong>
+        <span>{% if lang == 'en' %}Your info is ready — just add theirs{% else %}내 정보는 입력됨 · 상대 생년월일만 추가하면 끝{% endif %}</span>
+      </div>
+      <div class="viral-compat-arrow">→</div>
+    </a>
+  </div>
+</section>
+{% endif %}
+
+{% include "_coupang_section.html" %}
 
 <section class="section alt">
   <div class="container narrow">

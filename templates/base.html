@@ -244,6 +244,8 @@
           <a href="{{ p }}/about">{{ t('footer_link_about') }}</a>
           <a href="{{ p }}/privacy">{{ t('footer_link_privacy') }}</a>
           <a href="{{ p }}/terms">{{ t('footer_link_terms') }}</a>
+          {% if lang != 'en' %}<a href="/premium">⭐ 프리미엄 리포트</a>{% endif %}
+          {% if support_links and support_links.active %}<a href="{{ p }}/support">{% if lang == 'en' %}☕ Support{% else %}☕ 후원하기{% endif %}</a>{% endif %}
         </div>
       </div>
       <p class="copyright">© {{ current_year }} {{ SITE_NAME }}. {{ t('footer_copyright') }}</p>
