@@ -51,6 +51,24 @@ jobs:
           # ─── Dev.to ───
           DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
 
+          # ─── Bluesky (AT Protocol, 봇 공식 허용) ───
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+
+          # ─── 텔레그램 채널 ───
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
+
+          # ─── Pinterest ───
+          PINTEREST_ACCESS_TOKEN: ${{ secrets.PINTEREST_ACCESS_TOKEN }}
+          PINTEREST_BOARD_ID: ${{ secrets.PINTEREST_BOARD_ID }}
+
+          # ─── Reddit (계정 숙성 후) ───
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+          REDDIT_USERNAME: ${{ secrets.REDDIT_USERNAME }}
+          REDDIT_PASSWORD: ${{ secrets.REDDIT_PASSWORD }}
+
           # ─── 공통 ───
           SITE_URL: https://tarofortune.pythonanywhere.com
           SITE_HOST: tarofortune.pythonanywhere.com
@@ -61,7 +79,7 @@ jobs:
         run: |
           git config user.name "tarofortune-bot"
           git config user.email "bot@tarofortune.pythonanywhere.com"
-          git add .lemmy_state.json .mastodon_state.json .devto_state.json 2>/dev/null || true
+          git add .lemmy_state.json .mastodon_state.json .devto_state.json .bluesky_state.json .telegram_state.json .pinterest_state.json 2>/dev/null || true
           if ! git diff --cached --quiet; then
             git commit -m "chore: bot state $(date -u +%Y-%m-%dT%H:%M:%SZ)"
             git push

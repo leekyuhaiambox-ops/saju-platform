@@ -54,6 +54,22 @@ def main():
     if os.environ.get("TISTORY_ACCESS_TOKEN") and os.environ.get("TISTORY_BLOG_NAME"):
         run_safely("Tistory", lambda: __import__("tistory_bot").run_daily())
 
+    # 7. Bluesky (AT Protocol, 봇 공식 허용)
+    if os.environ.get("BLUESKY_HANDLE") and os.environ.get("BLUESKY_APP_PASSWORD"):
+        run_safely("Bluesky", lambda: __import__("bluesky_bot").run_daily())
+
+    # 8. 텔레그램 채널
+    if os.environ.get("TELEGRAM_BOT_TOKEN") and os.environ.get("TELEGRAM_CHANNEL"):
+        run_safely("Telegram", lambda: __import__("telegram_bot").run_daily())
+
+    # 9. Pinterest (에버그린 시각 트래픽)
+    if os.environ.get("PINTEREST_ACCESS_TOKEN") and os.environ.get("PINTEREST_BOARD_ID"):
+        run_safely("Pinterest", lambda: __import__("pinterest_bot").run_daily())
+
+    # 10. Reddit (계정 숙성 후)
+    if os.environ.get("REDDIT_CLIENT_ID") and os.environ.get("REDDIT_USERNAME"):
+        run_safely("Reddit", lambda: __import__("reddit_bot").run_daily())
+
     print("\n=== done ===")
 
 
