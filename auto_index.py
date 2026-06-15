@@ -35,6 +35,11 @@ def submit_indexnow():
     # 띠별 운세 12개 (고볼륨 한국어 키워드) 매일 색인 갱신
     for z in ["쥐", "소", "호랑이", "토끼", "용", "뱀", "말", "양", "원숭이", "닭", "개", "돼지"]:
         urls.append(base + "/zodiac/" + parse.quote(z))
+    # 꿈해몽 인덱스 + 고볼륨 꿈 (돼지/똥/용 등)
+    urls.append(base + "/dream")
+    for slug in ["pig", "feces", "dragon", "snake", "teeth", "poo_lottery",
+                 "poop_step", "money", "death", "blood"]:
+        urls.append(base + "/dream/" + slug)
     return submit_urls(HOST, urls)
 
 

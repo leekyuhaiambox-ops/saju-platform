@@ -856,3 +856,42 @@ em { font-style: normal; color: var(--text-mute); font-size: .88em; font-weight:
 .viral-compat-text strong { font-size: 1.1rem; color: var(--accent-2); }
 .viral-compat-text span { font-size: .85rem; color: var(--text-dim); }
 .viral-compat-arrow { font-size: 1.6rem; color: var(--accent); font-weight: 900; }
+
+/* ─── 꿈해몽 ─────────────────────── */
+.dream-fortune-badge {
+  display: inline-block;
+  margin-top: .8rem;
+  padding: .4rem 1rem;
+  background: var(--accent);
+  color: #1a0f2e;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: .9rem;
+}
+.dream-cta-box {
+  background: var(--bg-card);
+  border: 1px solid var(--accent-3);
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  text-align: center;
+}
+.dream-cta-box h3 { color: var(--accent-2); margin-bottom: .6rem; }
+.dream-cta-box p { color: var(--text-dim); margin-bottom: 1rem; }
+.related-dreams {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: 1rem;
+}
+.related-dream-chip {
+  padding: .5rem .9rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: .9rem;
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color .15s;
+}
+.related-dream-chip:hover { border-color: var(--accent); color: var(--accent-2); }

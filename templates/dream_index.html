@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}꿈해몽 — 돼지꿈·똥꿈·용꿈 등 60가지 꿈 풀이 (무료){% endblock %}
+{% block description %}돼지꿈, 똥꿈, 용꿈, 이빨 빠지는 꿈, 뱀꿈 등 자주 꾸는 꿈 60가지의 길흉과 의미를 무료로 풀이합니다. 로또·재물·태몽 해몽.{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block jsonld_extra %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"CollectionPage","name":"꿈해몽 사전","inLanguage":"ko-KR","mainEntityOfPage":"{{ request.url }}","publisher":{"@id":"{{ request.url_root }}#org"}}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">꿈해몽</p>
+    <h1>꿈해몽 사전</h1>
+    <p class="lead">간밤에 꾼 꿈, 무슨 의미일까요? 자주 꾸는 꿈 60가지의 길흉과 풀이를 모았습니다.</p>
+  </div>
+</section>
+
+<section class="container">
+  <div class="pillar-grid">
+    {% for dr in dreams %}
+    <a class="pillar-tile" href="{{ url_for('dream_detail', slug=dr.slug) }}">
+      <div class="pillar-tile-name">{{ dr.title }}</div>
+      <div class="pillar-tile-headline">{{ dr.summary }}</div>
+      <div class="pillar-tile-element">{{ dr.fortune }}</div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+{% if ADFIT_SLOT_SQUARE %}
+<div class="adfit-container adfit-square">
+  <p class="ad-label">{{ t('ad_label') }}</p>
+  <ins class="kakao_ad_area" style="display:none;" data-ad-unit="{{ ADFIT_SLOT_SQUARE }}" data-ad-width="250" data-ad-height="250"></ins>
+</div>
+{% endif %}
+
+<section class="section alt">
+  <div class="container narrow">
+    <h2 class="section-title">꿈도 보고, 사주도 보고</h2>
+    <p>꿈은 그날의 메시지, 사주는 평생의 청사진입니다. 본인 사주도 무료로 확인해보세요.</p>
+    <p style="text-align:center"><a href="{{ url_for('index') }}" class="link-button">내 사주 무료로 보기</a></p>
+  </div>
+</section>
+{% endblock %}

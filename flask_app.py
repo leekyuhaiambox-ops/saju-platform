@@ -1040,6 +1040,30 @@ def support_page():
 
 
 # ─────────────────────────────────────────────────────────────────
+# 꿈해몽 — 한국 검색량 최상위 (돼지꿈/똥꿈/용꿈 등)
+# ─────────────────────────────────────────────────────────────────
+@app.route("/dream")
+def dream_index():
+    from saju.dream import all_dreams
+    return render_template("dream_index.html", dreams=all_dreams())
+
+
+@app.route("/dream/<slug>")
+def dream_detail(slug):
+    from saju.dream import get_dream, all_dreams
+    d = get_dream(slug)
+    if not d:
+        abort(404)
+    # 관련 꿈 (같지 않은 것 6개)
+    related = [x for x in all_dreams() if x["slug"] != slug][:6]
+    coupang_rec = None
+    from saju.coupang import get_general_recommendations
+    coupang_rec = get_general_recommendations(COUPANG_PARTNERS_ID, sub_id="dream")
+    return render_template("dream_detail.html", d=d, related=related,
+                           coupang_rec=coupang_rec)
+
+
+# ─────────────────────────────────────────────────────────────────
 # RSS 피드 — 일일 운세 + 60갑자 일주별 풀이
 # 외부 어그리게이터/리더에 노출 → 자연 트래픽 유입
 # ─────────────────────────────────────────────────────────────────
@@ -1424,6 +1448,18 @@ def sitemap():
     for guide_slug in ["saju-free", "what-is-day-pillar", "saju-vs-mbti",
                         "today-luck", "saju-for-beginners"]:
         items.append(emit(f"/guide/{guide_slug}", "0.8", "monthly"))
+
+    # ─── 꿈해몽 (한국어 전용, 고볼륨 검색) ───
+    from saju.dream import DREAMS as _DREAMS
+    items.append(
+        f"<url><loc>{base}/dream</loc><lastmod>{today_iso}</lastmod>"
+        f"<changefreq>weekly</changefreq><priority>0.8</priority></url>"
+    )
+    for _d in _DREAMS:
+        items.append(
+            f"<url><loc>{base}/dream/{_d[0]}</loc><lastmod>{today_iso}</lastmod>"
+            f"<changefreq>monthly</changefreq><priority>0.7</priority></url>"
+        )
 
     # ─── 띠별 × 월별 운세 페이지 (long-tail SEO 폭발) ───
     # 2026년 + 2027년 × 12띠 × 12월 = 288 KR + 288 EN = 576 URLs
