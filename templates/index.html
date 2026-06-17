@@ -135,6 +135,58 @@
   </div>
 </section>
 
+<section class="content-section">
+  <div class="container">
+    {% set p = '/en' if lang == 'en' else '' %}
+    <h2 class="section-title">{% if lang == 'en' %}More free readings{% else %}더 많은 무료 운세{% endif %}</h2>
+    <div class="pillar-grid">
+      <a class="pillar-tile" href="{{ p }}/tarot">
+        <div class="pillar-tile-name">🔮</div>
+        <div class="pillar-tile-headline">{% if lang == 'en' %}Tarot{% else %}타로카드{% endif %}</div>
+        <div class="pillar-tile-element">{% if lang == 'en' %}78 cards + daily draw{% else %}78장 의미 + 오늘의 타로{% endif %}</div>
+      </a>
+      <a class="pillar-tile" href="{{ p }}/horoscope">
+        <div class="pillar-tile-name">♈</div>
+        <div class="pillar-tile-headline">{% if lang == 'en' %}Zodiac Horoscope{% else %}별자리 운세{% endif %}</div>
+        <div class="pillar-tile-element">{% if lang == 'en' %}All 12 star signs{% else %}12별자리 성격·궁합{% endif %}</div>
+      </a>
+      <a class="pillar-tile" href="{{ p }}/today">
+        <div class="pillar-tile-name">📅</div>
+        <div class="pillar-tile-headline">{% if lang == 'en' %}Today's Fortune{% else %}오늘의 운세{% endif %}</div>
+        <div class="pillar-tile-element">{% if lang == 'en' %}Daily by Day Master{% else %}매일 일진 풀이{% endif %}</div>
+      </a>
+      <a class="pillar-tile" href="{{ p }}/compatibility">
+        <div class="pillar-tile-name">💞</div>
+        <div class="pillar-tile-headline">{% if lang == 'en' %}Compatibility{% else %}궁합{% endif %}</div>
+        <div class="pillar-tile-element">{% if lang == 'en' %}Two-chart match{% else %}두 사람 사주 궁합{% endif %}</div>
+      </a>
+      {% if lang != 'en' %}
+      <a class="pillar-tile" href="/mbti">
+        <div class="pillar-tile-name">🧩</div>
+        <div class="pillar-tile-headline">MBTI 궁합</div>
+        <div class="pillar-tile-element">16유형 성격·궁합</div>
+      </a>
+      <a class="pillar-tile" href="/blood">
+        <div class="pillar-tile-name">🩸</div>
+        <div class="pillar-tile-headline">혈액형</div>
+        <div class="pillar-tile-element">A·B·O·AB 성격·궁합</div>
+      </a>
+      <a class="pillar-tile" href="/dream">
+        <div class="pillar-tile-name">🌙</div>
+        <div class="pillar-tile-headline">꿈해몽</div>
+        <div class="pillar-tile-element">돼지꿈·용꿈 등 해석</div>
+      </a>
+      {% else %}
+      <a class="pillar-tile" href="/en/sixty-pillars">
+        <div class="pillar-tile-name">🀄</div>
+        <div class="pillar-tile-headline">60 Day Pillars</div>
+        <div class="pillar-tile-element">All 60 archetypes</div>
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
 {% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_BOTTOM %}
 <div class="ad-container">
   <div class="container narrow">
