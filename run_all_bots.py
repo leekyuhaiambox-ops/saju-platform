@@ -19,7 +19,16 @@ if os.path.exists(env_file):
                 os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
 
 
+# multi-site-bot 워크플로우가 이미 담당하는 채널은 SKIP_CHANNELS로 중복 게시 방지.
+# 예: daily-bot.yml에서 SKIP_CHANNELS="lemmy,mastodon,devto" 설정 →
+#     daily-bot은 Bluesky/Telegram/Pinterest/Reddit만, multi-site는 Lemmy/Mastodon/Devto만.
+SKIP = {c.strip().lower() for c in os.environ.get("SKIP_CHANNELS", "").split(",") if c.strip()}
+
+
 def run_safely(label: str, fn):
+    if label.lower() in SKIP:
+        print(f"\n=== {label} === (SKIP_CHANNELS)")
+        return
     print(f"\n=== {label} ===")
     try:
         fn()
