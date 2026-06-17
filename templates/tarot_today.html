@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% set p = '/en' if en else '' %}
+{% set nm = card.en_name if en else card.ko_name %}
+{% set ori = (('Reversed' if en else '역방향') if rev else ('Upright' if en else '정방향')) %}
+{% set meaning = (card.rev_en if en else card.rev_ko) if rev else (card.up_en if en else card.up_ko) %}
+{% block title %}{% if en %}Today's Tarot Card — {{ today }}{% else %}오늘의 타로 — {{ today }}{% endif %} ({{ nm }}){% endblock %}
+{% block description %}{% if en %}Today's free tarot card: {{ nm }} ({{ ori }}). {{ meaning[:80] }}{% else %}오늘의 무료 타로 카드: {{ nm }} ({{ ori }}). {{ meaning[:80] }}{% endif %}{% endblock %}
+{% block og_type %}article{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb"><a href="{{ p }}/tarot">{% if en %}Tarot{% else %}타로{% endif %}</a></p>
+    <h1>{% if en %}Today's Tarot{% else %}오늘의 타로{% endif %}</h1>
+    <p class="lead">{{ today }}</p>
+  </div>
+</section>
+
+<article class="article container narrow">
+  <div class="day-master-card" style="max-width:460px;margin:1rem auto 2rem;text-align:center">
+    <p class="day-master-label">{{ ori }}</p>
+    <p class="day-master-stem" style="font-size:2rem">{{ nm }}</p>
+    <p class="muted">{{ card.kw_en if en else card.kw_ko }}</p>
+  </div>
+
+  <h2>{% if en %}What it means for you today{% else %}오늘 당신에게 주는 의미{% endif %}</h2>
+  <p>{{ meaning }}</p>
+
+  {% if ADFIT_SLOT_MEDIUM %}
+  <div class="adfit-container adfit-medium">
+    <p class="ad-label">{{ t('ad_label') }}</p>
+    <ins class="kakao_ad_area" style="display:none;" data-ad-unit="{{ ADFIT_SLOT_MEDIUM }}" data-ad-width="300" data-ad-height="250"></ins>
+  </div>
+  {% endif %}
+
+  <div class="dream-cta-box">
+    <h3>{% if en %}Go deeper than one card{% else %}카드 한 장보다 더 깊게{% endif %}</h3>
+    <p>{% if en %}See the full meaning of this card, or get a free Korean Saju reading based on your birth date and time.{% else %}이 카드의 전체 의미를 보거나, 생년월일시 기반 무료 사주 풀이를 받아보세요.{% endif %}</p>
+    <a href="{{ p }}/tarot/{{ card.slug }}" class="link-button">{% if en %}Full card meaning{% else %}이 카드 전체 의미{% endif %}</a>
+    <a href="{{ p }}/" class="link-button secondary">{% if en %}Free Saju reading{% else %}내 사주 보기{% endif %}</a>
+  </div>
+
+  <p class="muted" style="text-align:center">{% if en %}A new card appears every day. Come back tomorrow!{% else %}매일 새로운 카드가 나옵니다. 내일 또 확인하세요!{% endif %}</p>
+</article>
+{% endblock %}

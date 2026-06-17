@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% set p = '/en' if en else '' %}
+{% block title %}{% if en %}Free Tarot Card Meanings — All 78 Cards + Daily Card{% else %}타로카드 의미 — 78장 전체 해석 + 오늘의 타로 (무료){% endif %}{% endblock %}
+{% block description %}{% if en %}Free tarot card meanings for all 78 Rider-Waite cards, upright and reversed. Draw your free daily tarot card.{% else %}라이더-웨이트 타로 78장의 정방향·역방향 의미를 무료로. 오늘의 타로 한 장도 무료로 뽑아보세요.{% endif %}{% endblock %}
+{% block og_type %}website{% endblock %}
+{% block jsonld_extra %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"CollectionPage","name":"{% if en %}Tarot Card Meanings{% else %}타로카드 의미{% endif %}","inLanguage":"{{ 'en' if en else 'ko-KR' }}","mainEntityOfPage":"{{ request.url }}","publisher":{"@id":"{{ request.url_root }}#org"}}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">{% if en %}Tarot{% else %}타로{% endif %}</p>
+    <h1>{% if en %}Tarot Card Meanings{% else %}타로카드 의미{% endif %}</h1>
+    <p class="lead">{% if en %}All 78 cards, upright and reversed — and your free card of the day.{% else %}78장 전체의 정·역방향 의미와 오늘의 타로 한 장.{% endif %}</p>
+  </div>
+</section>
+
+<section class="container narrow">
+  <div class="dream-cta-box" style="text-align:center">
+    <p class="day-master-label">{% if en %}Your card of the day{% else %}오늘의 카드{% endif %}</p>
+    <p class="day-master-stem" style="font-size:1.8rem">{{ daily.en_name if en else daily.ko_name }}</p>
+    <p class="muted">{% if daily_rev %}{% if en %}Reversed{% else %}역방향{% endif %}{% else %}{% if en %}Upright{% else %}정방향{% endif %}{% endif %}</p>
+    <p>{{ (daily.rev_en if en else daily.rev_ko) if daily_rev else (daily.up_en if en else daily.up_ko) }}</p>
+    <a href="{{ p }}/tarot/today" class="link-button">{% if en %}See today's card in full{% else %}오늘의 타로 자세히 보기{% endif %}</a>
+  </div>
+</section>
+
+<section class="container">
+  <h2 class="section-title">{% if en %}Major Arcana (22){% else %}메이저 아르카나 (22장){% endif %}</h2>
+  <div class="pillar-grid">
+    {% for c in major %}
+    <a class="pillar-tile" href="{{ p }}/tarot/{{ c.slug }}">
+      <div class="pillar-tile-name">{{ c.num }}</div>
+      <div class="pillar-tile-headline">{{ c.en_name if en else c.ko_name }}</div>
+      <div class="pillar-tile-element">{{ c.kw_en if en else c.kw_ko }}</div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+{% if ADFIT_SLOT_SQUARE %}
+<div class="adfit-container adfit-square">
+  <p class="ad-label">{{ t('ad_label') }}</p>
+  <ins class="kakao_ad_area" style="display:none;" data-ad-unit="{{ ADFIT_SLOT_SQUARE }}" data-ad-width="250" data-ad-height="250"></ins>
+</div>
+{% endif %}
+
+<section class="container">
+  <h2 class="section-title">{% if en %}Minor Arcana (56){% else %}마이너 아르카나 (56장){% endif %}</h2>
+  <div class="related-dreams">
+    {% for s in suits %}
+    <a href="{{ p }}/tarot/ace-of-{{ s[0] }}" class="related-dream-chip">{{ s[2] if en else s[1] }} ({{ s[3] }})</a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container narrow">
+    <h2 class="section-title">{% if en %}Tarot + Saju: the full picture{% else %}타로에 사주를 더하면{% endif %}</h2>
+    <p>{% if en %}Tarot reads the energy of the moment; Korean Saju reads the blueprint of your whole life from your birth date and time. Try a free Saju reading too.{% else %}타로가 '지금 이 순간'의 기운을 본다면, 사주는 태어난 연·월·일·시로 인생 전체의 설계도를 봅니다. 무료 사주도 함께 확인해보세요.{% endif %}</p>
+    <p style="text-align:center"><a href="{{ p }}/" class="link-button">{% if en %}Get my free Saju reading{% else %}내 사주 무료로 보기{% endif %}</a></p>
+  </div>
+</section>
+{% endblock %}

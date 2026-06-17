@@ -42,6 +42,24 @@
     "tags": ["zodiac", "astrology", "horoscope", "zodiacsigns", "astrologymemes"]
   },
   {
+    "lang": "en",
+    "title": "Free tarot card meanings — all 78 cards",
+    "body": "I added a full Rider-Waite tarot reference to my astrology site: all 78 cards with upright and reversed meanings, plus a free daily card draw. Pull your card of the day and see what it says: https://tarofortune.pythonanywhere.com/en/tarot #tarot #tarotreading #tarotcards #dailytarot #divination",
+    "tags": ["tarot", "tarotreading", "tarotcards", "dailytarot", "divination"]
+  },
+  {
+    "lang": "en",
+    "title": "Draw your free tarot card of the day",
+    "body": "One card, drawn fresh each day, to reflect on the energy ahead — completely free, no signup. Upright or reversed, with a full meaning. And if you want a deeper read, try a Korean Saju chart from your birth date too. Today's card: https://tarofortune.pythonanywhere.com/en/tarot/today #tarot #dailytarot #tarotcommunity #astrology #divination",
+    "tags": ["tarot", "dailytarot", "tarotcommunity", "astrology", "divination"]
+  },
+  {
+    "lang": "kr",
+    "title": "오늘의 타로 한 장, 무료로 뽑아보세요",
+    "body": "타로 78장 전체 의미(정·역방향)와 매일 바뀌는 '오늘의 타로 한 장'을 무료로 추가했어요. 가입 없이 오늘 내 카드를 뽑고, 더 깊게는 생년월일 기반 사주까지 함께 볼 수 있습니다. 오늘의 타로: https://tarofortune.pythonanywhere.com/tarot/today #타로 #타로카드 #오늘의타로 #타로점 #사주",
+    "tags": ["타로", "타로카드", "오늘의타로", "타로점", "사주"]
+  },
+  {
     "lang": "kr",
     "title": "사주로 나의 삶의 단계를 이해해보세요",
     "body": "최근에 제 사주를 분석해보니, 각 인생 단계마다 겪는 어려움과 기회들이 정말 명확하게 보였어요. 나의 60주기와 오행이 어떻게 연결되는지 알게 되니, 앞으로의 방향이 한결 뚜렷해졌습니다. 여러분도 무료로 나만의 사주를 확인해보세요! https://tarofortune.pythonanywhere.com #사주 #인생단계 #한국점성술 #오행 #자기개발",

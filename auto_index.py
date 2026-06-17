@@ -56,6 +56,16 @@ def submit_indexnow():
                 "ENTP", "ISTJ", "ESTJ", "ESFJ", "ENFJ", "ENTJ", "INTP",
                 "ISFP", "ESTP"]:
         urls.append(base + "/mbti/" + _mt)
+    # 타로 — 인덱스·오늘의카드(매일 갱신)·메이저22 한·영
+    urls += [base + "/tarot", base + "/en/tarot",
+             base + "/tarot/today", base + "/en/tarot/today"]
+    try:
+        from saju.tarot import all_major as _maj
+        for _c in _maj():
+            urls.append(base + "/tarot/" + _c["slug"])
+            urls.append(base + "/en/tarot/" + _c["slug"])
+    except Exception:
+        pass
     return submit_urls(HOST, urls)
 
 

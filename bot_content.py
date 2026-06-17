@@ -12,6 +12,11 @@ from __future__ import annotations
 from saju.interpreter_en import DAY_PILLAR_INTERPRETATIONS_EN
 from saju.horoscope import SIGNS, get_sign_en
 
+try:
+    from saju import tarot as _tarot
+except Exception:
+    _tarot = None
+
 SIGN_SLUGS = [s[0] for s in SIGNS]
 
 SIGN_EMOJI = {
@@ -63,15 +68,37 @@ def zodiac_post(site_url: str, slug: str, limit: int = 300) -> str:
     return _clip(text, limit)
 
 
+def tarot_post(site_url: str, limit: int = 300) -> str:
+    """오늘의 타로 카드 — 영어권 #tarot 디스커버리 피드용. 날짜 결정론적."""
+    if _tarot is None:
+        return ""
+    card, rev = _tarot.daily_card()
+    url = f"{site_url}/en/tarot/today"
+    ori = "Reversed" if rev else "Upright"
+    meaning = (card["rev_en"] if rev else card["up_en"]).split(". ")[0].rstrip(".") + "."
+    tags = "#tarot #tarotreading #tarotcards #dailytarot #cartomancy #divination"
+    text = (f"🔮 Card of the day: {card['en_name']} ({ori})\n{meaning}\n\n"
+            f"Your free daily tarot → {url}\n\n{tags}")
+    if len(text) > limit:
+        text = f"🔮 {card['en_name']} ({ori})\n{url}\n\n{tags}"
+    return _clip(text, limit)
+
+
 def next_post(site_url: str, state: dict, limit: int = 300):
-    """state['count']에 따라 pillar/zodiac 교차 + 전체 순환 보장.
+    """state['count']에 따라 pillar/zodiac/tarot 3종 순환 + 전체 커버.
 
     반환: (text, kind, key)  — text가 ""이면 게시 스킵.
     """
     count = int(state.get("count", 0))
-    half = count // 2
-    if count % 2 == 1:
-        slug = SIGN_SLUGS[half % len(SIGN_SLUGS)]
+    cycle = count % 3
+    third = count // 3
+    if cycle == 1:
+        slug = SIGN_SLUGS[third % len(SIGN_SLUGS)]
         return zodiac_post(site_url, slug, limit), "zodiac", slug
-    idx = half % 60
+    if cycle == 2:
+        text = tarot_post(site_url, limit)
+        if text:
+            return text, "tarot", "today"
+        # 타로 불가 시 pillar로 폴백
+    idx = third % 60
     return pillar_post(site_url, idx, limit), "pillar", idx

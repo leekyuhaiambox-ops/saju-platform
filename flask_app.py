@@ -1149,6 +1149,45 @@ def mbti_detail(t):
 
 
 # ─────────────────────────────────────────────────────────────────
+# 타로 78장 — 사이트 명칭(타로사주)의 핵심 기능. 한·영. 오늘의 카드 추첨.
+# ─────────────────────────────────────────────────────────────────
+@app.route("/tarot")
+@app.route("/en/tarot")
+def tarot_index():
+    from saju import tarot
+    card, rev = tarot.daily_card()
+    en = (g.lang == "en")
+    return render_template("tarot_index.html", en=en,
+                           major=tarot.all_major(), suits=tarot.SUITS,
+                           daily=card, daily_rev=rev)
+
+
+@app.route("/tarot/today")
+@app.route("/en/tarot/today")
+def tarot_today():
+    from saju import tarot
+    card, rev = tarot.daily_card()
+    en = (g.lang == "en")
+    return render_template("tarot_today.html", en=en, card=card, rev=rev,
+                           today=date.today().isoformat())
+
+
+@app.route("/tarot/<slug>")
+@app.route("/en/tarot/<slug>")
+def tarot_detail(slug):
+    from saju import tarot
+    card = tarot.get_card(slug)
+    if not card:
+        abort(404)
+    en = (g.lang == "en")
+    if card["arcana"] == "minor":
+        siblings = [c for c in tarot.cards_by_suit(card["suit"]) if c["slug"] != slug]
+    else:
+        siblings = [c for c in tarot.all_major() if c["slug"] != slug]
+    return render_template("tarot_detail.html", en=en, card=card, siblings=siblings[:13])
+
+
+# ─────────────────────────────────────────────────────────────────
 # RSS 피드 — 일일 운세 + 60갑자 일주별 풀이
 # 외부 어그리게이터/리더에 노출 → 자연 트래픽 유입
 # ─────────────────────────────────────────────────────────────────
@@ -1565,6 +1604,16 @@ def sitemap():
     items.append(_hl("/horoscope", "0.8", "weekly"))
     for _s in _SIGNS:
         items.append(_hl(f"/horoscope/{_s[0]}"))
+
+    # ─── 타로 78장 (한·영 양쪽, hreflang) ───
+    from saju.tarot import DECK as _DECK
+    items.append(_ko("/tarot", "0.9", "weekly"))
+    items.append(_hl("/tarot", "0.9", "weekly"))
+    items.append(_ko("/tarot/today", "0.7", "daily"))
+    items.append(_hl("/tarot/today", "0.7", "daily"))
+    for _c in _DECK:
+        items.append(_ko(f"/tarot/{_c['slug']}"))
+        items.append(_hl(f"/tarot/{_c['slug']}"))
     items.append(_ko("/blood", "0.8", "weekly"))
     items.append(_ko("/blood-compat", "0.7", "weekly"))
     for _bt in _BO:
