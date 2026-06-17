@@ -111,6 +111,89 @@ DETAIL = {
 
 ELEMENT_KR = {"불": "Fire", "흙": "Earth", "공기": "Air", "물": "Water"}
 
+# 영문 요약 (Bluesky/Mastodon 등 영어권 디스커버리 피드 + /en/ 페이지용)
+# (personality, love, career, strength, weakness, best[], worst[])
+DETAIL_EN = {
+    "aries": {"personality": "Aries is the pioneer of the zodiac — bold, direct, and the first to leap into action. Courage and drive are your superpowers; impatience is the lesson.",
+              "love": "In love you go straight for what you want. You chase the spark, so a partner who keeps the romance fresh suits you best.",
+              "career": "Founders, athletes, sales, anything fast-moving and competitive lets you shine.",
+              "strength": "Drive, courage, leadership, honesty", "weakness": "Impatience, temper, restlessness",
+              "best": ["Leo", "Sagittarius"], "worst": ["Cancer", "Capricorn"]},
+    "taurus": {"personality": "Taurus is grounded earth energy — patient, reliable, and devoted to comfort and beauty. You finish what you start; stubbornness is the trade-off.",
+               "love": "Slow to fall but loyal for the long haul. You value trust, stability, and sensual, shared experiences.",
+               "career": "Finance, real estate, cuisine, art, design — fields rewarding steadiness and taste.",
+               "strength": "Persistence, stability, loyalty, taste", "weakness": "Stubbornness, resistance to change",
+               "best": ["Virgo", "Capricorn"], "worst": ["Leo", "Aquarius"]},
+    "gemini": {"personality": "Gemini is curious air energy — quick-witted, talkative, endlessly versatile. You chase novelty; focus is the challenge.",
+               "love": "You fall for a great conversation. Playful and witty in love, you need a partner who keeps things stimulating.",
+               "career": "Journalism, writing, marketing, teaching, media — anything built on communication.",
+               "strength": "Wit, adaptability, communication", "weakness": "Inconsistency, scattered focus",
+               "best": ["Libra", "Aquarius"], "worst": ["Virgo", "Pisces"]},
+    "cancer": {"personality": "Cancer is tender water energy — deeply caring, intuitive, and devoted to home and loved ones. Sensitive and protective by nature.",
+               "love": "Devoted and nurturing, you love like family. Express your hurts openly rather than holding them in.",
+               "career": "Education, nursing, counseling, hospitality, HR — caring for people.",
+               "strength": "Empathy, devotion, intuition", "weakness": "Moodiness, clinginess",
+               "best": ["Scorpio", "Pisces"], "worst": ["Aries", "Libra"]},
+    "leo": {"personality": "Leo is radiant sun energy — confident, charismatic, born for the spotlight. Generous and warm, with pride to manage.",
+            "love": "You love grandly and romantically, treating your partner like royalty and expecting the same. Genuine admiration is everything.",
+            "career": "Entertainment, politics, leadership, the stage — roles where you lead and are seen.",
+            "strength": "Confidence, charisma, generosity", "weakness": "Pride, need for attention",
+            "best": ["Aries", "Sagittarius"], "worst": ["Taurus", "Scorpio"]},
+    "virgo": {"personality": "Virgo is the earth perfectionist — analytical, meticulous, brilliant with detail. Reliable and practical, sometimes overly critical.",
+              "love": "You show love through practical care, not grand gestures. Watch the urge to critique the one you love.",
+              "career": "Accounting, medicine, research, editing, QA — precision work.",
+              "strength": "Analysis, diligence, detail", "weakness": "Perfectionism, worry, criticism",
+              "best": ["Taurus", "Capricorn"], "worst": ["Gemini", "Sagittarius"]},
+    "libra": {"personality": "Libra is balanced air energy — graceful, social, with a strong eye for beauty and fairness. You avoid conflict and can be indecisive.",
+              "love": "Romantic and partnership-oriented, you love being in love. Don't dodge the hard conversations.",
+              "career": "Design, law, diplomacy, counseling, fashion — harmony and aesthetics.",
+              "strength": "Balance, charm, fairness", "weakness": "Indecision, avoidance",
+              "best": ["Gemini", "Aquarius"], "worst": ["Cancer", "Capricorn"]},
+    "scorpio": {"personality": "Scorpio is intense water energy — penetrating, magnetic, all-in once committed. Loyal and perceptive, with jealousy to watch.",
+                "love": "You love deeply and seek a soul-level bond, not casual flings. Betrayal ends it decisively.",
+                "career": "Investigation, psychology, medicine, research, finance — depth and insight.",
+                "strength": "Insight, focus, loyalty", "weakness": "Jealousy, obsession, secrecy",
+                "best": ["Cancer", "Pisces"], "worst": ["Leo", "Aquarius"]},
+    "sagittarius": {"personality": "Sagittarius is free-spirited fire — optimistic, honest, hungry for experience and knowledge. Philosophical and bluntly truthful.",
+                    "love": "You crave freedom and growth in love, not constraint. Adventurous together, slow to settle.",
+                    "career": "Travel, education, publishing, sport — freedom and expansion.",
+                    "strength": "Optimism, adventure, honesty", "weakness": "Restlessness, bluntness",
+                    "best": ["Aries", "Leo"], "worst": ["Virgo", "Pisces"]},
+    "capricorn": {"personality": "Capricorn is ambitious earth — disciplined, responsible, relentlessly climbing toward goals. Practical and prudent, slow to open up.",
+                  "love": "Serious and long-term in love. Awkward with words but steadfast in commitment.",
+                  "career": "Management, administration, finance, law — authority and responsibility.",
+                  "strength": "Responsibility, persistence, ambition", "weakness": "Rigidity, workaholism",
+                  "best": ["Taurus", "Virgo"], "worst": ["Aries", "Libra"]},
+    "aquarius": {"personality": "Aquarius is innovative air — original, independent, thinking unlike anyone else. Humane and objective, sometimes emotionally distant.",
+                 "love": "You prefer a friendship-first bond, prizing independence and shared values over clinginess.",
+                 "career": "Tech, science, invention, activism, design — originality and innovation.",
+                 "strength": "Originality, objectivity, independence", "weakness": "Detachment, stubbornness",
+                 "best": ["Gemini", "Libra"], "worst": ["Taurus", "Scorpio"]},
+    "pisces": {"personality": "Pisces is dreamy water — empathetic, artistic, richly imaginative and warm. Intuitive and inspired, prone to escapism.",
+               "love": "Devoted and romantic, you immerse fully and will sacrifice for love. Keep one foot in reality.",
+               "career": "Art, music, film, counseling, healing — feeling and imagination.",
+               "strength": "Empathy, imagination, artistry", "weakness": "Escapism, indecision, moodiness",
+               "best": ["Cancer", "Scorpio"], "worst": ["Gemini", "Sagittarius"]},
+}
+
+
+def get_sign_en(slug: str):
+    """영문 별자리 정보 (이름·기간·원소·행성 + 영문 상세)."""
+    for s in SIGNS:
+        if s[0] == slug:
+            base = {"slug": s[0], "name": s[2], "name_ko": s[1],
+                    "element": ELEMENT_KR.get(s[5], s[5]), "planet_ko": s[6],
+                    "date_range": f"{s[3][0]}/{s[3][1]} – {s[4][0]}/{s[4][1]}"}
+            base.update(DETAIL_EN.get(s[0], {}))
+            return base
+    return None
+
+
+def all_signs_en():
+    return [{"slug": s[0], "name": s[2], "name_ko": s[1],
+             "element": ELEMENT_KR.get(s[5], s[5]),
+             "date_range": f"{s[3][0]}/{s[3][1]}–{s[4][0]}/{s[4][1]}"} for s in SIGNS]
+
 
 def sign_for_date(month: int, day: int) -> str:
     """월·일 → 별자리 slug."""

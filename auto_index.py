@@ -42,10 +42,12 @@ def submit_indexnow():
         urls.append(base + "/dream/" + slug)
     # 별자리·혈액형·MBTI (고볼륨 한국어 검색)
     urls += [base + "/horoscope", base + "/blood", base + "/blood-compat", base + "/mbti"]
+    urls.append(base + "/en/horoscope")
     try:
         from saju.horoscope import SIGNS as _SIGNS
         for _s in _SIGNS:
             urls.append(base + "/horoscope/" + _s[0])
+            urls.append(base + "/en/horoscope/" + _s[0])
     except Exception:
         pass
     for _bt in ["A", "B", "O", "AB"]:

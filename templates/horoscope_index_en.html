@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Daily Zodiac Horoscope — All 12 Star Signs (Free){% endblock %}
+{% block description %}Free zodiac horoscope for all 12 star signs. Personality, love, career, strengths and best matches for Aries through Pisces — plus your full Korean Saju reading.{% endblock %}
+{% block og_type %}website{% endblock %}
+{% block jsonld_extra %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"CollectionPage","name":"Zodiac Horoscope — 12 Star Signs","inLanguage":"en","mainEntityOfPage":"{{ request.url }}","publisher":{"@id":"{{ request.url_root }}#org"}}
+</script>
+{% endblock %}
+
+{% block content %}
+{% set p = '/en' if lang == 'en' else '' %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb">Zodiac Horoscope</p>
+    <h1>Your Zodiac Sign</h1>
+    <p class="lead">Personality, love, career and compatibility for all 12 star signs. Find your sign below.</p>
+  </div>
+</section>
+
+<section class="container">
+  <div class="pillar-grid">
+    {% for s in signs %}
+    <a class="pillar-tile" href="{{ p }}/horoscope/{{ s.slug }}">
+      <div class="pillar-tile-name">{{ s.name }}</div>
+      <div class="pillar-tile-headline">{{ s.date_range }}</div>
+      <div class="pillar-tile-element">{{ s.element }} · {{ s.name_ko }}</div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+{% if ADFIT_SLOT_SQUARE %}
+<div class="adfit-container adfit-square">
+  <p class="ad-label">{{ t('ad_label') }}</p>
+  <ins class="kakao_ad_area" style="display:none;" data-ad-unit="{{ ADFIT_SLOT_SQUARE }}" data-ad-width="250" data-ad-height="250"></ins>
+</div>
+{% endif %}
+
+<section class="section alt">
+  <div class="container narrow">
+    <h2 class="section-title">Your sign is the Sun. Saju is your whole life.</h2>
+    <p>Western astrology reads only the Sun's position at your birth month. Korean Saju (Four Pillars) reads your full birth year, month, day and hour — a far deeper map of who you are. Try it free.</p>
+    <p style="text-align:center"><a href="{{ p }}/" class="link-button">Get my free Saju reading</a></p>
+  </div>
+</section>
+{% endblock %}

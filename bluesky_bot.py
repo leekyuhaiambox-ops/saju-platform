@@ -149,20 +149,25 @@ def run_daily():
     except Exception as e:
         print(f"[bluesky] login failed: {e}")
         return
-    posted = set(state.get("posted", []))
-    available = [i for i in range(60) if i not in posted]
-    if not available:
-        state["posted"] = []
-        available = list(range(60))
-    idx = random.choice(available)
-    text = compose(idx)
+    # 사주 일주 + 서양 별자리(대형 해시태그) 교차 게시
+    try:
+        from bot_content import next_post
+        text, kind, key = next_post(SITE_URL, state, limit=300)
+    except Exception as e:
+        print(f"[bluesky] bot_content unavailable ({e}); fallback to pillar")
+        posted = set(state.get("posted", []))
+        available = [i for i in range(60) if i not in posted] or list(range(60))
+        key, kind = random.choice(available), "pillar"
+        text = compose(key)
     if not text:
-        print(f"[bluesky] no content for {idx}")
+        print(f"[bluesky] no content for {kind}:{key}")
         return
     result = post(jwt, did, text)
-    print(f"[bluesky] idx={idx} {json.dumps(result, ensure_ascii=False)}")
+    print(f"[bluesky] {kind}={key} {json.dumps(result, ensure_ascii=False)}")
     if result.get("ok"):
-        state.setdefault("posted", []).append(idx)
+        if kind == "pillar":
+            state.setdefault("posted", []).append(key)
+        state["count"] = int(state.get("count", 0)) + 1
         state["last_date"] = today
         save_state(state)
 

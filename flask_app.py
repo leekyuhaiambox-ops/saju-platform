@@ -1067,13 +1067,25 @@ def dream_detail(slug):
 # 별자리 운세 (서양 12별자리) — 고볼륨 검색
 # ─────────────────────────────────────────────────────────────────
 @app.route("/horoscope")
+@app.route("/en/horoscope")
 def horoscope_index():
+    if g.lang == "en":
+        from saju.horoscope import all_signs_en
+        return render_template("horoscope_index_en.html", signs=all_signs_en())
     from saju.horoscope import all_signs
     return render_template("horoscope_index.html", signs=all_signs())
 
 
 @app.route("/horoscope/<slug>")
+@app.route("/en/horoscope/<slug>")
 def horoscope_detail(slug):
+    if g.lang == "en":
+        from saju.horoscope import get_sign_en, all_signs_en
+        s = get_sign_en(slug)
+        if not s:
+            abort(404)
+        others = [x for x in all_signs_en() if x["slug"] != slug]
+        return render_template("horoscope_detail_en.html", s=s, others=others)
     from saju.horoscope import get_sign, all_signs
     s = get_sign(slug)
     if not s:
@@ -1543,6 +1555,16 @@ def sitemap():
     items.append(_ko("/horoscope", "0.8", "weekly"))
     for _s in _SIGNS:
         items.append(_ko(f"/horoscope/{_s[0]}"))
+    # 별자리는 영문판도 운영 (영어권 트래픽) — hreflang 상호 연결
+    def _hl(path, prio="0.7", freq="monthly"):
+        return (f"<url><loc>{base}/en{path}</loc>"
+                f"<xhtml:link rel=\"alternate\" hreflang=\"ko\" href=\"{base}{path}\"/>"
+                f"<xhtml:link rel=\"alternate\" hreflang=\"en\" href=\"{base}/en{path}\"/>"
+                f"<lastmod>{today_iso}</lastmod>"
+                f"<changefreq>{freq}</changefreq><priority>{prio}</priority></url>")
+    items.append(_hl("/horoscope", "0.8", "weekly"))
+    for _s in _SIGNS:
+        items.append(_hl(f"/horoscope/{_s[0]}"))
     items.append(_ko("/blood", "0.8", "weekly"))
     items.append(_ko("/blood-compat", "0.7", "weekly"))
     for _bt in _BO:

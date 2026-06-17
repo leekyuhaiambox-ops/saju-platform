@@ -23,6 +23,8 @@ FILES = [
     "templates/dream_detail.html",
     "templates/horoscope_index.html",
     "templates/horoscope_detail.html",
+    "templates/horoscope_index_en.html",
+    "templates/horoscope_detail_en.html",
     "templates/blood_index.html",
     "templates/blood_detail.html",
     "templates/blood_compat.html",

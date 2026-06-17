@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}{{ s.name }} Horoscope — Personality, Love & Compatibility ({{ s.date_range }}){% endblock %}
+{% block description %}{{ s.name }} ({{ s.date_range }}) personality, love style, career and best matches. {{ s.personality[:90] }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block jsonld_extra %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"{{ s.name }} Horoscope — Personality & Compatibility","inLanguage":"en","mainEntityOfPage":"{{ request.url }}","publisher":{"@id":"{{ request.url_root }}#org"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+ {"@type":"ListItem","position":1,"name":"Home","item":"{{ request.url_root }}en/"},
+ {"@type":"ListItem","position":2,"name":"Zodiac Horoscope","item":"{{ request.url_root }}en/horoscope"},
+ {"@type":"ListItem","position":3,"name":"{{ s.name }}","item":"{{ request.url }}"}
+]}
+</script>
+{% endblock %}
+
+{% block content %}
+{% set p = '/en' if lang == 'en' else '' %}
+<section class="page-hero">
+  <div class="container narrow">
+    <p class="breadcrumb"><a href="{{ p }}/horoscope">Zodiac Horoscope</a></p>
+    <h1>{{ s.name }}</h1>
+    <p class="lead">{{ s.date_range }}</p>
+    <p class="meta">{{ s.element }} sign · {{ s.name_ko }}</p>
+  </div>
+</section>
+
+<article class="article container narrow">
+  <h2>{{ s.name }} Personality</h2>
+  <p>{{ s.personality }}</p>
+
+  <h2>Love &amp; Relationships</h2>
+  <p>{{ s.love }}</p>
+
+  {% if ADFIT_SLOT_MEDIUM %}
+  <div class="adfit-container adfit-medium">
+    <p class="ad-label">{{ t('ad_label') }}</p>
+    <ins class="kakao_ad_area" style="display:none;" data-ad-unit="{{ ADFIT_SLOT_MEDIUM }}" data-ad-width="300" data-ad-height="250"></ins>
+  </div>
+  {% endif %}
+
+  <h2>Career &amp; Strengths</h2>
+  <p>{{ s.career }}</p>
+
+  <ul class="bullet-list">
+    <li><strong>Strengths</strong> — {{ s.strength }}</li>
+    <li><strong>Watch out for</strong> — {{ s.weakness }}</li>
+  </ul>
+
+  <h2>{{ s.name }} Compatibility</h2>
+  <p>Best matches: <strong>{{ s.best|join(', ') }}</strong></p>
+  <p>Tricky matches: {{ s.worst|join(', ') }}</p>
+
+  <div class="dream-cta-box">
+    <h3>Your sign is the Sun. Saju is your whole life.</h3>
+    <p>Western astrology reads only your birth month's Sun. Korean Saju reads your full year, month, day and hour. Discover the deeper you — free.</p>
+    <a href="{{ p }}/" class="link-button">Get my free Saju reading</a>
+    <a href="{{ p }}/today" class="link-button secondary">Today's fortune</a>
+  </div>
+
+  <h2>Other signs</h2>
+  <div class="related-dreams">
+    {% for o in others %}
+    <a href="{{ p }}/horoscope/{{ o.slug }}" class="related-dream-chip">{{ o.name }}</a>
+    {% endfor %}
+  </div>
+</article>
+
+<section class="section alt">
+  <div class="container narrow">
+    <p class="disclaimer">Zodiac horoscopes are a Western astrology personality framework, offered for fun and self-reflection.</p>
+  </div>
+</section>
+{% endblock %}

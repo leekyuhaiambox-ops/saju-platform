@@ -88,22 +88,25 @@ def run_daily():
         print("Already posted today; exiting.")
         return
 
-    posted = set(state.get("posted_pillars", []))
-    available = [i for i in range(60) if i not in posted]
-    if not available:
-        state["posted_pillars"] = []
-        available = list(range(60))
-
-    idx = random.choice(available)
-    text = compose_pillar_toot(idx)
+    # 사주 일주 + 서양 별자리(대형 해시태그) 교차 게시
+    try:
+        from bot_content import next_post
+        text, kind, key = next_post(SITE_URL, state, limit=490)
+    except Exception as e:
+        print(f"[mastodon] bot_content unavailable ({e}); fallback to pillar")
+        posted = set(state.get("posted_pillars", []))
+        available = [i for i in range(60) if i not in posted] or list(range(60))
+        key, kind = random.choice(available), "pillar"
+        text = compose_pillar_toot(key)
     if not text:
-        print(f"Could not compose toot for pillar {idx}")
+        print(f"Could not compose toot for {kind}:{key}")
         return
 
     result = post_status(text)
-    print(f"[mastodon] pillar={idx} {json.dumps(result, ensure_ascii=False)}")
+    print(f"[mastodon] {kind}={key} {json.dumps(result, ensure_ascii=False)}")
     if result.get("ok"):
-        state.setdefault("posted_pillars", []).append(idx)
+        if kind == "pillar":
+            state.setdefault("posted_pillars", []).append(key)
         state["last_date"] = today
         state["count"] = state.get("count", 0) + 1
         save_state(state)
