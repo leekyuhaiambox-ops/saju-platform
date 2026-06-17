@@ -2,25 +2,61 @@
   {
     "lang": "en",
     "title": "Unlocking the Secrets of Your Destiny with Saju Astrology",
-    "body": "As I delved into creating the Korean four-pillars astrology calculator, I was amazed by how the 60 day-pillars interact with the five elements in shaping our lives. Each configuration tells a unique story that can resonate deeply with personal experiences. It's fascinating to see how even the smallest detail can reveal significant insights. Try it out for yourself at https://tarofortune.pythonanywhere.com. #Astrology #Saju #IndieDev #KoreanCulture #PersonalGrowth",
-    "tags": [
-      "Astrology",
-      "Saju",
-      "IndieDev",
-      "KoreanCulture",
-      "PersonalGrowth"
-    ]
+    "body": "As I delved into creating the Korean four-pillars astrology calculator, I was amazed by how the 60 day-pillars interact with the five elements in shaping our lives. Each configuration tells a unique story that can resonate deeply with personal experiences. It's fascinating to see how even the smallest detail can reveal significant insights. Try it out for yourself at https://tarofortune.pythonanywhere.com/en/ #Astrology #Saju #IndieDev #KoreanCulture #PersonalGrowth",
+    "tags": ["Astrology", "Saju", "IndieDev", "KoreanCulture", "PersonalGrowth"]
+  },
+  {
+    "lang": "en",
+    "title": "Your zodiac sign is just the Sun — here's the deeper map",
+    "body": "Western astrology reads only the Sun's position in your birth month. Korean Saju reads your full birth year, month, day AND hour — a far richer picture. I built a free tool that does both. Start with your zodiac sign, then go deeper: https://tarofortune.pythonanywhere.com/en/horoscope #horoscope #astrology #zodiac #zodiacsigns #astrologytok",
+    "tags": ["horoscope", "astrology", "zodiac", "zodiacsigns", "astrologytok"]
+  },
+  {
+    "lang": "en",
+    "title": "Free daily horoscope for all 12 signs",
+    "body": "Personality, love style, career strengths and best matches for every star sign — Aries through Pisces, all free. And if you want to go beyond Sun-sign astrology, try a full Korean Saju (Four Pillars) reading on the same site. Find your sign: https://tarofortune.pythonanywhere.com/en/horoscope #dailyhoroscope #astrology #zodiac #horoscopes #starsign",
+    "tags": ["dailyhoroscope", "astrology", "zodiac", "horoscopes", "starsign"]
+  },
+  {
+    "lang": "en",
+    "title": "Which signs are your best match? (free compatibility)",
+    "body": "Curious which zodiac signs you click with — and which ones spell trouble? Each sign page lists its best and trickiest matches, plus a deeper Korean Saju compatibility check that uses your full birth chart, not just your Sun sign. Free, no signup: https://tarofortune.pythonanywhere.com/en/compatibility #astrology #compatibility #zodiac #zodiaccompatibility #horoscope",
+    "tags": ["astrology", "compatibility", "zodiac", "zodiaccompatibility", "horoscope"]
+  },
+  {
+    "lang": "en",
+    "title": "What your birth day reveals — the 60 Day Pillars",
+    "body": "In Korean Saju astrology, the day you were born maps to one of 60 'Day Pillars', each a vivid archetype — like a great tree finding a deep well, or a flower enduring cold earth. I translated all 60 into English with full readings. Find yours free: https://tarofortune.pythonanywhere.com/en/sixty-pillars #astrology #Saju #BaZi #FourPillars #ChineseAstrology",
+    "tags": ["astrology", "Saju", "BaZi", "FourPillars", "ChineseAstrology"]
+  },
+  {
+    "lang": "en",
+    "title": "Today's fortune by your Day Master",
+    "body": "Daily fortune in Saju isn't generic — it's read through your personal Day Master (the heavenly stem of your birth day) against today's energy. I made a free daily reading that does exactly that, in English. Check today: https://tarofortune.pythonanywhere.com/en/today #astrology #dailyfortune #Saju #BaZi #divination",
+    "tags": ["astrology", "dailyfortune", "Saju", "BaZi", "divination"]
+  },
+  {
+    "lang": "en",
+    "title": "Aries to Pisces: the one-line truth about each sign",
+    "body": "Aries leads, Taurus endures, Gemini connects, Cancer protects, Leo shines, Virgo perfects, Libra balances, Scorpio penetrates, Sagittarius explores, Capricorn climbs, Aquarius innovates, Pisces dreams. Full personality + love + career for each, free: https://tarofortune.pythonanywhere.com/en/horoscope #zodiac #astrology #horoscope #zodiacsigns #astrologymemes",
+    "tags": ["zodiac", "astrology", "horoscope", "zodiacsigns", "astrologymemes"]
   },
   {
     "lang": "kr",
     "title": "사주로 나의 삶의 단계를 이해해보세요",
     "body": "최근에 제 사주를 분석해보니, 각 인생 단계마다 겪는 어려움과 기회들이 정말 명확하게 보였어요. 나의 60주기와 오행이 어떻게 연결되는지 알게 되니, 앞으로의 방향이 한결 뚜렷해졌습니다. 여러분도 무료로 나만의 사주를 확인해보세요! https://tarofortune.pythonanywhere.com #사주 #인생단계 #한국점성술 #오행 #자기개발",
-    "tags": [
-      "사주",
-      "인생단계",
-      "한국점성술",
-      "오행",
-      "자기개발"
-    ]
+    "tags": ["사주", "인생단계", "한국점성술", "오행", "자기개발"]
+  },
+  {
+    "lang": "kr",
+    "title": "별자리 운세 + 사주, 둘 다 무료로",
+    "body": "별자리는 태어난 달의 태양만 보지만, 사주는 태어난 연·월·일·시를 모두 봅니다. 별자리 성격·연애·궁합부터 가볍게 본 뒤, 더 깊은 사주 일주까지 무료로 확인해보세요. 별자리 운세: https://tarofortune.pythonanywhere.com/horoscope #별자리운세 #별자리 #사주 #운세 #궁합",
+    "tags": ["별자리운세", "별자리", "사주", "운세", "궁합"]
+  },
+  {
+    "lang": "kr",
+    "title": "오늘의 운세, 내 일간 기준으로 정확하게",
+    "body": "두루뭉술한 띠별 운세 말고, 내 사주 일간(태어난 날의 천간)을 기준으로 오늘의 기운을 봅니다. 매일 갱신되는 무료 오늘의 운세를 확인해보세요. https://tarofortune.pythonanywhere.com/today #오늘의운세 #사주 #운세 #일진 #명리",
+    "tags": ["오늘의운세", "사주", "운세", "일진", "명리"]
   }
 ]
