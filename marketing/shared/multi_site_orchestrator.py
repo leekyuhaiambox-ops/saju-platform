@@ -47,6 +47,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import sys
 import time
 from dataclasses import dataclass
@@ -255,35 +256,42 @@ def post_to_devto(site: Site, post: dict, dry_run: bool = False) -> bool:
 # CHANNEL-SPECIFIC FORMATTERS
 # ---------------------------------------------------------------------------
 
+_URL_RE = re.compile(r"https?://[^\s)]+")
+
+
 def _tag_url(base_url: str, channel: str) -> str:
-    """게시 채널을 referral 파라미터로 태깅 → /api/analytics/daily 에서 추적."""
+    """게시 채널을 referral 파라미터로 태깅 → /api/analytics/daily 에서 추적.
+
+    중요: 쿼리 파라미터는 경로(path) '뒤'에 붙어야 한다.
+    예) .../en/horoscope?ref=...  (O)   .../?ref=.../en/horoscope (X, 과거 버그)
+    """
     sep = "&" if "?" in base_url else "?"
     return (f"{base_url.rstrip('/')}{sep}ref={channel}"
             f"&utm_source={channel}&utm_medium=social&utm_campaign=multi-site-bot")
 
 
+def _retag_body(body: str, channel: str, fallback_url: str, prefix: str = "") -> str:
+    """본문에 들어있는 '전체 URL'(경로 포함)을 찾아 UTM 파라미터를 올바르게 부착.
+
+    본문에 URL이 없으면 prefix + 태깅된 fallback_url을 덧붙인다.
+    """
+    m = _URL_RE.search(body)
+    if m:
+        full = m.group(0)
+        return body[:m.start()] + _tag_url(full, channel) + body[m.end():]
+    return body + f"\n\n{prefix}{_tag_url(fallback_url, channel)}"
+
+
 def _format_mastodon(site: Site, post: dict) -> str:
     tags = " ".join(f"#{t}" for t in post.get("tags", site.primary_tags))
-    tagged_url = _tag_url(site.url, "mastodon")
-    body = post["body"]
-    # 본문에 site.url 있으면 tagged_url로 치환
-    if site.url in body:
-        body = body.replace(site.url, tagged_url, 1)
-    else:
-        body += f"\n\n{tagged_url}"
+    body = _retag_body(post["body"], "mastodon", site.url)
     if tags not in body:
         body += f"\n\n{tags}"
     return body[:500]  # Mastodon 기본 500자
 
 
 def _format_lemmy(site: Site, post: dict) -> str:
-    tagged_url = _tag_url(site.url, "lemmy")
-    body = post["body"]
-    if site.url in body:
-        body = body.replace(site.url, tagged_url, 1)
-    else:
-        body += f"\n\n**Try it:** {tagged_url}"
-    return body
+    return _retag_body(post["body"], "lemmy", site.url, prefix="**Try it:** ")
 
 
 def _format_devto(site: Site, post: dict) -> str:
@@ -291,12 +299,7 @@ def _format_devto(site: Site, post: dict) -> str:
     front_matter = (
         f"---\ntitle: {post['title']}\npublished: true\ntags: {', '.join(tags)}\n---\n\n"
     )
-    tagged_url = _tag_url(site.url, "devto")
-    body = post["body"]
-    if site.url in body:
-        body = body.replace(site.url, tagged_url, 1)
-    else:
-        body += f"\n\n**Live demo:** {tagged_url}\n"
+    body = _retag_body(post["body"], "devto", site.url, prefix="**Live demo:** ")
     return front_matter + body
 
 
