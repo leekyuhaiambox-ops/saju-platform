@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>🚀 발행 센터 — 원클릭 홍보 (austriano)</title>
+<style>
+  :root{--bg:#0f1115;--card:#1a1d24;--line:#2b2f3a;--ink:#e8eaf0;--mut:#9aa3b2;--acc:#7c6cff;--ok:#19c37d}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Malgun Gothic",sans-serif;padding:24px}
+  h1{font-size:22px;margin:0 0 4px}
+  .sub{color:var(--mut);margin:0 0 20px;font-size:13px}
+  .filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+  .filter button{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:20px;padding:6px 14px;cursor:pointer;font-size:13px}
+  .filter button.on{background:var(--acc);border-color:var(--acc)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+  .tag{display:inline-block;font-size:11px;color:var(--mut);border:1px solid var(--line);border-radius:6px;padding:2px 8px;margin-right:6px}
+  .title{font-weight:600;margin:8px 0 6px;font-size:15px}
+  pre.body{white-space:pre-wrap;word-break:break-word;background:#0c0e12;border:1px solid var(--line);border-radius:8px;padding:12px;margin:8px 0;font-size:13px;color:#cfd4de;max-height:240px;overflow:auto}
+  .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  a.btn,button.btn{display:inline-flex;align-items:center;gap:6px;text-decoration:none;border:none;border-radius:8px;padding:9px 14px;font-size:13px;font-weight:600;cursor:pointer;color:#fff}
+  .b-copy{background:#39414f}.b-x{background:#000}.b-th{background:#000}.b-rd{background:#ff4500}
+  .b-tg{background:#229ed9}.b-pin{background:#e60023}.b-fb{background:#1877f2}.b-ko{background:#03c75a}
+  .b-ti{background:#eb531d}.b-qu{background:#b92b27}.b-open{background:#39414f}
+  .b-copy.done{background:var(--ok)}
+  .hint{color:var(--mut);font-size:12px;margin-top:6px}
+  .grp{margin:26px 0 10px;font-size:13px;letter-spacing:.04em;color:var(--mut);text-transform:uppercase}
+  .note{background:#14223a;border:1px solid #25406e;border-radius:10px;padding:12px 14px;font-size:13px;color:#bcd2f5;margin-bottom:18px}
+</style>
+</head>
+<body>
+<h1>🚀 발행 센터</h1>
+<p class="sub">버튼을 누르면 해당 플랫폼 작성창이 <b>내용이 미리 채워진 채</b> 열립니다. 로그인만 돼 있으면 <b>「게시」 한 번</b>이면 끝. (닉네임: austriano)</p>
+
+<div class="note">
+  <b>쓰는 법</b> — ① 원하는 글의 플랫폼 버튼 클릭 → ② 열린 작성창에서 내용 확인 → ③ 게시.
+  미리채움이 안 되는 곳(네이버블로그·Quora 등)은 <b>복사</b> 버튼 누른 뒤 작성창에 붙여넣으세요.
+  하루 1~2개씩, 같은 글 도배는 피하세요.
+</div>
+
+<div class="filter" id="filter"></div>
+<div id="list"></div>
+
+<script>
+const SITE="https://tarofortune.pythonanywhere.com";
+const enc=encodeURIComponent;
+
+// ── 게시물 데이터 ──
+const POSTS=[
+ // 짧은 소셜 (X / Threads) — 원클릭 프리필
+ {g:"소셜",t:"social",lang:"EN",title:"Card of the day",body:"🔮 Your free card of the day is up. One card, one message, no signup.\nPull it → "+SITE+"/en/tarot/today\n#tarot #tarotreading #dailytarot #tarotcommunity #divination"},
+ {g:"소셜",t:"social",lang:"EN",title:"Sun sign is 1 of 4",body:"Your Sun sign is only 1 of 4 pillars. Korean Saju reads all four — year, month, day, hour. Free in English:\n"+SITE+"/en/\n#astrology #bazi #saju #zodiac #fourpillars"},
+ {g:"소셜",t:"social",lang:"EN",title:"Scorpio",body:"♏ Scorpio: loves deep, all-in, never casual. Best match? Cancer & Pisces. 🌊\nFull sign + free Saju → "+SITE+"/en/horoscope/scorpio\n#scorpio #astrology #zodiac #horoscope #zodiacsigns"},
+ {g:"소셜",t:"social",lang:"EN",title:"Death card",body:"Death in tarot ≠ death. It means: a chapter ends so a new one can begin. 🌒\nAll 78 card meanings free → "+SITE+"/en/tarot/death\n#tarot #tarotcards #tarotmeaning #divination #spirituality"},
+ {g:"소셜",t:"social",lang:"KR",title:"오늘의 타로",body:"🔮 오늘의 타로 한 장, 무료로 뽑아보세요. 가입 없이 바로.\n"+SITE+"/tarot/today\n#타로 #타로카드 #오늘의타로 #타로점 #데일리타로"},
+ {g:"소셜",t:"social",lang:"KR",title:"별자리 궁합",body:"내 별자리, 잘 맞는 별자리, 상극까지 한 번에. 무료 ✨\n"+SITE+"/horoscope\n#별자리 #별자리운세 #별자리궁합 #점성술 #운세"},
+ {g:"소셜",t:"social",lang:"KR",title:"오늘의 운세",body:"띠별 운세 말고, 내 사주 일간 기준 오늘의 운세. 더 정확해요. 📅\n"+SITE+"/today\n#오늘의운세 #사주 #운세 #일진 #무료운세"},
+ {g:"소셜",t:"social",lang:"KR",title:"타로 78장",body:"타로카드 78장 의미 정·역방향 총정리 (무료, 가입X)\n"+SITE+"/tarot\n#타로카드 #타로의미 #타로해석 #타로 #사주타로"},
+
+ // 레딧 — 서브별 프리필 submit
+ {g:"레딧",t:"reddit",sub:"tarot",title:"I built a free, no-signup tarot site with all 78 card meanings + a daily card draw — would love feedback",body:"I've been studying tarot for a while and got tired of sites that gate meanings behind signups or bury them in ads. So I built a clean, free reference: all 78 Rider-Waite cards with upright AND reversed meanings, plus a \"card of the day\" you can reflect on.\n\nNo login, no email, nothing to buy. It also has a Korean Saju (Four Pillars) reading if you're curious how East-Asian fortune-telling compares to tarot.\n\nCard of the day: "+SITE+"/en/tarot/today\n\nHonest question: which card's \"standard\" meaning do you most disagree with? I'd like to make the interpretations less cookie-cutter."},
+ {g:"레딧",t:"reddit",sub:"astrology",title:"Your Sun sign is just one of four \"pillars\" — here's a free tool that reads all four",body:"Western astrology centers the Sun sign (your birth month). Korean Saju / Chinese BaZi reads four pillars — year, month, day, and hour of birth — which is why two people born the same month can feel so different.\n\nI made a free calculator that does the full four-pillar chart in English (Day Master, Ten Gods, Five Elements, 100-year luck flow), cross-linked with the 12 zodiac signs so you can compare both systems.\n\nZodiac side: "+SITE+"/en/horoscope\n\nFor those who've looked into BaZi — did your Day Master resonate more or less than your Sun sign?"},
+ {g:"레딧",t:"reddit",sub:"Divination",title:"Free daily single-card tarot pull (no signup) + full 78-card reference",body:"Sharing a free tool I made: a deterministic daily card (same card all day so you can come back and reflect), plus the full 78-card meanings, upright and reversed. There's also a Korean Saju reading if you like comparing divination systems.\n\n"+SITE+"/en/tarot\n\nWhat's your daily-pull ritual? Thinking of adding a 3-card spread next and want to do it right."},
+ {g:"레딧",t:"reddit",sub:"Korea",title:"Made a free English tool for Korean Saju (사주) fortune-telling — birth chart + daily fortune",body:"Saju (사주명리) is the traditional Korean four-pillar astrology many Koreans still check before big decisions. Most tools are Korean-only, so I built a free English version: enter your birth date/time and it computes your Day Master, Ten Gods, Five Elements and luck cycles — no signup.\n\n"+SITE+"/en/\n\nIf you've had a Saju reading in Korea, how accurate did you find it?"},
+ {g:"레딧",t:"reddit",sub:"learnkorean",title:"Saju vocabulary: the 60 \"Day Pillars\" (일주) are a fun way to learn 천간/지지 hanja",body:"If you're learning Korean and into culture, the 60갑자 (sexagenary cycle) is a neat vocab set — 10 heavenly stems (천간) × 12 earthly branches (지지), the same 띠 animals you know. I put all 60 with Korean + hanja + English meanings here, free:\n\n"+SITE+"/en/sixty-pillars\n\nBonus: it tells you your own Day Pillar from your birth date, which makes the vocab stick."},
+
+ // 블로그 (네이버/티스토리) — 긴 글, 복사 후 작성창 열기
+ {g:"블로그",t:"blog",lang:"KR",title:"타로카드 78장 의미 총정리 (정방향·역방향) + 오늘의 타로 무료로 뽑는 법",body:"타로를 처음 보면 카드가 78장이나 돼서 막막하죠. 그런데 구조를 알면 의외로 단순합니다. 오늘은 타로 78장의 의미를 정·역방향으로 정리하고, 무료로 오늘의 타로 한 장을 뽑는 방법까지 알려드릴게요.\n\n[타로 78장 구성]\n· 메이저 아르카나 22장: 인생의 큰 흐름과 운명 (바보·마법사·연인·죽음·태양 등)\n· 마이너 아르카나 56장: 일상의 구체적 상황 — 완드(불)·컵(물)·소드(공기)·펜타클(흙) 4원소 × 14장\n\n[자주 보는 메이저 카드 정방향]\n· 바보: 새로운 시작, 순수, 모험\n· 연인: 깊은 결합과 중요한 선택\n· 운명의 수레바퀴: 전환점, 행운의 흐름\n· 죽음: 실제 죽음이 아니라 한 시기의 끝과 변형\n· 태양: 타로에서 가장 밝은 카드, 기쁨·성공·활력\n\n역방향은 보통 그 에너지가 막히거나 과하거나 안으로 향한 상태로 봅니다.\n\n78장 전체 정·역방향 의미와 오늘의 타로 한 장 무료 뽑기(가입 불필요):\n"+SITE+"/tarot\n\n타로가 '지금 이 순간'을 본다면, 사주는 태어난 연·월·일·시로 인생 전체를 봅니다."},
+ {g:"블로그",t:"blog",lang:"KR",title:"별자리 성격·궁합 총정리 — 12별자리, 잘 맞는 별자리와 상극은?",body:"\"나는 무슨 별자리지?\" 생일만 알면 알 수 있죠. 오늘은 12별자리의 성격, 연애 스타일, 그리고 잘 맞는 별자리와 상극을 정리했습니다.\n\n· 불(양·사자·사수): 열정·추진력, 자유와 도전\n· 흙(황소·처녀·염소): 현실적·끈기, 안정과 성취\n· 공기(쌍둥이·천칭·물병): 지적·사교적, 소통과 아이디어\n· 물(게·전갈·물고기): 감수성·공감력, 깊은 교감\n\n[궁합 예시]\n· 양자리 ❤ 사자·사수 / ⚠ 게·염소\n· 황소 ❤ 처녀·염소 / ⚠ 사자·물병\n· 전갈 ❤ 게·물고기 / ⚠ 사자·물병\n\n내 별자리 성격·연애·직업·궁합 전체 + 사주 일주 무료로 보기:\n"+SITE+"/horoscope"},
+ {g:"블로그",t:"blog",lang:"KR",title:"오늘의 운세 무료로 보는 법 — 띠별 말고 '내 사주 일간' 기준으로",body:"대부분의 오늘의 운세는 띠별(12지) 기준이라 같은 띠 1/12 인구가 전부 같은 운세를 봅니다. 더 정확한 건 '내 사주의 일간(태어난 날의 천간)' 기준이에요.\n\n사주에서 '나 자신'을 상징하는 글자가 일간(日干)입니다. 갑·을·병·정·무·기·경·신·임·계 중 하나죠. 이 일간이 오늘의 기운(일진)과 어떻게 만나는지를 보면 훨씬 개인화된 운세가 나옵니다.\n\n매일 갱신되는 무료 오늘의 운세를 일간 기준으로 보기(가입 불필요):\n"+SITE+"/today\n\n생년월일시만 넣으면 일간·일주·오행·십신까지 무료로 다 나옵니다."},
+
+ // Quora / 커뮤니티 — 복사 후 해당 위치 게시
+ {g:"Quora·커뮤니티",t:"qa",lang:"EN",title:"[Quora] Western vs Korean/Chinese astrology",body:"Western astrology is built around your Sun sign — one data point. Korean Saju (사주) / Chinese BaZi uses four pillars: year, month, day, and hour of birth (eight characters total). The most important is your Day Master — the heavenly stem of your birth day, representing \"you.\" Two people born the same month share a Sun sign but can have completely different Saju charts. Free four-pillar chart in English: "+SITE+"/en/"},
+ {g:"Quora·커뮤니티",t:"qa",lang:"EN",title:"[Quora] Free accurate tarot meanings site?",body:"Most are ad-walls or want your email. A clean free one with all 78 cards (upright + reversed) and a daily single-card draw: "+SITE+"/en/tarot — no login. For learning, pull one card a day and write down what it brings up before reading the \"official\" meaning."},
+ {g:"Quora·커뮤니티",t:"qa",lang:"KR",title:"[카페] 타로 78장 의미 + 오늘의 타로 무료 공유",body:"타로 공부하다가 78장 의미 매번 찾기 번거로워서 정·역방향 한 번에 정리된 곳 찾았는데 가입도 안 받고 무료라 공유해요. 오늘의 타로 한 장도 매일 바뀌어서 가볍게 보기 좋아요.\n"+SITE+"/tarot"},
+ {g:"Quora·커뮤니티",t:"qa",lang:"KR",title:"[카페] MBTI 궁합 + 사주 일주 같이 보기",body:"MBTI는 16유형, 사주 일주는 60가지인데 둘 다 무료로 볼 수 있어요. MBTI 환상의 궁합 + 내 사주 일주 비교하니 신기하더라고요.\n"+SITE+"/mbti"},
+];
+
+function intentX(text){return "https://twitter.com/intent/tweet?text="+enc(text);}
+function intentThreads(text){return "https://www.threads.net/intent/post?text="+enc(text);}
+function intentReddit(sub,title,body){return "https://www.reddit.com/r/"+sub+"/submit?title="+enc(title)+"&text="+enc(body);}
+
+function card(p,i){
+  const el=document.createElement('div');el.className='card';el.dataset.g=p.g;
+  let btns='<button class="btn b-copy" data-i="'+i+'">📋 복사</button>';
+  if(p.t==="social"){
+    btns+='<a class="btn b-x" target="_blank" href="'+intentX(p.body)+'">𝕏 게시</a>';
+    btns+='<a class="btn b-th" target="_blank" href="'+intentThreads(p.body)+'">@ Threads</a>';
+  }else if(p.t==="reddit"){
+    btns+='<a class="btn b-rd" target="_blank" href="'+intentReddit(p.sub,p.title,p.body)+'">↟ r/'+p.sub+' 작성창 열기(자동입력)</a>';
+  }else if(p.t==="blog"){
+    btns+='<a class="btn b-ti" target="_blank" href="https://www.tistory.com/manage/newpost/">티스토리 글쓰기</a>';
+    btns+='<a class="btn b-ko" target="_blank" href="https://blog.naver.com/">네이버 블로그</a>';
+  }else if(p.t==="qa"){
+    btns+='<a class="btn b-qu" target="_blank" href="https://www.quora.com/search?q='+enc(p.title.replace(/^\[[^\]]+\]\s*/,''))+'">Quora 검색</a>';
+  }
+  const tag2 = p.lang? '<span class="tag">'+p.lang+'</span>':'';
+  el.innerHTML='<span class="tag">'+p.g+'</span>'+tag2+
+    '<div class="title">'+p.title.replace(/</g,'&lt;')+'</div>'+
+    '<pre class="body" id="b'+i+'">'+p.body.replace(/</g,'&lt;')+'</pre>'+
+    '<div class="btns">'+btns+'</div>'+
+    (p.t==="blog"||p.t==="qa"? '<div class="hint">미리채움 미지원 → 「복사」 후 위 작성창에 붙여넣기</div>':'')+
+    (p.t==="reddit"? '<div class="hint">작성창이 제목·본문 자동입력된 채 열립니다. 확인 후 Post.</div>':'');
+  return el;
+}
+
+const list=document.getElementById('list');
+const groups=[...new Set(POSTS.map(p=>p.g))];
+function render(filter){
+  list.innerHTML='';
+  groups.forEach(g=>{
+    if(filter&&filter!==g)return;
+    const items=POSTS.map((p,i)=>({p,i})).filter(x=>x.p.g===g);
+    if(!items.length)return;
+    const h=document.createElement('div');h.className='grp';h.textContent=g+' ('+items.length+')';list.appendChild(h);
+    items.forEach(x=>list.appendChild(card(x.p,x.i)));
+  });
+}
+const fl=document.getElementById('filter');
+['전체',...groups].forEach((g,idx)=>{
+  const b=document.createElement('button');b.textContent=g;if(idx===0)b.className='on';
+  b.onclick=()=>{[...fl.children].forEach(c=>c.className='');b.className='on';render(g==='전체'?null:g);};
+  fl.appendChild(b);
+});
+render(null);
+
+list.addEventListener('click',e=>{
+  const b=e.target.closest('.b-copy');if(!b)return;
+  const i=b.dataset.i;const txt=POSTS[i].body;
+  navigator.clipboard.writeText(txt).then(()=>{b.textContent='✅ 복사됨';b.classList.add('done');setTimeout(()=>{b.textContent='📋 복사';b.classList.remove('done');},1500);});
+});
+</script>
+</body>
+</html>
