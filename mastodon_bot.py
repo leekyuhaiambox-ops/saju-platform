@@ -19,9 +19,9 @@ from urllib import request, parse
 
 from saju.interpreter_en import DAY_PILLAR_INTERPRETATIONS_EN
 
-INSTANCE = os.environ.get("MASTODON_INSTANCE", "mastodon.social")
+INSTANCE = os.environ.get("MASTODON_INSTANCE") or "mastodon.social"  # 빈 문자열도 폴백
 TOKEN = os.environ.get("MASTODON_ACCESS_TOKEN", "")
-SITE_URL = os.environ.get("SITE_URL", "https://tarofortune.pythonanywhere.com")
+SITE_URL = os.environ.get("SITE_URL") or "https://tarofortune.pythonanywhere.com"
 
 STATE_FILE = Path(os.environ.get(
     "MASTODON_STATE_FILE",

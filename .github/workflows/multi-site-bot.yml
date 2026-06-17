@@ -62,12 +62,13 @@ jobs:
         env:
           LEMMY_USERNAME: ${{ secrets.LEMMY_USERNAME }}
           LEMMY_PASSWORD: ${{ secrets.LEMMY_PASSWORD }}
-          LEMMY_INSTANCE: ${{ secrets.LEMMY_INSTANCE }}
-          MASTODON_INSTANCE: ${{ secrets.MASTODON_INSTANCE }}
+          # 인스턴스·사이트 URL은 비밀이 아닌 설정값 → 하드코딩(secret 미설정 시 빈 값으로 'no host given' 버그 발생했었음)
+          LEMMY_INSTANCE: lemmy.world
+          MASTODON_INSTANCE: mastodon.social
           MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
           DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
           INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
-          SITE_URL: ${{ secrets.SITE_URL }}
+          SITE_URL: https://tarofortune.pythonanywhere.com
         run: |
           ARGS=""
           if [ -n "${{ github.event.inputs.force_site }}" ]; then
@@ -89,8 +90,8 @@ jobs:
         if: github.event.inputs.dry_run != 'true'
         env:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
-          MASTODON_INSTANCE: ${{ secrets.MASTODON_INSTANCE }}
-          LEMMY_INSTANCE: ${{ secrets.LEMMY_INSTANCE }}
+          MASTODON_INSTANCE: mastodon.social
+          LEMMY_INSTANCE: lemmy.world
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ -f "./marketing/shared/analytics_collector.py" ]; then
@@ -103,8 +104,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
           PA_TOKEN: ${{ secrets.PA_TOKEN }}
-          MASTODON_INSTANCE: ${{ secrets.MASTODON_INSTANCE }}
-          LEMMY_INSTANCE: ${{ secrets.LEMMY_INSTANCE }}
+          MASTODON_INSTANCE: mastodon.social
+          LEMMY_INSTANCE: lemmy.world
         run: |
           if [ -f "./marketing/shared/daily_report.py" ]; then
             python -X utf8 ./marketing/shared/daily_report.py || echo "Daily report failed (non-fatal)"
@@ -122,8 +123,8 @@ jobs:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
           PA_TOKEN: ${{ secrets.PA_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MASTODON_INSTANCE: ${{ secrets.MASTODON_INSTANCE }}
-          LEMMY_INSTANCE: ${{ secrets.LEMMY_INSTANCE }}
+          MASTODON_INSTANCE: mastodon.social
+          LEMMY_INSTANCE: lemmy.world
         run: |
           if [ -z "$SMTP_USER" ] || [ -z "$SMTP_PASS" ]; then
             echo "SMTP_USER/SMTP_PASS not set — skipping email (GitHub Issue 알림은 작동 중)"

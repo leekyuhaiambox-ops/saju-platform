@@ -22,7 +22,7 @@ from urllib import request, parse
 
 from reddit_bot import POSTS as REDDIT_POSTS  # 동일 콘텐츠 풀 재사용
 
-LEMMY_INSTANCE = os.environ.get("LEMMY_INSTANCE", "lemmy.world")
+LEMMY_INSTANCE = os.environ.get("LEMMY_INSTANCE") or "lemmy.world"  # 빈 문자열도 폴백
 USERNAME = os.environ.get("LEMMY_USERNAME", "")
 PASSWORD = os.environ.get("LEMMY_PASSWORD", "")
 SITE_URL = os.environ.get("SITE_URL", "https://tarofortune.pythonanywhere.com")

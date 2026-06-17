@@ -309,7 +309,8 @@ def _format_devto(site: Site, post: dict) -> str:
 
 def _direct_mastodon_post(text: str) -> bool:
     token = os.environ.get("MASTODON_ACCESS_TOKEN")
-    instance = os.environ.get("MASTODON_INSTANCE", "mastodon.social")
+    # 빈 문자열(secret 미설정 시)도 기본값으로 폴백 — 'no host given' 버그 방지
+    instance = os.environ.get("MASTODON_INSTANCE") or "mastodon.social"
     if not token:
         print("[ERROR] MASTODON_ACCESS_TOKEN 환경변수 없음")
         return False
@@ -333,7 +334,7 @@ def _direct_lemmy_post(title: str, body: str, communities: list[str]) -> bool:
     """Lemmy 실제 게시 — saju_platform/lemmy_bot.py 의 login/post helpers 재활용."""
     user = os.environ.get("LEMMY_USERNAME")
     pwd = os.environ.get("LEMMY_PASSWORD")
-    instance = os.environ.get("LEMMY_INSTANCE", "lemmy.world")
+    instance = os.environ.get("LEMMY_INSTANCE") or "lemmy.world"
     if not (user and pwd):
         print("[ERROR] LEMMY 자격증명 환경변수 없음")
         return False
