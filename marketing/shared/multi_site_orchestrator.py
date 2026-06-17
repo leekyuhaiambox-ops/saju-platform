@@ -473,7 +473,11 @@ def _direct_devto_post(title: str, body: str, tags: list[str]) -> bool:
     req = urllib.request.Request(
         "https://dev.to/api/articles",
         data=_json.dumps(payload).encode("utf-8"),
-        headers={"api-key": key, "Content-Type": "application/json"},
+        # User-Agent 없으면 Cloudflare가 'Forbidden Bots'(403)로 차단 → 브라우저 UA 부착
+        headers={"api-key": key, "Content-Type": "application/json",
+                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                               "(KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+                 "Accept": "application/vnd.forem.api-v1+json"},
         method="POST",
     )
     try:

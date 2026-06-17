@@ -34,6 +34,7 @@ on:
 
 permissions:
   contents: write   # state 파일 자동 커밋용
+  issues: write     # 일일 리포트 GitHub Issue 생성용 (없으면 403)
 
 jobs:
   run-bots:
