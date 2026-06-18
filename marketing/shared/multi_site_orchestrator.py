@@ -456,36 +456,52 @@ def _lemmy_direct_api_post(title: str, body: str, community: str | None,
         return False
 
 
+_DEVTO_UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+             "(KHTML, like Gecko) Chrome/124.0 Safari/537.36")
+
+
+def _devto_try(title: str, body: str, tags: list[str], key: str):
+    """단일 시도. (성공여부, http상태, 응답본문) 반환."""
+    import urllib.request, json as _json
+    payload = {"article": {"title": title, "body_markdown": body,
+                            "published": True, "tags": tags[:4]}}  # Dev.to 태그 4개 제한
+    req = urllib.request.Request(
+        "https://dev.to/api/articles",
+        data=_json.dumps(payload).encode("utf-8"),
+        # User-Agent 없으면 Cloudflare가 'Forbidden Bots'(403)로 차단
+        headers={"api-key": key, "Content-Type": "application/json",
+                 "User-Agent": _DEVTO_UA, "Accept": "application/vnd.forem.api-v1+json"},
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            return resp.status in (200, 201), resp.status, ""
+    except urllib.error.HTTPError as e:
+        return False, e.code, e.read().decode("utf-8", "replace")[:200]
+    except Exception as e:
+        return False, 0, str(e)[:200]
+
+
 def _direct_devto_post(title: str, body: str, tags: list[str]) -> bool:
     key = os.environ.get("DEVTO_API_KEY")
     if not key:
         print("[ERROR] DEVTO_API_KEY 환경변수 없음")
         return False
-    import urllib.request, json as _json
-    payload = {
-        "article": {
-            "title": title,
-            "body_markdown": body,
-            "published": True,
-            "tags": tags[:4],  # Dev.to는 4개 제한
-        }
-    }
-    req = urllib.request.Request(
-        "https://dev.to/api/articles",
-        data=_json.dumps(payload).encode("utf-8"),
-        # User-Agent 없으면 Cloudflare가 'Forbidden Bots'(403)로 차단 → 브라우저 UA 부착
-        headers={"api-key": key, "Content-Type": "application/json",
-                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-                               "(KHTML, like Gecko) Chrome/124.0 Safari/537.36",
-                 "Accept": "application/vnd.forem.api-v1+json"},
-        method="POST",
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            return resp.status in (200, 201)
-    except Exception as e:
-        print(f"[ERROR] Dev.to: {e}")
+    ok, status, err = _devto_try(title, body, tags, key)
+    if ok:
+        return True
+    # 422 = 발행글 제목 중복 → 날짜 접미사로 고유화 후 1회 재시도
+    if status == 422:
+        from datetime import datetime, timezone
+        uniq = f"{title} ({datetime.now(timezone.utc).strftime('%Y-%m-%d')})"
+        print(f"[Dev.to] 제목 중복(422) → 고유 제목으로 재시도: {uniq}")
+        ok2, status2, err2 = _devto_try(uniq, body, tags, key)
+        if ok2:
+            return True
+        print(f"[ERROR] Dev.to 재시도 실패: {status2} {err2}")
         return False
+    print(f"[ERROR] Dev.to: {status} {err}")  # 429(rate limit) 등은 다음 실행에서 재시도
+    return False
 
 
 # ---------------------------------------------------------------------------
