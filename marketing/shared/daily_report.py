@@ -181,6 +181,13 @@ def collect_devto() -> dict:
         return {"error": str(e)[:80]}
 
 
+# PR별 수동 상태 override — maintainer가 PR을 닫고 수동 merge한 경우 등
+# (etewiah#30: "Merged manually in 1b04777" — GitHub API는 closed로 보이지만 실제 등재됨)
+PR_STATE_OVERRIDES = {
+    "etewiah/awesome-real-estate#30": "✅ MERGED (manual, commit 1b04777)",
+}
+
+
 def collect_awesome_prs() -> list[dict]:
     prs = [
         ("brandonhimpfen/awesome-civic-tech", 6, 9),
@@ -197,8 +204,11 @@ def collect_awesome_prs() -> list[dict]:
     ]
     results = []
     for repo, num, stars in prs:
+        override = PR_STATE_OVERRIDES.get(f"{repo}#{num}")
         code, data = gh("GET", f"/repos/{repo}/pulls/{num}")
-        if code != 200:
+        if override:
+            state = override
+        elif code != 200:
             state = "?"
         elif data.get("merged"):
             state = "✅ MERGED"

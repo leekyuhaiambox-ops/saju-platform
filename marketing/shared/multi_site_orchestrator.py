@@ -164,7 +164,16 @@ def pick_site_for_today(force: str | None = None) -> Site:
     return SITES[keys[epoch_day % len(keys)]]
 
 
-def pick_post(site: Site, channel: str) -> dict:
+# Dev.to는 영구 게시물 — 같은 글 재게시는 스팸으로 보이고 422(제목중복) 유발.
+# 풀 소진 시 리셋하지 않고 None 반환 → 그날 게시 skip. (Mastodon은 피드가 흘러가서 회전 허용)
+NO_REPEAT_CHANNELS = {"devto"}
+
+# Lemmy 계정 banned (2026-07 확인: banned=True, post_count=0).
+# 재가입 전까지 게시 시도 차단 — API 낭비 + 추가 스팸 판정 방지.
+DISABLED_CHANNELS = {"lemmy"}
+
+
+def pick_post(site: Site, channel: str) -> dict | None:
     """사이트 + 채널에 맞는 콘텐츠 선택. state 파일로 중복 방지."""
     pool = _load_post_pool(site.key)
     state_path = Path(__file__).parent / "state" / f"{site.key}_{channel}.json"
@@ -177,6 +186,9 @@ def pick_post(site: Site, channel: str) -> dict:
     used = set(state.get("used_indices", []))
     available = [i for i in range(len(pool)) if i not in used]
     if not available:
+        if channel in NO_REPEAT_CHANNELS:
+            print(f"[{channel} · {site.key}] 풀 소진 — 새 콘텐츠 생성 전까지 skip")
+            return None
         used = set()
         available = list(range(len(pool)))
 
@@ -555,23 +567,36 @@ def main():
 
     if args.channel in ("mastodon", "all"):
         post = pick_post(site, "mastodon")
-        results["mastodon"] = post_to_mastodon(site, post, args.dry_run)
+        if post is None:
+            results["mastodon"] = "skipped (pool exhausted)"
+        else:
+            results["mastodon"] = post_to_mastodon(site, post, args.dry_run)
 
     if args.channel in ("devto", "all"):
         post = pick_post(site, "devto")
-        results["devto"] = post_to_devto(site, post, args.dry_run)
+        if post is None:
+            results["devto"] = "skipped (pool exhausted — no repeats)"
+        else:
+            results["devto"] = post_to_devto(site, post, args.dry_run)
 
     if args.channel in ("lemmy", "all"):
-        # Lemmy는 3일 주기 (state 파일로 추적)
-        last_lemmy = _last_lemmy_at(site.key)
-        if last_lemmy and (time.time() - last_lemmy) < 3 * 86400:
-            print(f"[LEMMY · {site.key}] 마지막 게시 후 3일 미경과 → 건너뜀")
-            results["lemmy"] = "skipped"
+        if "lemmy" in DISABLED_CHANNELS:
+            print(f"[LEMMY] 채널 비활성 (계정 banned) — 게시 skip")
+            results["lemmy"] = "disabled (account banned)"
         else:
-            post = pick_post(site, "lemmy")
-            results["lemmy"] = post_to_lemmy(site, post, args.dry_run)
-            if not args.dry_run and results["lemmy"]:
-                _mark_lemmy_posted(site.key)
+            # Lemmy는 3일 주기 (state 파일로 추적)
+            last_lemmy = _last_lemmy_at(site.key)
+            if last_lemmy and (time.time() - last_lemmy) < 3 * 86400:
+                print(f"[LEMMY · {site.key}] 마지막 게시 후 3일 미경과 → 건너뜀")
+                results["lemmy"] = "skipped"
+            else:
+                post = pick_post(site, "lemmy")
+                if post is None:
+                    results["lemmy"] = "skipped (pool exhausted)"
+                else:
+                    results["lemmy"] = post_to_lemmy(site, post, args.dry_run)
+                    if not args.dry_run and results["lemmy"]:
+                        _mark_lemmy_posted(site.key)
 
     if args.channel in ("indexnow", "all"):
         results["indexnow"] = submit_indexnow(site)
