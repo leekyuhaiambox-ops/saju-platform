@@ -16,10 +16,10 @@ on:
   workflow_dispatch:
     inputs:
       force_site:
-        description: '강제 사이트 (tarofortune / currency-map / geoinfomatic). 비우면 epoch_day 회전.'
+        description: '강제 사이트 (tarofortune / currency-map / geoinfomatic / zipscope). 비우면 epoch_day 회전.'
         required: false
         type: choice
-        options: ['', 'tarofortune', 'currency-map', 'geoinfomatic']
+        options: ['', 'tarofortune', 'currency-map', 'geoinfomatic', 'zipscope']
         default: ''
       dry_run:
         description: '드라이런 (게시 안 함)'
