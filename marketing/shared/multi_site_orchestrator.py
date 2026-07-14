@@ -100,6 +100,21 @@ SITES: dict[str, Site] = {
             "korea@lemmy.world",  # 229 구독
         ],
     ),
+    "zipscope": Site(
+        key="zipscope",
+        name_en="ZipScope — Living-Area Analysis Map",
+        name_kr="집스코프 생활권 분석 지도",
+        url="https://tarofortune.pythonanywhere.com/analyze/",
+        description_en="Nationwide Korean living-area analysis map covering 38,000+ residential complexes. 7-dimension livability score, commute isochrones, flood-risk estimate from SRTM DEM + OSM rivers, winter-sunlight simulation (terrain + building shadows), water-view line-of-sight. Pure analysis — no listings.",
+        description_kr="전국 38,000개 단지 생활권 분석 지도. 7차원 생활점수·통근 등시선·침수위험(위성 DEM)·겨울 일조·수변 조망·초등 배정까지 지도 한 화면에. 매물 없는 순수 분석.",
+        primary_tags=["gis", "python", "opensource", "showdev"],
+        primary_tags_kr=["부동산", "생활권", "침수위험", "일조량", "통근"],
+        lemmy_communities=[
+            "openstreetmap@lemmy.world",  # 5,511 — DEM·OSM 기술 이야기와 궁합
+            "map_enthusiasts@lemmy.world",  # 6,140
+            "korea@lemmy.world",  # 229
+        ],
+    ),
     "geoinfomatic": Site(
         key="geoinfomatic",
         name_en="Living Zone Accessibility Analyzer",
