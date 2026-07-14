@@ -188,8 +188,36 @@ NO_REPEAT_CHANNELS = {"devto"}
 DISABLED_CHANNELS = {"lemmy"}
 
 
+def _zipscope_weekly_data_post() -> dict | None:
+    """월요일 전용: ZipScope 라이브 API에서 신선한 시장 데이터 포스트 생성.
+    고정 풀과 달리 데이터가 매주 갱신되므로 반복 없이 무한 콘텐츠."""
+    import urllib.request
+    try:
+        base = "https://tarofortune.pythonanywhere.com/analyze"
+        mr = json.loads(urllib.request.urlopen(f"{base}/api/market-rank?metric=jeonse&n=3", timeout=20).read())
+        top = mr.get("top") or []
+        if len(top) < 3:
+            return None
+        rows = " · ".join(f"{t['sigungu']} {t['value']}%" for t in top[:3])
+        body = (f"📊 이번 주 전국 전세가율 TOP3\n{rows}\n\n"
+                f"전세가율 100% 초과는 전세가가 매매가보다 높은 '역전세' 위험 신호입니다. "
+                f"전국 {mr.get('total', 200)}개 시군구 랭킹·단지별 전세가율은 지도에서 확인:\n"
+                f"{base}/?ref=mastodon&utm_source=mastodon&utm_medium=social&utm_campaign=weekly-data")
+        return {"lang": "kr", "title": "이번 주 전국 전세가율 TOP3", "body": body,
+                "tags": ["부동산", "전세가율", "역전세", "아파트"]}
+    except Exception as e:
+        print("[weekly-data] 생성 실패:", repr(e)[:60])
+        return None
+
+
 def pick_post(site: Site, channel: str) -> dict | None:
     """사이트 + 채널에 맞는 콘텐츠 선택. state 파일로 중복 방지."""
+    # 월요일 × zipscope × Mastodon → 고정 풀 대신 라이브 시장 데이터 포스트
+    if site.key == "zipscope" and channel == "mastodon" and datetime.now().weekday() == 0:
+        dyn = _zipscope_weekly_data_post()
+        if dyn:
+            print("[mastodon · zipscope] 주간 데이터 포스트(동적) 사용")
+            return dyn
     pool = _load_post_pool(site.key)
     state_path = Path(__file__).parent / "state" / f"{site.key}_{channel}.json"
     state_path.parent.mkdir(parents=True, exist_ok=True)
