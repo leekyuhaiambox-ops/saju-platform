@@ -130,6 +130,21 @@ SITES: dict[str, Site] = {
             "realestate@lemmy.world",  # 55 — 작지만 주제 일치
         ],
     ),
+    "interview-copilot": Site(
+        key="interview-copilot",
+        name_en="Interview Copilot — English Interview Trainer for Koreans",
+        name_kr="인터뷰 코파일럿 — 한국인 영어면접 연습 도구",
+        url="https://geoinfomatic.pythonanywhere.com/interview",
+        description_en="Free English-interview practice tool for Korean speakers. An AI interviewer asks questions by voice; answers are generated from YOUR resume with Korean pronunciation under every sentence — just read it out loud. BYO API key: the browser calls the LLM directly, so your resume and conversation never touch our server.",
+        description_kr="한국인을 위한 영어면접 연습 도구. AI 면접관이 음성으로 질문하면 내 이력서 기반 영어 답변이 뜨고, 문장마다 한글 발음이 달려 그대로 읽으면 됩니다. 모의면접 타이머·코치 피드백 포함, 베타 기간 전부 무료.",
+        primary_tags=["ai", "career", "english", "showdev", "webdev"],
+        primary_tags_kr=["영어면접", "면접준비", "외국계", "취업", "이직"],
+        lemmy_communities=[
+            "korea@lemmy.world",       # 229 — 한국 관련 커뮤니티
+            "jobs@lemmy.world",        # 구직·커리어
+            "artificial_intel@lemmy.world",  # AI 도구
+        ],
+    ),
 }
 
 

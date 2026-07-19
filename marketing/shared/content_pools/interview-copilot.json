@@ -1,0 +1,38 @@
+[
+  {
+    "lang": "en",
+    "title": "I built a free English-interview trainer for Koreans — answers come with Korean pronunciation under every sentence",
+    "body": "Korean job seekers often know English but freeze in interviews: the answer exists in your head, your mouth won't start.\n\nSo I built Interview Copilot. The flow:\n- An AI interviewer asks questions by voice (TTS)\n- An answer is generated from YOUR resume (not generic templates)\n- Every English sentence gets Korean pronunciation right under it — \"As a solo builder\" → \"애즈 어 솔로 빌더\"\n- Answer timer + 10-second countdown + coach feedback in Korean when you finish\n\nIf the answer doesn't come to you, you just read it out loud. After a few rounds it sticks.\n\nPrivacy design I care about: it's BYO-key. You paste your own Claude/OpenAI API key and the browser calls the LLM directly — your resume and the whole conversation never touch my server. The key lives in localStorage only.\n\nHonest downsides: getting an API key is a 5-minute chore if you've never done it, and the free-tier host is slow on cold start.\n\nFree during beta: https://geoinfomatic.pythonanywhere.com/interview",
+    "tags": ["showdev", "ai", "career", "webdev"]
+  },
+  {
+    "lang": "en",
+    "title": "Privacy-first interview prep: why the browser should call the LLM, not my server",
+    "body": "I made an English-interview practice tool for Korean speakers, and the most important design decision wasn't AI — it was where the resume goes.\n\nInterview prep tools ask for your resume, your target job description, and record everything you say. That's the most sensitive career data you own. I didn't want to hold it.\n\nSo Interview Copilot is BYO-key: you bring your own Claude/OpenAI API key, and the browser calls the LLM API directly. My server only handles optional login and subscription state. The resume, the questions, the answers — none of it transits my backend. Delete localStorage and it's gone.\n\nThe product itself: AI interviewer asks by voice, answers are generated from your resume, and every sentence gets Korean pronunciation underneath so you can read it aloud even when your brain blanks under pressure. Mock-interview timer, follow-up questions, coach feedback in Korean.\n\nFree during beta: https://geoinfomatic.pythonanywhere.com/interview\n\nStack: vanilla JS + Web Speech API, static hosting, Flask accounts API on a free tier.",
+    "tags": ["privacy", "ai", "javascript", "showdev"]
+  },
+  {
+    "lang": "en",
+    "title": "The 3-second freeze: designing an interview tool around panic, not fluency",
+    "body": "Watch a non-native speaker in an English interview and the failure isn't grammar — it's the 3-second freeze after the question. The answer exists; retrieval fails under pressure.\n\nMost prep tools train fluency. I built one that assumes panic will happen and gives you a floor: when the AI interviewer asks something, a complete answer generated from your own resume appears on screen, with Korean pronunciation under every sentence. Worst case, you read. Best case, you glance and speak.\n\nFeatures that came out of that principle:\n- Mock interview with voice questions, a visible countdown (pressure training), and follow-up questions\n- Coach feedback in your native language after each answer\n- Real-interview assist mode (share your Meet/Zoom tab; beta)\n\nIt's free during beta and BYO-API-key, so conversations stay in your browser: https://geoinfomatic.pythonanywhere.com/interview",
+    "tags": ["ai", "ux", "career", "english"]
+  },
+  {
+    "lang": "kr",
+    "title": "영어 면접, 답이 안 떠올라도 읽으면 되는 연습 도구 (베타 무료)",
+    "body": "영어 면접에서 제일 무서운 건 어려운 질문이 아니라, 질문 듣고 3초간 머리가 하얘지는 순간이잖아요.\n\n그래서 만든 도구입니다. AI 면접관이 영어로 질문하면, 내 이력서 기반 영어 답변이 화면에 뜨는데 문장마다 밑에 한글 발음이 달립니다.\n\nAs a solo builder → 애즈 어 솔로 빌더\n\n안 떠올라도 그냥 읽으면 됩니다. 몇 번 돌리면 입에 붙어요.\n\n- AI 모의면접: 음성 질문 + 답변 타이머 + 10초 카운트다운 + 한국어 코치 피드백\n- 예상질문 목록 넣으면 순서대로, 끝나면 AI 꼬리질문\n- 이력서·대화는 브라우저에만 저장 (본인 API 키로 직접 호출, 서버 미경유)\n\n단점: 본인 Claude/OpenAI API 키를 발급받아야 해서(무료, 5분) 처음엔 좀 귀찮습니다.\n\n베타 기간 전부 무료: https://geoinfomatic.pythonanywhere.com/interview",
+    "tags": ["영어면접", "면접준비", "취업", "외국계"]
+  },
+  {
+    "lang": "kr",
+    "title": "외국계 이직 준비하며 만든 영어면접 연습기 — 이력서 기반 답변 + 한글 발음",
+    "body": "외국계·해외 취업 준비할 때 영어면접 스크립트 외우다가 막상 실전에서 날리는 경험, 다들 있을 겁니다.\n\n인터뷰 코파일럿은 접근이 다릅니다. 범용 모범답안이 아니라 내 이력서를 근거로 답변을 만들고, 모든 영어 문장 아래 한글 발음을 달아줍니다. 발음이 자신 없어도 입이 떨어집니다.\n\n모의면접 모드는 실전 압박 훈련용입니다. 질문이 음성으로 나오고, 답변 제한시간 타이머가 돌고, 마지막 10초엔 카운트다운이 뜹니다. 답변이 끝나면 한국어로 뭐가 좋았고 뭘 고칠지 피드백을 줍니다.\n\n프라이버시: 본인 API 키로 브라우저가 AI를 직접 호출하는 구조라 이력서와 대화가 서버로 전송되지 않습니다.\n\n베타 기간이라 전부 무료입니다: https://geoinfomatic.pythonanywhere.com/interview",
+    "tags": ["외국계", "이직", "영어면접", "커리어"]
+  },
+  {
+    "lang": "kr",
+    "title": "영어 면접 1분 자기소개, 구조부터 발음까지 정리한 무료 가이드",
+    "body": "영어 면접 첫 질문은 거의 항상 Tell me about yourself입니다. 이걸 후크-강점-근거-지원동기 4단계로 짜는 법과 직무별 예시 스크립트(마케터·개발자·영업, 한글 발음 병기)를 정리한 가이드를 공개했습니다.\n\n가이드: https://geoinfomatic.pythonanywhere.com/interview/guide-1min-intro.html\n예상질문 30개 정리: https://geoinfomatic.pythonanywhere.com/interview/guide-questions.html\n화상면접 준비법: https://geoinfomatic.pythonanywhere.com/interview/guide-video-interview.html\n\n읽고 끝내지 말고 입으로 연습하세요. 같은 사이트의 무료 도구는 AI 면접관이 영어로 질문하고, 내 이력서 기반 답변을 한글 발음과 함께 띄워줍니다: https://geoinfomatic.pythonanywhere.com/interview",
+    "tags": ["영어면접", "자기소개", "면접질문", "취업준비"]
+  }
+]
