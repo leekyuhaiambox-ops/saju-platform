@@ -255,6 +255,7 @@
           <a href="{{ p }}/terms">{{ t('footer_link_terms') }}</a>
           <a href="{{ p }}/contact">{% if lang == 'en' %}Contact{% else %}문의하기{% endif %}</a>
           {% if CONTACT_EMAIL %}<a href="mailto:{{ CONTACT_EMAIL }}">{{ CONTACT_EMAIL }}</a>{% endif %}
+          {% if CONTACT_PHONE %}<a href="tel:{{ CONTACT_PHONE|replace('-','') }}">☎ {{ CONTACT_PHONE }}</a>{% endif %}
           {% if lang != 'en' %}<a href="/premium">⭐ 프리미엄 리포트</a>{% endif %}
           {% if support_links and support_links.active %}<a href="{{ p }}/support">{% if lang == 'en' %}☕ Support{% else %}☕ 후원하기{% endif %}</a>{% endif %}
         </div>

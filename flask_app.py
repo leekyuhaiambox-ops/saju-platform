@@ -49,8 +49,9 @@ from saju import analytics
 CRON_SECRET = os.environ.get("CRON_SECRET", "")
 # ─── 관리자 대시보드 시크릿 (환경변수 없으면 기본값) ───
 ADMIN_SECRET = os.environ.get("ADMIN_SECRET", "saju2026admin")
-# ─── 연락처 이메일 (AdSense 승인 필수: 명확한 연락 수단) ───
-CONTACT_EMAIL = os.environ.get("CONTACT_EMAIL", "iamboxkorea@gmail.com")
+# ─── 연락처 (AdSense 승인 필수: 명확한 연락 수단) ───
+CONTACT_EMAIL = os.environ.get("CONTACT_EMAIL", "geostaticss@gmail.com")
+CONTACT_PHONE = os.environ.get("CONTACT_PHONE", "1588-9241")
 # ─── 쿠팡 파트너스 ID (가입 후 환경변수로 주입) ───
 COUPANG_PARTNERS_ID = os.environ.get("COUPANG_PARTNERS_ID", "")
 # ─── 후원/프리미엄 활성 여부 ───
@@ -424,6 +425,7 @@ def inject_globals():
     lang = getattr(g, "lang", DEFAULT_LANG)
     return {
         "CONTACT_EMAIL": CONTACT_EMAIL,
+        "CONTACT_PHONE": CONTACT_PHONE,
         "ADSENSE_CLIENT_ID": ADSENSE_CLIENT_ID,
         "ADSENSE_SLOT_TOP": ADSENSE_SLOT_TOP,
         "ADSENSE_SLOT_INLINE": ADSENSE_SLOT_INLINE,
@@ -818,7 +820,8 @@ def terms():
 @app.route("/contact")
 @app.route("/en/contact")
 def contact():
-    return render_template("contact.html", contact_email=CONTACT_EMAIL)
+    return render_template("contact.html", contact_email=CONTACT_EMAIL,
+                           contact_phone=CONTACT_PHONE)
 
 
 # ─────────────────────────────────────────────────────────────────
