@@ -196,11 +196,26 @@ DREAMS = [
 ]
 
 
+import json as _json
+import os as _os
+
+_EXTRA = {}
+try:
+    _p = _os.path.join(_os.path.dirname(__file__), "dream_extra.json")
+    if _os.path.exists(_p):
+        with open(_p, encoding="utf-8") as _f:
+            _EXTRA = _json.load(_f)
+except Exception:
+    _EXTRA = {}
+
+
 def get_dream(slug: str):
     for d in DREAMS:
         if d[0] == slug:
-            return {"slug": d[0], "title": d[1], "fortune": d[2],
-                    "summary": d[3], "body": d[4], "tags": d[5]}
+            out = {"slug": d[0], "title": d[1], "fortune": d[2],
+                   "summary": d[3], "body": d[4], "tags": d[5]}
+            out.update(_EXTRA.get(slug, {}))  # 재물/애정/직장/건강/로또/상황별 병합
+            return out
     return None
 
 

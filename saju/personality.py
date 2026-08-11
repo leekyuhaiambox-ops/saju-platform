@@ -98,12 +98,27 @@ MBTI_BEST = {
 }
 
 
+import json as _json
+import os as _os
+
+_MBTI_EXTRA = {}
+try:
+    _p = _os.path.join(_os.path.dirname(__file__), "mbti_extra.json")
+    if _os.path.exists(_p):
+        with open(_p, encoding="utf-8") as _f:
+            _MBTI_EXTRA = _json.load(_f)
+except Exception:
+    _MBTI_EXTRA = {}
+
+
 def get_mbti(t: str):
     t = t.upper()
     if t not in MBTI_TYPES:
         return None
     name, desc = MBTI_TYPES[t]
-    return {"type": t, "name": name, "desc": desc, "best": MBTI_BEST.get(t, "ENFP")}
+    out = {"type": t, "name": name, "desc": desc, "best": MBTI_BEST.get(t, "ENFP")}
+    out.update(_MBTI_EXTRA.get(t, {}))  # 연애/직장/강점/약점/스트레스/성장 병합
+    return out
 
 
 def all_mbti():

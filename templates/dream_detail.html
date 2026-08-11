@@ -35,11 +35,32 @@
   <h2>{{ d.title }}의 의미</h2>
   <p style="font-size:1.05rem;line-height:1.9;">{{ d.body }}</p>
 
+  {% if d.wealth or d.love or d.work or d.health %}
+  <h2>{{ d.title }} 운세별 풀이</h2>
+  <ul class="bullet-list">
+    {% if d.wealth %}<li><strong>💰 재물운</strong> — {{ d.wealth }}</li>{% endif %}
+    {% if d.love %}<li><strong>💕 애정운</strong> — {{ d.love }}</li>{% endif %}
+    {% if d.work %}<li><strong>💼 직장·사업운</strong> — {{ d.work }}</li>{% endif %}
+    {% if d.health %}<li><strong>🍀 건강운</strong> — {{ d.health }}</li>{% endif %}
+  </ul>
+  {% endif %}
+
   {% if ADFIT_SLOT_MEDIUM %}
   <div class="adfit-container adfit-medium">
     <p class="ad-label">{{ t('ad_label') }}</p>
     <ins class="kakao_ad_area" style="display:none;" data-ad-unit="{{ ADFIT_SLOT_MEDIUM }}" data-ad-width="300" data-ad-height="250"></ins>
   </div>
+  {% endif %}
+
+  {% if d.variations %}
+  <h2>{{ d.title }}의 상황별 해석</h2>
+  <p>{{ d.variations }}</p>
+  {% endif %}
+
+  {% if d.lottery %}
+  <h2>{{ d.title }}과 로또·복권</h2>
+  <p>{{ d.lottery }}</p>
+  <p class="muted" style="font-size:.9rem">※ 로또·복권 관련 해석은 재미를 위한 전통적 속설이며, 당첨을 보장하지 않습니다.</p>
   {% endif %}
 
   <div class="dream-cta-box">
