@@ -1,0 +1,704 @@
+{
+ "ace-of-cups": {
+  "love_ko": "새로운 감정이 샘솟듯 열리며 순수한 사랑과 마음의 문이 활짝 열리는 시작의 카드예요.",
+  "love_en": "A pure new love overflows, opening your heart to fresh emotional beginnings.",
+  "work_ko": "창의적 영감과 협업의 기운이 넘쳐 새 프로젝트나 파트너십이 축복처럼 시작됩니다.",
+  "work_en": "Creative inspiration overflows, blessing new projects and heartfelt collaborations.",
+  "advice_ko": "마음을 활짝 열고 밀려오는 감정과 기회를 두려움 없이 받아들이세요.",
+  "advice_en": "Open your heart fully and receive the emotional gifts flowing toward you.",
+  "yesno": "Yes"
+ },
+ "2-of-cups": {
+  "love_ko": "두 사람이 서로 잔을 나누듯 대등하고 진실한 사랑의 결합과 상호 끌림을 뜻해요.",
+  "love_en": "A balanced, mutual attraction unites two hearts in genuine partnership.",
+  "work_ko": "신뢰 위에 맺어진 파트너십이나 계약, 동료와의 조화로운 협력이 결실을 맺습니다.",
+  "work_en": "A trusting partnership or contract forms through harmonious mutual cooperation.",
+  "advice_ko": "상대를 동등하게 존중하며 진심을 주고받는 균형 잡힌 관계를 가꾸세요.",
+  "advice_en": "Honor the other as an equal and nurture a balanced, sincere connection.",
+  "yesno": "Yes"
+ },
+ "3-of-cups": {
+  "love_ko": "친구와 공동체 속에서 사랑을 축하하며 즐거운 만남과 관계의 기쁨이 무르익어요.",
+  "love_en": "Joyful celebration and friendship surround your love with warmth and delight.",
+  "work_ko": "팀의 협력과 성취를 함께 축하하며 인맥과 공동 프로젝트가 풍성하게 열매 맺습니다.",
+  "work_en": "Team success and networking flourish, worth celebrating with your collaborators.",
+  "advice_ko": "혼자 짊어지지 말고 친구와 공동체의 기쁨과 지지를 함께 나누세요.",
+  "advice_en": "Share your joy and lean on the support of friends and community.",
+  "yesno": "Yes"
+ },
+ "4-of-cups": {
+  "love_ko": "권태와 무관심에 빠져 눈앞의 새로운 사랑을 놓치고 있는 정체된 마음을 뜻해요.",
+  "love_en": "Apathy and discontent blind you to a new love offered right before you.",
+  "work_ko": "현재 기회에 시들해져 무기력하지만 놓친 제안을 다시 살펴볼 필요가 있습니다.",
+  "work_en": "Boredom clouds your view; reconsider an overlooked offer at work.",
+  "advice_ko": "권태에서 벗어나 이미 주어진 소중한 기회에 다시 눈을 뜨세요.",
+  "advice_en": "Shake off apathy and notice the gift already extended to you.",
+  "yesno": "No"
+ },
+ "5-of-cups": {
+  "love_ko": "상실과 후회에 잠겨 슬퍼하지만 아직 남은 두 잔의 희망을 돌아봐야 할 때예요.",
+  "love_en": "Grief over loss lingers, yet two cups of hope still remain behind you.",
+  "work_ko": "실패나 좌절에 마음이 무겁지만 남아 있는 자원과 가능성에 다시 집중해야 합니다.",
+  "work_en": "Setbacks weigh on you, but salvageable resources still stand behind you.",
+  "advice_ko": "엎질러진 것에 매달리지 말고 아직 남은 것에서 희망을 찾으세요.",
+  "advice_en": "Stop mourning the spilled cups and turn toward what remains.",
+  "yesno": "No"
+ },
+ "6-of-cups": {
+  "love_ko": "옛 추억과 순수한 애정이 되살아나 첫사랑이나 오래된 인연이 다시 찾아올 수 있어요.",
+  "love_en": "Sweet nostalgia revives innocent affection, perhaps reuniting an old flame.",
+  "work_ko": "과거 인연이나 익숙한 환경이 도움을 주고 예전의 신뢰가 새 기회로 이어집니다.",
+  "work_en": "Past connections and familiar ground bring supportive, nostalgic opportunities.",
+  "advice_ko": "따뜻한 추억에서 위안을 얻되 과거에 머무르지는 마세요.",
+  "advice_en": "Draw comfort from fond memories without staying trapped in the past.",
+  "yesno": "Yes"
+ },
+ "7-of-cups": {
+  "love_ko": "환상과 여러 선택지에 마음이 흔들려 진짜 사랑과 헛된 이상을 구분해야 할 때예요.",
+  "love_en": "Fantasy and too many options cloud which love is real versus illusion.",
+  "work_ko": "매력적인 선택지가 넘쳐 혼란스럽지만 현실적인 하나를 골라 집중해야 합니다.",
+  "work_en": "Many tempting options confuse you; choose one realistic path and commit.",
+  "advice_ko": "환상에 취하지 말고 실체 있는 선택에 발을 딛으세요.",
+  "advice_en": "See past the illusions and ground yourself in one real choice.",
+  "yesno": "Maybe"
+ },
+ "8-of-cups": {
+  "love_ko": "더 깊은 의미를 찾아 미련을 뒤로하고 미지근한 관계를 떠나는 결단의 카드예요.",
+  "love_en": "You walk away from a hollow relationship, seeking deeper emotional truth.",
+  "work_ko": "겉으로 안정돼 보여도 공허함을 느껴 더 뜻깊은 길을 향해 떠나게 됩니다.",
+  "work_en": "You leave a hollow yet stable role to pursue more meaningful work.",
+  "advice_ko": "충분히 노력했다면 미련 없이 등을 돌려 더 깊은 길로 나아가세요.",
+  "advice_en": "Honor your effort, then turn away and seek a deeper path.",
+  "yesno": "No"
+ },
+ "9-of-cups": {
+  "love_ko": "감정적 만족과 소원 성취의 카드로 원하던 사랑과 행복이 이루어지는 흐뭇한 시기예요.",
+  "love_en": "The wish card grants emotional fulfillment and the contented love you longed for.",
+  "work_ko": "노력이 보상받아 만족스러운 성과와 안정된 풍요를 누리는 소원 성취의 시기입니다.",
+  "work_en": "Your efforts pay off, bringing satisfying success and comfortable abundance.",
+  "advice_ko": "감사하는 마음으로 이룬 것을 누리되 자만에 빠지지는 마세요.",
+  "advice_en": "Savor your fulfilled wishes with gratitude, not smugness.",
+  "yesno": "Yes"
+ },
+ "10-of-cups": {
+  "love_ko": "무지개처럼 완성된 사랑과 가정의 행복, 함께하는 이들과의 정서적 충만함을 뜻해요.",
+  "love_en": "A rainbow of lasting love crowns family harmony and complete emotional bliss.",
+  "work_ko": "일과 삶의 조화가 이루어져 공동체와 함께 오래도록 지속될 만족을 누립니다.",
+  "work_en": "Work-life harmony brings lasting contentment shared with your community.",
+  "advice_ko": "곁에 있는 사람들과의 정서적 유대에서 진정한 행복을 찾으세요.",
+  "advice_en": "Find true happiness in the emotional bonds with those beside you.",
+  "yesno": "Yes"
+ },
+ "page-of-cups": {
+  "love_ko": "설레는 고백이나 순수한 애정의 메시지가 찾아오는 풋풋한 감정의 시작을 알려요.",
+  "love_en": "A tender, playful love message or sweet romantic overture arrives.",
+  "work_ko": "창의적 아이디어와 직관의 씨앗이 트여 새로운 배움이나 예술적 제안이 다가옵니다.",
+  "work_en": "Creative ideas and intuitive sparks bring fresh, artistic opportunities.",
+  "advice_ko": "어린아이 같은 호기심과 직관을 믿고 마음의 속삭임에 귀 기울이세요.",
+  "advice_en": "Trust your childlike intuition and listen to your heart's gentle whispers.",
+  "yesno": "Maybe"
+ },
+ "knight-of-cups": {
+  "love_ko": "로맨틱한 구애자가 손에 잔을 들고 다가오듯 낭만적인 제안과 이상적 사랑이 찾아와요.",
+  "love_en": "A romantic suitor approaches, offering an idealistic, heartfelt proposal of love.",
+  "work_ko": "매력적인 제안이나 창의적 기회가 다가오지만 그 낭만이 현실적인지 살펴야 합니다.",
+  "work_en": "A charming, creative offer arrives; check if its promise is realistic.",
+  "advice_ko": "가슴이 이끄는 대로 따르되 감정에만 휩쓸리지 않도록 균형을 지키세요.",
+  "advice_en": "Follow your heart's lead, but keep it balanced with grounded realism.",
+  "yesno": "Yes"
+ },
+ "queen-of-cups": {
+  "love_ko": "깊은 공감과 헌신으로 상대를 감싸는 다정하고 직관적인 사랑의 성숙함을 뜻해요.",
+  "love_en": "Deep empathy and nurturing devotion express a mature, intuitive kind of love.",
+  "work_ko": "타인의 감정을 읽는 직관과 배려로 돌봄이나 상담, 창작 분야에서 빛을 발합니다.",
+  "work_en": "Intuitive empathy makes you shine in caring, counseling, or creative roles.",
+  "advice_ko": "감정에 휘둘리지 말고 깊은 직관과 공감으로 부드럽게 상황을 품으세요.",
+  "advice_en": "Lead with intuition and compassion without drowning in others' emotions.",
+  "yesno": "Yes"
+ },
+ "king-of-cups": {
+  "love_ko": "격정 속에서도 평정을 지키며 감정을 성숙하게 다스리는 든든한 사랑의 안정감을 뜻해요.",
+  "love_en": "Emotionally mature and calm, this love offers steady, reassuring depth.",
+  "work_ko": "감정과 이성의 균형으로 갈등을 조율하고 신뢰받는 리더십을 발휘하게 됩니다.",
+  "work_en": "Balancing heart and reason, you lead with trusted, diplomatic composure.",
+  "advice_ko": "격한 감정의 파도 속에서도 흔들림 없이 평정과 연민을 함께 지키세요.",
+  "advice_en": "Master turbulent emotions with calm compassion and steady self-control.",
+  "yesno": "Yes"
+ },
+ "fool": {
+  "love_ko": "설렘 가득한 새로운 만남이 시작되니 계산 없이 마음을 열어보라는 신호예요.",
+  "love_en": "A fresh, spontaneous romance begins; open your heart freely without overthinking the leap.",
+  "work_ko": "익숙한 길을 벗어난 새 도전이나 창업의 출발점이니 순수한 용기가 자산이 됩니다.",
+  "work_en": "A brand-new venture or bold career leap awaits; beginner's courage is your greatest asset.",
+  "advice_ko": "낭떠러지 앞에서도 믿음으로 첫발을 내딛되, 발밑은 한 번 살피세요.",
+  "advice_en": "Take the leap with faith and an open mind, but stay lightly aware of the edge.",
+  "yesno": "Yes"
+ },
+ "magician": {
+  "love_ko": "매력과 의지로 원하는 관계를 끌어올 힘이 있으니 진심을 담아 먼저 표현하세요.",
+  "love_en": "You hold the charm and will to manifest the connection you want; act with sincere intention.",
+  "work_ko": "재능과 자원이 모두 갖춰졌으니 아이디어를 구체적 행동으로 실현할 최적의 때예요.",
+  "work_en": "All the tools and talent are in hand; now is the moment to turn ideas into results.",
+  "advice_ko": "'위와 아래가 하나'처럼 뜻과 행동을 일치시켜 집중하면 원하는 걸 창조합니다.",
+  "advice_en": "Align your focus, will, and action as one, and you can create what you envision.",
+  "yesno": "Yes"
+ },
+ "high-priestess": {
+  "love_ko": "겉으로 드러나지 않은 감정과 비밀이 흐르니 서두르지 말고 직관을 믿으세요.",
+  "love_en": "Hidden feelings and unspoken depths swirl beneath the surface; trust intuition and let things unfold.",
+  "work_ko": "아직 공개되지 않은 정보가 있으니 성급한 결정보다 조용히 관찰하고 배우는 게 유리해요.",
+  "work_en": "Undisclosed information is still forming; observe quietly and study rather than forcing a decision.",
+  "advice_ko": "답은 밖이 아니라 내면의 고요 속에 있으니 침묵 속에서 직관에 귀 기울이세요.",
+  "advice_en": "The answer lies in inner stillness, not outer noise; listen closely to your quiet intuition.",
+  "yesno": "Maybe"
+ },
+ "empress": {
+  "love_ko": "따뜻한 애정과 풍요로움이 무르익어 관계가 결실을 맺거나 임신·사랑이 깊어질 수 있어요.",
+  "love_en": "Warm, nurturing love flourishes; the relationship deepens, blossoms, and may bear tender fruit.",
+  "work_ko": "창의력과 결실의 시기라 프로젝트가 풍성하게 자라나고 재정도 넉넉히 불어납니다.",
+  "work_en": "A fertile, creative season; projects grow abundantly and finances flourish with steady increase.",
+  "advice_ko": "자신과 주변을 넉넉히 보살피고 창조의 흐름에 자연스럽게 몸을 맡기세요.",
+  "advice_en": "Nurture yourself and others generously, and let your creativity grow at its natural pace.",
+  "yesno": "Yes"
+ },
+ "emperor": {
+  "love_ko": "안정과 책임을 중시하는 든든한 관계이니 신뢰의 구조를 함께 세워가면 좋아요.",
+  "love_en": "A stable, committed bond built on protection and responsibility; build reliable structure together.",
+  "work_ko": "체계와 리더십으로 기반을 다지는 시기라 규율과 계획이 성공의 토대가 됩니다.",
+  "work_en": "A time to lead with structure and authority; discipline and planning form your foundation for success.",
+  "advice_ko": "감정보다 원칙과 질서를 세우고, 주도적으로 책임지는 리더가 되세요.",
+  "advice_en": "Establish order and firm principles, and take charge with steady, responsible leadership.",
+  "yesno": "Yes"
+ },
+ "hierophant": {
+  "love_ko": "전통적 약속이나 결혼처럼 사회적 틀 안의 진지한 관계로 나아갈 수 있어요.",
+  "love_en": "A traditional, committed union—engagement or marriage—moving through conventional, socially honored steps.",
+  "work_ko": "규범과 멘토, 검증된 방식이 힘이 되니 제도권 안에서 배우고 협력하면 유리합니다.",
+  "work_en": "Established institutions, mentors, and proven methods favor you; learn and cooperate within the system.",
+  "advice_ko": "검증된 지혜와 스승의 가르침을 존중하되, 형식이 본질을 가리지 않게 하세요.",
+  "advice_en": "Honor proven wisdom and mentorship, but don't let ritual eclipse the meaning behind it.",
+  "yesno": "Yes"
+ },
+ "lovers": {
+  "love_ko": "깊은 교감과 진실한 결합의 카드이니 마음이 통하는 관계가 확실히 무르익어요.",
+  "love_en": "Deep harmony and genuine union; a heartfelt, values-aligned connection ripens into true partnership.",
+  "work_ko": "중요한 선택의 갈림길이니 가치관에 맞는 파트너십과 결정을 신중히 골라야 합니다.",
+  "work_en": "A meaningful crossroads; choose partnerships and decisions that truly align with your core values.",
+  "advice_ko": "머리와 가슴이 하나 되는 선택을 하고, 진실한 가치를 기준으로 삼으세요.",
+  "advice_en": "Choose from both head and heart, letting your deepest values guide the decision you make.",
+  "yesno": "Yes"
+ },
+ "chariot": {
+  "love_ko": "강한 의지로 밀어붙여 관계의 장애를 돌파하니 방향만 분명하면 함께 나아갑니다.",
+  "love_en": "Willpower drives the relationship forward past obstacles; with clear direction you advance together.",
+  "work_ko": "집중력과 추진력으로 경쟁에서 승리하는 시기라 목표를 향해 단호히 전진하세요.",
+  "work_en": "Focus and momentum bring victory over rivals; press decisively toward your clearly set goal.",
+  "advice_ko": "상반된 힘의 고삐를 함께 쥐고 흔들림 없이 한 방향으로 나아가세요.",
+  "advice_en": "Hold the opposing reins together and drive forward with unwavering focus and self-control.",
+  "yesno": "Yes"
+ },
+ "strength": {
+  "love_ko": "인내와 부드러운 다정함으로 관계를 다스리면 격한 감정도 온화하게 길들여져요.",
+  "love_en": "Gentle patience and compassion tame turbulent emotions, deepening the bond through quiet inner strength.",
+  "work_ko": "힘겨운 상황도 조급함 대신 끈기와 침착함으로 대하면 부드럽게 극복할 수 있어요.",
+  "work_en": "Meet workplace pressure with patience and calm resolve rather than force, and you'll gently prevail.",
+  "advice_ko": "완력이 아니라 부드러운 용기와 자기 절제로 내면의 사자를 다독이세요.",
+  "advice_en": "Master challenges through gentle courage and self-mastery, not brute force—soothe the lion within.",
+  "yesno": "Yes"
+ },
+ "hermit": {
+  "love_ko": "잠시 홀로 서서 자신의 진심을 성찰할 시간이 필요하니 관계도 천천히 살피세요.",
+  "love_en": "A time of introspection; step back to understand your true feelings before the relationship moves on.",
+  "work_ko": "혼자 깊이 파고들며 전문성을 쌓는 시기이니 조용한 연구와 자기 점검이 열쇠예요.",
+  "work_en": "A period of solitary focus and expertise-building; quiet study and self-review light the way.",
+  "advice_ko": "잠시 물러나 내면의 등불로 스스로를 비추면 진짜 길이 보입니다.",
+  "advice_en": "Withdraw for a while and let your inner lamp guide you; the true path reveals itself in solitude.",
+  "yesno": "Maybe"
+ },
+ "wheel-of-fortune": {
+  "love_ko": "운명적 전환점이 다가오니 관계의 흐름이 예상치 못한 방향으로 크게 바뀔 수 있어요.",
+  "love_en": "A fated turning point arrives; the relationship's tide may shift dramatically in an unexpected direction.",
+  "work_ko": "행운의 순환이 유리하게 돌기 시작하니 찾아온 기회의 물결에 올라타세요.",
+  "work_en": "Fortune's cycle turns in your favor; ride the incoming wave of opportunity while momentum lasts.",
+  "advice_ko": "변화는 자연스러운 흐름이니 통제하려 애쓰기보다 순환에 유연히 올라타세요.",
+  "advice_en": "Change is the natural cycle; flow with fortune's turning wheel rather than fighting to control it.",
+  "yesno": "Yes"
+ },
+ "justice": {
+  "love_ko": "공정함과 정직이 관계의 핵심이니 서로에게 솔직하고 균형 잡힌 태도가 필요해요.",
+  "love_en": "Fairness and honesty define this bond; mutual truth and balanced give-and-take keep it healthy.",
+  "work_ko": "계약·법률·평가가 공정하게 결론 나는 시기이니 정직하게 임하면 정당한 결과를 얻어요.",
+  "work_en": "Contracts, legal matters, and evaluations resolve fairly; act with integrity to earn just outcomes.",
+  "advice_ko": "감정을 걷어내고 진실과 책임에 근거해 균형 잡힌 결정을 내리세요.",
+  "advice_en": "Weigh the facts objectively and decide with integrity, accepting responsibility for cause and effect.",
+  "yesno": "Yes"
+ },
+ "hanged-man": {
+  "love_ko": "관계가 멈춘 듯 정체되니 조급함을 내려놓고 관점을 바꿔 바라볼 시간이 필요해요.",
+  "love_en": "The relationship feels suspended; release urgency and shift perspective to see it in a new light.",
+  "work_ko": "진행이 보류되는 시기이니 억지로 밀기보다 잠시 멈춰 상황을 다르게 바라보세요.",
+  "work_en": "Progress is on hold; instead of forcing it, pause and view the situation from a fresh angle.",
+  "advice_ko": "통제를 내려놓고 기꺼이 멈춰 서면, 거꾸로 매달린 시선에서 새 깨달음이 옵니다.",
+  "advice_en": "Surrender control and embrace the pause; a reversed perspective brings the insight you've been missing.",
+  "yesno": "Maybe"
+ },
+ "death": {
+  "love_ko": "한 단계가 끝나고 관계가 근본적으로 변형되니, 낡은 방식을 놓아야 새 국면이 열려요.",
+  "love_en": "A chapter ends and the bond transforms; release the old form to make room for genuine renewal.",
+  "work_ko": "묵은 일이나 방식이 확실히 마무리되는 시기이니 종결을 받아들여야 재탄생이 시작돼요.",
+  "work_en": "An old role or method decisively ends; accept the closure, for it clears the ground for rebirth.",
+  "advice_ko": "끝을 두려워 말고 놓아주면, 죽음 뒤엔 반드시 새로운 시작이 따라옵니다.",
+  "advice_en": "Don't fear the ending; release what's finished, and profound transformation and renewal will follow.",
+  "yesno": "No"
+ },
+ "temperance": {
+  "love_ko": "서로의 다름을 조화롭게 섞어 균형을 이루니 인내와 절제가 관계를 무르익게 해요.",
+  "love_en": "Blending differences into harmony; patience and moderation let the relationship mature gracefully.",
+  "work_ko": "극단을 피하고 자원을 알맞게 조율하는 시기이니 협업과 중용이 좋은 결과를 냅니다.",
+  "work_en": "A time to balance resources and avoid extremes; collaboration and moderation yield steady results.",
+  "advice_ko": "서두르지 말고 상반된 요소를 인내로 섞어 중용의 균형을 찾으세요.",
+  "advice_en": "Blend opposites with patience and seek the middle path; moderation brings lasting equilibrium.",
+  "yesno": "Yes"
+ },
+ "devil": {
+  "love_ko": "집착과 육체적 유혹에 얽매인 관계일 수 있으니 건강한 자유와 경계를 회복해야 해요.",
+  "love_en": "A bond gripped by obsession, temptation, or unhealthy attachment; reclaim your freedom and boundaries.",
+  "work_ko": "돈이나 지위에 매인 소모적 굴레에 갇힐 수 있으니 무엇이 나를 옭아매는지 직시하세요.",
+  "work_en": "Beware entrapment by money, status, or a draining situation; face honestly what truly binds you.",
+  "advice_ko": "스스로 채운 사슬은 느슨하니, 유혹과 의존의 정체를 직시하면 벗어날 수 있어요.",
+  "advice_en": "The chains are looser than they seem; confront the temptation or dependency and you can break free.",
+  "yesno": "No"
+ },
+ "tower": {
+  "love_ko": "갑작스러운 충격이 관계의 허약한 토대를 무너뜨리니, 진실 앞에서 재정비가 필요해요.",
+  "love_en": "A sudden shock topples a shaky foundation; painful truth clears away what was never solid.",
+  "work_ko": "예기치 못한 붕괴나 급변이 닥칠 수 있으니 낡은 구조가 무너지는 걸 받아들이세요.",
+  "work_en": "An abrupt upheaval may strike; accept the collapse of an unstable structure as necessary clearing.",
+  "advice_ko": "무너지는 것은 애초에 거짓된 토대이니, 충격을 각성의 계기로 삼으세요.",
+  "advice_en": "What falls was built on illusion; let the sudden shock become a lightning flash of liberating truth.",
+  "yesno": "No"
+ },
+ "star": {
+  "love_ko": "상처 뒤에 찾아온 치유와 희망의 카드이니 순수한 믿음으로 관계가 다시 빛나요.",
+  "love_en": "Healing and hope after hardship; renewed faith and openness let the connection shine serenely again.",
+  "work_ko": "영감과 낙관이 되살아나는 시기이니 꿈을 향한 꾸준한 믿음이 좋은 흐름을 부릅니다.",
+  "work_en": "Inspiration and optimism return; steady faith in your vision draws a hopeful, healing flow of progress.",
+  "advice_ko": "어둠 뒤의 별처럼 희망을 놓지 말고, 순수한 마음으로 자신을 새롭게 채우세요.",
+  "advice_en": "Keep faith like a star after darkness; renew yourself with hope, serenity, and open generosity.",
+  "yesno": "Yes"
+ },
+ "moon": {
+  "love_ko": "환상과 불확실함이 감도니 오해나 숨은 감정을 조심하며 진실을 천천히 확인하세요.",
+  "love_en": "Illusion and uncertainty cloud the connection; watch for hidden feelings and verify the truth slowly.",
+  "work_ko": "정보가 모호하고 불안이 커지는 시기이니 성급한 판단보다 안개가 걷힐 때를 기다리세요.",
+  "work_en": "Information is murky and anxieties rise; wait for the fog to clear rather than judging prematurely.",
+  "advice_ko": "두려움과 착각에 휘둘리지 말고 직관을 나침반 삼아 어둠 속을 천천히 걸으세요.",
+  "advice_en": "Don't let fear or illusion mislead you; trust intuition as your compass through the uncertain dark.",
+  "yesno": "Maybe"
+ },
+ "sun": {
+  "love_ko": "밝고 따뜻한 기쁨이 넘치는 관계이니 진심 어린 행복과 활력이 사랑을 환하게 비춰요.",
+  "love_en": "Radiant joy and warmth fill the relationship; genuine happiness and vitality light up the love.",
+  "work_ko": "성공과 인정이 활짝 빛나는 시기이니 자신감을 갖고 성취의 열매를 마음껏 누리세요.",
+  "work_en": "Success and recognition shine brightly; move with confidence and enjoy the fruits of clear achievement.",
+  "advice_ko": "숨김없이 자신을 드러내고, 아이처럼 순수한 기쁨으로 지금의 밝음을 만끽하세요.",
+  "advice_en": "Shine openly and authentically; embrace life's warmth with childlike joy and well-earned confidence.",
+  "yesno": "Yes"
+ },
+ "judgement": {
+  "love_ko": "과거를 청산하고 관계가 새 국면으로 부활하니, 용서와 화해의 부름에 응답하세요.",
+  "love_en": "A wake-up call revives the bond; answer the summons to forgive, reconcile, and begin anew.",
+  "work_ko": "지난 노력이 평가받고 새 소명으로 거듭나는 시기이니 결단으로 재도약을 선택하세요.",
+  "work_en": "Past efforts are judged and a new calling emerges; answer it decisively and rise to a fresh start.",
+  "advice_ko": "지난 삶을 정직하게 돌아보고, 더 높은 부름에 응답해 새롭게 일어서세요.",
+  "advice_en": "Reflect honestly on your past, heed the higher call, and rise renewed toward your true purpose.",
+  "yesno": "Yes"
+ },
+ "world": {
+  "love_ko": "하나의 여정이 완성되어 관계가 온전한 결실과 성취에 이르니 충만함을 함께 누려요.",
+  "love_en": "A cycle completes in wholeness; the relationship reaches fulfillment, integration, and joyful completion.",
+  "work_ko": "오랜 목표가 성공적으로 마무리되는 시기이니 성취를 자축하고 다음 무대로 나아가세요.",
+  "work_en": "A long goal culminates in success; celebrate the accomplishment and step onto your next larger stage.",
+  "advice_ko": "여정의 완성을 온전히 축하하며, 배운 모든 것을 통합해 다음 원을 준비하세요.",
+  "advice_en": "Celebrate this hard-won completion fully, integrate all you've learned, and ready yourself for the next cycle.",
+  "yesno": "Yes"
+ },
+ "ace-of-pentacles": {
+  "love_ko": "안정된 토대 위에서 시작되는 진실하고 물질적으로도 든든한 새 인연을 뜻합니다.",
+  "love_en": "A grounded, sincere new relationship begins on a stable and secure foundation.",
+  "work_ko": "새 일자리, 투자, 사업 종잣돈 등 번영으로 이어질 실질적 기회가 손에 들어옵니다.",
+  "work_en": "A tangible opportunity — new job, investment, or seed money — arrives with real prospects.",
+  "advice_ko": "눈앞의 현실적 기회를 잡아 씨앗을 심고 꾸준히 가꾸어 나가세요.",
+  "advice_en": "Seize the concrete opportunity before you and patiently nurture the seed you plant.",
+  "yesno": "Yes"
+ },
+ "2-of-pentacles": {
+  "love_ko": "두 관계나 감정 사이에서 균형을 잡으려 애쓰며 유연한 조율이 필요한 시기입니다.",
+  "love_en": "You juggle competing feelings or ties, needing flexibility to keep everything in balance.",
+  "work_ko": "여러 업무와 돈의 흐름을 곡예하듯 저글링하며 우선순위 조정이 요구됩니다.",
+  "work_en": "You juggle multiple tasks and cash flow, forced to prioritize and adapt constantly.",
+  "advice_ko": "변화의 파도에 맞춰 유연하게 움직이되 한 번에 너무 많이 떠안지 마세요.",
+  "advice_en": "Stay adaptable to shifting waves, but avoid taking on more than you can handle.",
+  "yesno": "Maybe"
+ },
+ "3-of-pentacles": {
+  "love_ko": "서로의 역할을 존중하며 함께 관계를 쌓아가는 협력과 팀워크가 빛나는 때입니다.",
+  "love_en": "Collaboration shines as you and your partner build the relationship together with mutual respect.",
+  "work_ko": "숙련된 기술이 인정받고 팀 협업으로 큰 프로젝트를 완성해 가는 단계입니다.",
+  "work_en": "Your skill is recognized as teamwork drives a major project steadily toward completion.",
+  "advice_ko": "혼자 힘쓰지 말고 전문가와 협력하며 각자의 재능을 모아 완성도를 높이세요.",
+  "advice_en": "Don't go it alone; combine talents with others to raise the quality of the work.",
+  "yesno": "Yes"
+ },
+ "4-of-pentacles": {
+  "love_ko": "마음을 꽉 움켜쥐고 방어하느라 애정 표현과 진솔한 나눔이 막혀 있습니다.",
+  "love_en": "Clinging and guardedness block open affection, leaving little room to share your heart.",
+  "work_ko": "돈과 지위를 지키려 지나치게 움켜쥐어 성장과 새 투자의 기회를 놓칠 수 있습니다.",
+  "work_en": "Hoarding money and status too tightly may cost you growth and fresh investment chances.",
+  "advice_ko": "안정은 좋으나 손을 조금 펴서 흐름을 허용해야 더 크게 순환합니다.",
+  "advice_en": "Security is fine, but loosen your grip a little to let abundance circulate.",
+  "yesno": "No"
+ },
+ "5-of-pentacles": {
+  "love_ko": "소외감과 결핍 속에 서로 등 돌린 채 힘든 시기를 함께 견디고 있습니다.",
+  "love_en": "Feeling left out in the cold, you endure a hard, lonely stretch together or apart.",
+  "work_ko": "재정적 어려움과 실직, 궁핍이 닥치지만 가까운 곳에 도움의 문이 열려 있습니다.",
+  "work_en": "Financial hardship or job loss bites, yet unnoticed help waits just nearby.",
+  "advice_ko": "혼자 버티지 말고 자존심을 내려놓아 곁의 도움과 지원을 청하세요.",
+  "advice_en": "Don't suffer alone; set pride aside and reach for the support close at hand.",
+  "yesno": "No"
+ },
+ "6-of-pentacles": {
+  "love_ko": "주고받음의 균형이 맞춰지며 관대함과 배려가 오가는 관계로 나아갑니다.",
+  "love_en": "Giving and receiving balance out as generosity and care flow both ways.",
+  "work_ko": "정당한 보상, 급여 인상이나 후원을 받거나 남에게 베풀 여유가 생기는 흐름입니다.",
+  "work_en": "Fair reward, a raise, or patronage arrives — or you gain the means to give.",
+  "advice_ko": "받을 땐 감사히, 줄 땐 공정하게 주고받음의 저울을 바로 세우세요.",
+  "advice_en": "Receive gratefully and give fairly, keeping the scales of exchange balanced.",
+  "yesno": "Yes"
+ },
+ "7-of-pentacles": {
+  "love_ko": "그동안 쏟은 정성을 돌아보며 이 관계를 계속 키울지 평가하는 시점입니다.",
+  "love_en": "You pause to assess the effort invested and whether this relationship is worth growing.",
+  "work_ko": "노력의 성과를 점검하는 단계로 당장의 수확보다 장기적 투자 결실을 기다려야 합니다.",
+  "work_en": "You review your progress; patience for the long-term harvest beats grabbing quick returns.",
+  "advice_ko": "조급해하지 말고 지금까지의 투자를 평가한 뒤 인내로 결실을 기다리세요.",
+  "advice_en": "Don't rush; evaluate what you've grown so far, then wait patiently for it to ripen.",
+  "yesno": "Maybe"
+ },
+ "8-of-pentacles": {
+  "love_ko": "관계에 정성껏 공을 들이며 신뢰를 한 땀 한 땀 쌓아가는 성실한 시기입니다.",
+  "love_en": "You devote steady effort to the bond, building trust one careful step at a time.",
+  "work_ko": "기술을 갈고닦으며 묵묵히 몰두하는 노력이 전문성과 숙련으로 이어지는 단계입니다.",
+  "work_en": "Diligent, focused practice sharpens your craft into genuine skill and mastery.",
+  "advice_ko": "한눈팔지 말고 반복과 연습에 몰두해 실력을 장인의 경지로 끌어올리세요.",
+  "advice_en": "Stay focused, embrace repetition, and hone your skill toward true craftsmanship.",
+  "yesno": "Yes"
+ },
+ "9-of-pentacles": {
+  "love_ko": "스스로 충만하고 독립적인 상태에서 여유롭게 관계를 즐기는 자족의 시기입니다.",
+  "love_en": "Self-sufficient and content, you enjoy love from a place of independence and ease.",
+  "work_ko": "그간의 노력이 결실 맺어 경제적 자립과 풍요, 물질적 성취를 누리게 됩니다.",
+  "work_en": "Your labor bears fruit as financial independence and material abundance become yours.",
+  "advice_ko": "이룬 성취를 스스로 인정하고 우아하게 누리며 자립의 열매를 만끽하세요.",
+  "advice_en": "Acknowledge what you've achieved and savor the fruits of your independence gracefully.",
+  "yesno": "Yes"
+ },
+ "10-of-pentacles": {
+  "love_ko": "가족과 세대를 아우르는 안정된 결합으로 오래 지속될 든든한 관계를 뜻합니다.",
+  "love_en": "A lasting, stable union woven into family and legacy promises enduring security together.",
+  "work_ko": "장기적 부와 유산, 가업의 번영 등 대를 잇는 물질적 안정이 확립됩니다.",
+  "work_en": "Long-term wealth, inheritance, and lasting prosperity establish security across generations.",
+  "advice_ko": "눈앞의 이익보다 대를 잇는 안정과 유산을 염두에 두고 견고히 다지세요.",
+  "advice_en": "Think beyond quick gains; build enduring stability and a legacy worth passing on.",
+  "yesno": "Yes"
+ },
+ "page-of-pentacles": {
+  "love_ko": "진지한 마음으로 관계를 배우고 알아가며 조심스레 첫발을 내딛는 시기입니다.",
+  "love_en": "You earnestly study and get to know the connection, stepping in carefully and sincerely.",
+  "work_ko": "새 기술이나 학업, 실용적 계획을 배우며 미래를 위해 착실히 준비하는 단계입니다.",
+  "work_en": "You study a new skill or practical plan, diligently laying groundwork for the future.",
+  "advice_ko": "호기심을 안고 배움에 열려 실용적 목표를 세워 한 걸음씩 익혀 나가세요.",
+  "advice_en": "Stay curious and open to learning; set a practical goal and study it step by step.",
+  "yesno": "Yes"
+ },
+ "knight-of-pentacles": {
+  "love_ko": "화려하진 않아도 성실하고 한결같은 태도로 믿음직하게 다가오는 상대를 뜻합니다.",
+  "love_en": "Unflashy but faithful, a steady and dependable partner approaches with quiet reliability.",
+  "work_ko": "느리지만 꾸준하고 책임감 있게 맡은 일을 끝까지 완수하는 근면한 흐름입니다.",
+  "work_en": "Slow but steady, you finish every duty with diligence and unwavering responsibility.",
+  "advice_ko": "속도보다 꾸준함이 답이니 지루해도 루틴을 지키며 끝까지 밀고 나가세요.",
+  "advice_en": "Consistency beats speed; keep the routine even when dull and see it through.",
+  "yesno": "Yes"
+ },
+ "queen-of-pentacles": {
+  "love_ko": "따뜻하게 보살피고 실질적으로 챙기며 안정된 보금자리를 만드는 성숙한 사랑입니다.",
+  "love_en": "A nurturing, practical love that cares for others and builds a warm, stable home.",
+  "work_ko": "일과 살림을 야무지게 병행하며 자원을 풍요롭게 운용하는 유능한 관리자의 면모입니다.",
+  "work_en": "You capably balance work and home, managing resources with warmth and abundant good sense.",
+  "advice_ko": "주변을 넉넉히 돌보되 자신의 필요와 건강도 실속 있게 챙기며 균형을 잡으세요.",
+  "advice_en": "Nurture those around you generously, but tend your own needs and health with equal care.",
+  "yesno": "Yes"
+ },
+ "king-of-pentacles": {
+  "love_ko": "든든하고 관대하게 상대를 감싸며 안정과 풍요를 책임지는 성숙한 파트너입니다.",
+  "love_en": "A secure, generous partner who shelters loved ones and provides lasting stability and comfort.",
+  "work_ko": "사업과 재정을 노련하게 다스려 부를 일구고 성공을 안정적으로 지켜내는 대가입니다.",
+  "work_en": "A seasoned master of business and finance who builds wealth and safeguards enduring success.",
+  "advice_ko": "쌓은 자원을 지혜롭고 관대하게 운용해 흔들림 없는 번영의 토대를 다지세요.",
+  "advice_en": "Steward your wealth wisely and generously to secure an unshakable foundation of prosperity.",
+  "yesno": "Yes"
+ },
+ "ace-of-swords": {
+  "love_ko": "감정에 휘둘리지 않고 진실을 명확히 말하면 관계에 새로운 돌파구가 열립니다.",
+  "love_en": "A breakthrough of clarity comes when you speak the honest truth in love.",
+  "work_ko": "예리한 아이디어와 논리로 새 프로젝트나 계약을 결단력 있게 밀어붙일 때입니다.",
+  "work_en": "A sharp idea and decisive logic cut through to launch a new venture.",
+  "advice_ko": "생각을 명료하게 정리하고 진실을 향해 단호하게 결단하세요.",
+  "advice_en": "Cut through confusion with clear thinking and a decisive commitment to truth.",
+  "yesno": "Yes"
+ },
+ "2-of-swords": {
+  "love_ko": "감정을 외면한 채 결정을 미루고 있어 관계가 교착 상태에 빠져 있습니다.",
+  "love_en": "You avoid feelings and stall, leaving the relationship at a tense standstill.",
+  "work_ko": "두 선택지 사이에서 눈을 가린 채 결정을 회피하면 문제만 더 커집니다.",
+  "work_en": "Refusing to choose between two options only lets the work problem grow.",
+  "advice_ko": "눈가리개를 벗고 외면한 진실을 직시해 균형 잡힌 결정을 내리세요.",
+  "advice_en": "Remove the blindfold, face the truth you avoid, and finally decide.",
+  "yesno": "Maybe"
+ },
+ "3-of-swords": {
+  "love_ko": "이별, 배신, 또는 아픈 진실로 마음이 깊이 찔리는 슬픔의 시기입니다.",
+  "love_en": "Heartbreak, betrayal, or a painful truth pierces the relationship deeply.",
+  "work_ko": "거절, 비판, 또는 동료와의 갈등으로 실망과 상처를 겪게 됩니다.",
+  "work_en": "Rejection, harsh criticism, or conflict brings painful disappointment at work.",
+  "advice_ko": "고통을 억누르지 말고 온전히 느끼며 슬픔을 흘려보내 치유하세요.",
+  "advice_en": "Let the grief flow rather than suppress it, so healing can begin.",
+  "yesno": "No"
+ },
+ "4-of-swords": {
+  "love_ko": "지친 관계에서 잠시 거리를 두고 마음을 쉬게 하며 회복할 시간이 필요합니다.",
+  "love_en": "Step back to rest and recover; the weary relationship needs quiet time.",
+  "work_ko": "과로에서 물러나 재충전하고 전략을 재정비할 휴식이 절실히 필요합니다.",
+  "work_en": "Pause from overwork to recover and regroup before your next push.",
+  "advice_ko": "무리하지 말고 잠시 멈춰 마음과 몸을 온전히 쉬게 하세요.",
+  "advice_en": "Stop pushing and give your mind and body genuine, restorative rest.",
+  "yesno": "Maybe"
+ },
+ "5-of-swords": {
+  "love_ko": "이기려고만 하는 다툼은 설령 이겨도 관계에 깊은 앙금을 남깁니다.",
+  "love_en": "Winning the argument at any cost leaves the relationship bitter and hollow.",
+  "work_ko": "무리한 경쟁과 자존심 싸움은 평판을 해치니 이길 싸움인지 따져보세요.",
+  "work_en": "Cutthroat rivalry may win the battle but damages your reputation at work.",
+  "advice_ko": "이기는 것보다 무엇을 잃는지 보고 불필요한 갈등은 놓아주세요.",
+  "advice_en": "Weigh what winning costs you, and let go of pointless conflicts.",
+  "yesno": "No"
+ },
+ "6-of-swords": {
+  "love_ko": "힘든 시기를 뒤로하고 더 평온한 관계의 국면으로 함께 나아갑니다.",
+  "love_en": "You move together away from turbulence toward calmer relationship waters.",
+  "work_ko": "어려운 상황에서 벗어나 새 환경이나 안정된 국면으로 전환하는 시기입니다.",
+  "work_en": "A transition carries you out of hardship toward steadier professional ground.",
+  "advice_ko": "과거에 매달리지 말고 더 나은 곳을 향해 조용히 이동하세요.",
+  "advice_en": "Leave the past behind and move calmly toward a better place.",
+  "yesno": "Yes"
+ },
+ "7-of-swords": {
+  "love_ko": "숨김, 거짓말, 또는 은밀한 행동이 관계의 신뢰를 위협하고 있습니다.",
+  "love_en": "Secrecy, deception, or hidden moves are quietly undermining the trust.",
+  "work_ko": "정면 승부를 피한 전략이나 누군가의 술수가 있으니 뒤를 조심하세요.",
+  "work_en": "A sly strategy or someone's deceit is at play; guard your back.",
+  "advice_ko": "정직하게 정면으로 다가서고 편법이나 회피의 유혹을 경계하세요.",
+  "advice_en": "Act with honest directness and resist the temptation to cut corners.",
+  "yesno": "No"
+ },
+ "8-of-swords": {
+  "love_ko": "스스로 만든 두려움에 갇혀 있을 뿐, 관계의 출구는 원래 열려 있습니다.",
+  "love_en": "Self-made fears trap you, though the way out was always open.",
+  "work_ko": "무력감에 갇힌 듯해도 제약의 대부분은 스스로의 생각이 만든 것입니다.",
+  "work_en": "You feel stuck at work, yet most limits are your own mind's making.",
+  "advice_ko": "피해자 사고에서 벗어나 시야를 넓히면 벗어날 길이 보입니다.",
+  "advice_en": "Drop the victim mindset; open your eyes and the escape appears.",
+  "yesno": "No"
+ },
+ "9-of-swords": {
+  "love_ko": "불안과 밤샘 걱정이 관계를 실제보다 훨씬 절망적으로 부풀리고 있습니다.",
+  "love_en": "Anxiety and sleepless worry make the relationship feel far worse than it is.",
+  "work_ko": "과도한 불안과 두려움이 밤잠을 앗아가지만 최악의 상상은 대개 과장입니다.",
+  "work_en": "Dread steals your sleep, yet the worst-case fears are largely exaggerated.",
+  "advice_ko": "머릿속 최악의 시나리오와 현실을 분리하고 걱정을 종이에 적어내세요.",
+  "advice_en": "Separate catastrophic thoughts from reality and write your worries down.",
+  "yesno": "No"
+ },
+ "10-of-swords": {
+  "love_ko": "관계가 고통스러운 끝에 이르렀지만 이 바닥이 새 새벽의 시작입니다.",
+  "love_en": "The relationship hits a painful end, yet rock bottom precedes a new dawn.",
+  "work_ko": "프로젝트나 경력의 한 국면이 완전히 무너졌으니 이제 놓아주고 재건하세요.",
+  "work_en": "A project or career chapter fully collapses; release it and rebuild anew.",
+  "advice_ko": "끝은 이미 왔으니 저항을 멈추고 바닥에서 다시 일어설 준비를 하세요.",
+  "advice_en": "The ending is complete; stop resisting and prepare to rise again.",
+  "yesno": "No"
+ },
+ "page-of-swords": {
+  "love_ko": "호기심과 솔직한 대화로 상대를 알아가되 성급한 말과 뒷담화는 조심하세요.",
+  "love_en": "Curiosity and candid talk deepen bonds, but watch impulsive or gossipy words.",
+  "work_ko": "새로운 정보를 열정적으로 배우고 관찰하되 섣부른 판단은 검증하세요.",
+  "work_en": "Eagerly learn and gather information at work, but verify hasty conclusions.",
+  "advice_ko": "호기심을 열어두고 진실을 캐되 말을 내뱉기 전에 한 번 더 생각하세요.",
+  "advice_en": "Stay curious and seek truth, but think twice before you speak.",
+  "yesno": "Maybe"
+ },
+ "knight-of-swords": {
+  "love_ko": "저돌적인 열정으로 밀어붙이지만 성급함이 상대를 부담스럽게 할 수 있습니다.",
+  "love_en": "Bold passion charges ahead, but impatience may overwhelm your partner.",
+  "work_ko": "빠른 결단과 추진력으로 돌파하되 무모함과 세부 간과를 경계하세요.",
+  "work_en": "Swift, driven action breaks through, but beware recklessness and missed details.",
+  "advice_ko": "속도와 신념은 좋지만 방향을 확인하고 남의 말도 들으며 나아가세요.",
+  "advice_en": "Channel your drive, but confirm your direction and listen before charging.",
+  "yesno": "Maybe"
+ },
+ "queen-of-swords": {
+  "love_ko": "감정에 휩쓸리지 않는 명료함과 정직함으로 건강한 경계를 세우는 관계입니다.",
+  "love_en": "Clear-eyed honesty and healthy boundaries define this relationship's strength.",
+  "work_ko": "냉철한 판단과 직설적 소통으로 독립적이고 공정하게 문제를 처리합니다.",
+  "work_en": "Sharp judgment and direct communication handle work fairly and independently.",
+  "advice_ko": "과거의 상처를 지혜로 삼아 감정과 이성을 분리해 명료하게 판단하세요.",
+  "advice_en": "Turn past pain into wisdom; judge clearly by separating emotion from fact.",
+  "yesno": "Maybe"
+ },
+ "king-of-swords": {
+  "love_ko": "공정하고 이성적인 태도로 관계를 이끌되 지나친 논리는 따뜻함을 가릴 수 있습니다.",
+  "love_en": "Fair, rational leadership guides love, but cold logic can mask warmth.",
+  "work_ko": "명확한 원칙과 전략적 판단으로 권위 있게 결정을 내리고 팀을 이끕니다.",
+  "work_en": "Clear principles and strategic judgment let you decide and lead with authority.",
+  "advice_ko": "감정에 흔들리지 말고 원칙과 논리에 근거해 공정하게 결단하세요.",
+  "advice_en": "Decide fairly from principle and logic rather than shifting emotion.",
+  "yesno": "Yes"
+ },
+ "ace-of-wands": {
+  "love_ko": "강렬한 끌림과 열정이 불꽃처럼 타오르며 새로운 로맨스가 시작될 신호입니다.",
+  "love_en": "A spark of raw attraction ignites, signaling a passionate new romance beginning.",
+  "work_ko": "창의적 영감이 폭발하니 새 프로젝트나 사업을 지금 시작할 최적의 순간입니다.",
+  "work_en": "Creative inspiration surges, making now the ideal moment to launch a new venture.",
+  "advice_ko": "떠오른 첫 불씨를 미루지 말고 용기 있게 곧바로 행동으로 옮기세요.",
+  "advice_en": "Don't hesitate; seize the first spark of inspiration and act on it boldly.",
+  "yesno": "Yes"
+ },
+ "2-of-wands": {
+  "love_ko": "관계의 미래를 저울질하며 더 넓은 세상으로 함께 나아갈지 계획하는 시기입니다.",
+  "love_en": "You weigh the relationship's future, planning whether to expand your world together.",
+  "work_ko": "손안의 세계를 바라보듯 장기 비전을 세우고 큰 그림을 설계할 때입니다.",
+  "work_en": "Like holding the globe, set a long-term vision and design your bigger plan.",
+  "advice_ko": "안전지대에 머물지 말고 대담한 계획으로 미지의 영역에 발을 내딛으세요.",
+  "advice_en": "Leave the comfort zone and step into unknown territory with a bold plan.",
+  "yesno": "Maybe"
+ },
+ "3-of-wands": {
+  "love_ko": "인내한 마음이 결실을 맺어 기다리던 상대나 소식이 곧 다가오고 있습니다.",
+  "love_en": "Patience pays off as the awaited partner or hopeful news sails toward you.",
+  "work_ko": "뿌린 노력이 배가 되어 돌아오고 사업 확장과 새로운 기회가 열립니다.",
+  "work_en": "Your efforts return like ships coming in, opening expansion and fresh opportunities.",
+  "advice_ko": "멀리 내다보며 이미 시작한 계획이 순항하도록 기회를 넓게 잡으세요.",
+  "advice_en": "Look to the horizon and widen your reach as your plans set sail.",
+  "yesno": "Yes"
+ },
+ "4-of-wands": {
+  "love_ko": "축복과 조화 속에 약혼이나 결혼처럼 관계가 안정된 다음 단계로 무르익습니다.",
+  "love_en": "In joyful harmony, the relationship ripens toward engagement, marriage, or stable milestone.",
+  "work_ko": "팀의 성취를 함께 축하하며 안정된 기반 위에서 자축할 만한 성과를 거둡니다.",
+  "work_en": "Celebrate a shared achievement as stable foundations bring results worth honoring.",
+  "advice_ko": "이룬 성과를 잠시 멈춰 축하하고 소중한 사람들과 기쁨을 나누세요.",
+  "advice_en": "Pause to celebrate what you've built and share the joy with loved ones.",
+  "yesno": "Yes"
+ },
+ "5-of-wands": {
+  "love_ko": "사소한 다툼과 자존심 대결이 이어져 관계에 소모적 긴장이 감도는 시기입니다.",
+  "love_en": "Petty quarrels and clashing egos create draining tension between the two of you.",
+  "work_ko": "경쟁과 의견 충돌이 난무하니 협력보다 혼란스러운 갈등이 앞서는 상황입니다.",
+  "work_en": "Competition and conflicting opinions dominate, breeding chaotic friction over cooperation.",
+  "advice_ko": "감정 소모전을 멈추고 규칙을 정해 건설적인 방향으로 에너지를 모으세요.",
+  "advice_en": "Stop the draining skirmish; set rules and channel the energy constructively.",
+  "yesno": "No"
+ },
+ "6-of-wands": {
+  "love_ko": "자신감과 매력이 빛나 상대의 인정과 사랑을 얻는 승리의 순간이 찾아옵니다.",
+  "love_en": "Radiant confidence wins your partner's admiration, bringing a triumphant moment in love.",
+  "work_ko": "노력이 공개적으로 인정받아 승진이나 성공적 성과로 보상받는 시기입니다.",
+  "work_en": "Your work earns public recognition, rewarded with promotion or a celebrated success.",
+  "advice_ko": "그동안의 노력에 자부심을 갖고 당당하게 성취를 드러내며 나아가세요.",
+  "advice_en": "Take pride in your effort and step forward, owning your well-earned victory.",
+  "yesno": "Yes"
+ },
+ "7-of-wands": {
+  "love_ko": "관계를 지키려 방어 태세를 취하지만 홀로 맞서는 부담이 커지는 국면입니다.",
+  "love_en": "You defend the relationship, yet the burden of standing alone grows heavier.",
+  "work_ko": "도전과 경쟁이 밀려와 자기 입지를 지키려 끊임없이 버텨야 하는 상황입니다.",
+  "work_en": "Challenges pile up, forcing you to constantly defend your hard-won position.",
+  "advice_ko": "물러서지 말고 자신의 신념을 지키되 무엇을 위해 싸우는지 되짚으세요.",
+  "advice_en": "Hold your ground and defend your convictions, but reassess what's worth fighting.",
+  "yesno": "No"
+ },
+ "8-of-wands": {
+  "love_ko": "빠른 진전과 설레는 연락이 오가며 관계가 급물살을 타는 시기입니다.",
+  "love_en": "Swift progress and exciting messages fly, moving the relationship rapidly forward.",
+  "work_ko": "일이 일사천리로 풀리고 반가운 소식과 결정이 빠르게 도착하는 흐름입니다.",
+  "work_en": "Work accelerates smoothly as welcome news and decisions arrive with sudden speed.",
+  "advice_ko": "흐름이 빠를 때 지체 없이 움직여 다가온 기회를 놓치지 말고 잡으세요.",
+  "advice_en": "Move without delay while momentum is high, and seize the swift opportunity.",
+  "yesno": "Yes"
+ },
+ "9-of-wands": {
+  "love_ko": "지난 상처로 경계심이 남았지만 조금만 더 버티면 관계가 고비를 넘깁니다.",
+  "love_en": "Past wounds leave you guarded, yet one more push carries the relationship through.",
+  "work_ko": "지치고 상처받았어도 마지막 관문이 코앞이니 끈기로 버텨낼 시점입니다.",
+  "work_en": "Weary and battle-worn, you're near the finish, so hold on with resilience.",
+  "advice_ko": "포기하고 싶어도 마지막 한 걸음을 남겨두었으니 끝까지 버텨내세요.",
+  "advice_en": "Though tempted to quit, only one step remains, so persevere to the end.",
+  "yesno": "Maybe"
+ },
+ "10-of-wands": {
+  "love_ko": "혼자 모든 짐을 떠안아 관계가 의무처럼 무겁고 버거워진 상태입니다.",
+  "love_en": "Carrying every burden alone, the relationship feels heavy like an exhausting obligation.",
+  "work_ko": "과중한 책임과 업무가 어깨를 짓눌러 번아웃 직전까지 몰린 상황입니다.",
+  "work_en": "Overwhelming responsibilities weigh you down, pushing you to the edge of burnout.",
+  "advice_ko": "모든 짐을 홀로 지지 말고 내려놓거나 나눌 것을 과감히 골라내세요.",
+  "advice_en": "Stop carrying it all alone; delegate or release what you can put down.",
+  "yesno": "No"
+ },
+ "page-of-wands": {
+  "love_ko": "호기심과 설렘으로 가득한 풋풋한 만남이나 즉흥적 데이트가 시작될 조짐입니다.",
+  "love_en": "Curiosity and excitement spark a fresh flirtation or spontaneous, playful new date.",
+  "work_ko": "새로운 아이디어에 대한 열정이 샘솟아 배우고 탐험하며 발돋움할 시기입니다.",
+  "work_en": "Enthusiasm for new ideas bubbles up, a time to learn, explore, and grow.",
+  "advice_ko": "결과를 재기 전에 순수한 호기심을 따라 마음이 이끄는 모험을 시도하세요.",
+  "advice_en": "Follow your genuine curiosity and try the adventure your heart is drawn to.",
+  "yesno": "Maybe"
+ },
+ "knight-of-wands": {
+  "love_ko": "뜨거운 열정과 모험심이 넘치는 상대가 등장해 격정적 로맨스가 휘몰아칩니다.",
+  "love_en": "A fiery, adventurous suitor sweeps in, whirling you into passionate, impulsive romance.",
+  "work_ko": "대담한 추진력으로 일을 밀어붙이지만 성급함과 산만함을 경계해야 할 시기입니다.",
+  "work_en": "Bold drive pushes projects ahead, though impatience and scattered focus need watching.",
+  "advice_ko": "타오르는 열정으로 과감히 뛰어들되 끝맺음을 잊지 않도록 방향을 잡으세요.",
+  "advice_en": "Charge ahead with fiery passion, but stay directed so you actually finish.",
+  "yesno": "Yes"
+ },
+ "queen-of-wands": {
+  "love_ko": "따뜻하고 당당한 매력이 빛나 자신감으로 상대를 사로잡는 관계의 주도자입니다.",
+  "love_en": "Warm, confident charisma shines, magnetizing your partner as you lead with self-assurance.",
+  "work_ko": "카리스마와 활력으로 사람을 이끌며 열정적으로 목표를 성취해 나가는 시기입니다.",
+  "work_en": "With charisma and vitality, you lead others and passionately achieve your goals.",
+  "advice_ko": "자기 가치를 믿고 따뜻함과 열정을 동시에 발산하며 당당하게 빛나세요.",
+  "advice_en": "Believe in your worth and shine boldly, radiating both warmth and passion.",
+  "yesno": "Yes"
+ },
+ "king-of-wands": {
+  "love_ko": "비전과 리더십을 갖춘 성숙한 상대가 관계를 든든하게 이끌어 가는 흐름입니다.",
+  "love_en": "A visionary, mature partner leads the relationship with steady confidence and warmth.",
+  "work_ko": "명확한 비전과 대담한 결단으로 사람을 이끌어 큰 사업을 성공시키는 시기입니다.",
+  "work_en": "With clear vision and bold decisions, you lead others to grand entrepreneurial success.",
+  "advice_ko": "큰 그림을 그리고 대담한 비전으로 사람들을 이끌어 앞장서서 실행하세요.",
+  "advice_en": "Cast a grand vision and lead boldly, guiding others to execute it.",
+  "yesno": "Yes"
+ }
+}

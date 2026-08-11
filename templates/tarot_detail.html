@@ -43,6 +43,20 @@
   <h2>{% if en %}Reversed{% else %}역방향{% endif %} ▼</h2>
   <p>{{ card.rev_en if en else card.rev_ko }}</p>
 
+  {% set love = card.love_en if en else card.love_ko %}
+  {% set work = card.work_en if en else card.work_ko %}
+  {% set advice = card.advice_en if en else card.advice_ko %}
+  {% if love or work or advice %}
+  <h2>{% if en %}What this card means for you{% else %}상황별 의미{% endif %}</h2>
+  <ul class="bullet-list">
+    {% if love %}<li><strong>{% if en %}Love & relationships{% else %}연애·관계{% endif %}</strong> — {{ love }}</li>{% endif %}
+    {% if work %}<li><strong>{% if en %}Work & money{% else %}일·금전{% endif %}</strong> — {{ work }}</li>{% endif %}
+    {% if advice %}<li><strong>{% if en %}Advice{% else %}조언{% endif %}</strong> — {{ advice }}</li>{% endif %}
+    {% if card.yesno %}<li><strong>{% if en %}Yes / No{% else %}예 / 아니오{% endif %}</strong> —
+      {% if en %}{{ card.yesno }}{% else %}{{ {'Yes':'예 (긍정)','No':'아니오 (부정)','Maybe':'유보 (조건부)'}[card.yesno] or card.yesno }}{% endif %}</li>{% endif %}
+  </ul>
+  {% endif %}
+
   <div class="dream-cta-box">
     <h3>{% if en %}Draw your card of the day{% else %}오늘의 타로 한 장 뽑기{% endif %}</h3>
     <p>{% if en %}A single card for today's energy, free and shareable.{% else %}오늘의 기운을 담은 카드 한 장, 무료로 뽑고 공유하세요.{% endif %}</p>

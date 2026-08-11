@@ -264,6 +264,25 @@ def _build_major():
 DECK = _build_major() + _build_minor()          # 78장
 BY_SLUG = {c["slug"]: c for c in DECK}
 
+# ─── 카드별 심화 콘텐츠 (연애·일/금전·조언·예아니오) ──────────
+# tarot_extra.json 에서 로드해 각 카드에 병합 → 페이지 콘텐츠 강화(AdSense 품질).
+import json as _json
+import os as _os
+
+_EXTRA = {}
+try:
+    _p = _os.path.join(_os.path.dirname(__file__), "tarot_extra.json")
+    if _os.path.exists(_p):
+        with open(_p, encoding="utf-8") as _f:
+            _EXTRA = _json.load(_f)
+except Exception:
+    _EXTRA = {}
+
+for _c in DECK:
+    _e = _EXTRA.get(_c["slug"])
+    if _e:
+        _c.update(_e)
+
 
 def get_card(slug: str):
     return BY_SLUG.get(slug)

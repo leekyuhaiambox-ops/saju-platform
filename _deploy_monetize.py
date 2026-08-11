@@ -15,6 +15,7 @@ FILES = [
     "saju/horoscope.py",
     "saju/personality.py",
     "saju/tarot.py",
+    "saju/tarot_extra.json",
     "auto_index.py",
     "templates/admin_stats.html",
     "templates/_coupang_section.html",
