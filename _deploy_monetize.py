@@ -39,6 +39,9 @@ FILES = [
     "templates/compatibility.html",
     "templates/index.html",
     "templates/base.html",
+    "templates/about.html",
+    "templates/privacy.html",
+    "templates/contact.html",
     "static/css/style.css",
 ]
 

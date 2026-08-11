@@ -49,6 +49,8 @@ from saju import analytics
 CRON_SECRET = os.environ.get("CRON_SECRET", "")
 # ─── 관리자 대시보드 시크릿 (환경변수 없으면 기본값) ───
 ADMIN_SECRET = os.environ.get("ADMIN_SECRET", "saju2026admin")
+# ─── 연락처 이메일 (AdSense 승인 필수: 명확한 연락 수단) ───
+CONTACT_EMAIL = os.environ.get("CONTACT_EMAIL", "iamboxkorea@gmail.com")
 # ─── 쿠팡 파트너스 ID (가입 후 환경변수로 주입) ───
 COUPANG_PARTNERS_ID = os.environ.get("COUPANG_PARTNERS_ID", "")
 # ─── 후원/프리미엄 활성 여부 ───
@@ -421,6 +423,7 @@ SITE_TAGLINE = "1,800년 동양철학의 지혜로 당신의 사주를 풀어드
 def inject_globals():
     lang = getattr(g, "lang", DEFAULT_LANG)
     return {
+        "CONTACT_EMAIL": CONTACT_EMAIL,
         "ADSENSE_CLIENT_ID": ADSENSE_CLIENT_ID,
         "ADSENSE_SLOT_TOP": ADSENSE_SLOT_TOP,
         "ADSENSE_SLOT_INLINE": ADSENSE_SLOT_INLINE,
@@ -810,6 +813,12 @@ def privacy():
 @app.route("/en/terms")
 def terms():
     return render_template("terms.html")
+
+
+@app.route("/contact")
+@app.route("/en/contact")
+def contact():
+    return render_template("contact.html", contact_email=CONTACT_EMAIL)
 
 
 # ─────────────────────────────────────────────────────────────────
@@ -1524,6 +1533,7 @@ def sitemap():
         ("/about", "0.4", "yearly"),
         ("/privacy", "0.3", "yearly"),
         ("/terms", "0.3", "yearly"),
+        ("/contact", "0.4", "yearly"),
     ]
     zodiacs_kr = ["쥐", "소", "호랑이", "토끼", "용", "뱀",
                   "말", "양", "원숭이", "닭", "개", "돼지"]
@@ -1836,12 +1846,13 @@ def api_compatibility():
 # ─────────────────────────────────────────────────────────────────
 @app.errorhandler(404)
 def not_found(e):
-    return render_template("404.html"), 404
+    # 오류 페이지에는 광고 미노출 (Google/AdFit 정책: 콘텐츠 없는 페이지 광고 금지)
+    return render_template("404.html", hide_ads=True), 404
 
 
 @app.errorhandler(500)
 def server_error(e):
-    return render_template("500.html"), 500
+    return render_template("500.html", hide_ads=True), 500
 
 
 if __name__ == "__main__":

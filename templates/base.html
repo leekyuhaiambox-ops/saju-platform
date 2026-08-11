@@ -167,6 +167,8 @@
     {% block content %}{% endblock %}
   </main>
 
+  {# 오류·콘텐츠 없는 페이지(hide_ads)에는 광고 유닛을 렌더링하지 않음 — 광고 정책 준수 #}
+  {% if not hide_ads %}
   {# ─── AdFit 728×90 Leaderboard (메인 콘텐츠 아래, 풋터 위) ─── #}
   {% if ADFIT_SLOT_LEADERBOARD %}
   <div class="adfit-container adfit-leaderboard">
@@ -195,9 +197,10 @@
          data-ad-width="160" data-ad-height="600"></ins>
   </div>
   {% endif %}
+  {% endif %}{# not hide_ads #}
 
-  {# AdFit 스크립트 — 한 번만 로드 #}
-  {% if ADFIT_SLOT_LEADERBOARD or ADFIT_SLOT_MEDIUM or ADFIT_SLOT_SQUARE or ADFIT_SLOT_SKYSCRAPER %}
+  {# AdFit 스크립트 — 한 번만 로드 (오류페이지 hide_ads에서는 로드 안 함) #}
+  {% if not hide_ads and (ADFIT_SLOT_LEADERBOARD or ADFIT_SLOT_MEDIUM or ADFIT_SLOT_SQUARE or ADFIT_SLOT_SKYSCRAPER) %}
   <script>
     // 모바일(< 768px)에서는 728×90 컨테이너 자체를 DOM에서 제거 — AdFit 정책 준수
     (function () {
@@ -250,6 +253,8 @@
           <a href="{{ p }}/about">{{ t('footer_link_about') }}</a>
           <a href="{{ p }}/privacy">{{ t('footer_link_privacy') }}</a>
           <a href="{{ p }}/terms">{{ t('footer_link_terms') }}</a>
+          <a href="{{ p }}/contact">{% if lang == 'en' %}Contact{% else %}문의하기{% endif %}</a>
+          {% if CONTACT_EMAIL %}<a href="mailto:{{ CONTACT_EMAIL }}">{{ CONTACT_EMAIL }}</a>{% endif %}
           {% if lang != 'en' %}<a href="/premium">⭐ 프리미엄 리포트</a>{% endif %}
           {% if support_links and support_links.active %}<a href="{{ p }}/support">{% if lang == 'en' %}☕ Support{% else %}☕ 후원하기{% endif %}</a>{% endif %}
         </div>
